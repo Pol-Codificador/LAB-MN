@@ -1,189 +1,261 @@
-## Semana 01 — Definición del problema y acuerdo de equipo
+## Equipo 4 — Integración Numérica
+### Semana 01 — Definición del problema y acuerdo de equipo
 
-**Módulo:** Integración Numérica
-**Semana:** 01
-**Responsable:** Renato Xavier Ponce Llerena
+* **Proyecto:** Página web de Métodos Numéricos
+* **Rol:** M — Matemática y modelación
+* **Semana:** 01
+* **Responsable:** Renato Xavier Ponce Llerena
+
+---
+## 1. Definición del problema
+
+### 1.1 Contexto
+Se plantea un caso didáctico relacionado con tráfico de datos.
+La tasa sintética de transferencia de datos está definida por:
+$$r(t) = t^2 + 1$$
+
+donde $t$ representa el tiempo transcurrido. La tasa está expresada en $\text{MB/s}$ y el intervalo de análisis corresponde a $0 \le t \le 2\text{ s}$.
+
+El objetivo es determinar el volumen total de datos transferidos durante dicho intervalo mediante integración numérica.
 
 ---
 
-# 1. Caso matemático seleccionado
+## 2. Formulación matemática
+Si $r(t)$ representa una tasa de transferencia en $\text{MB/s}$, el volumen acumulado durante un intervalo de tiempo se obtiene mediante:
+$$V = \int_a^b r(t)\,dt$$
 
-El caso base establecido para el módulo de Integración Numérica es calcular el área bajo la curva de la campana de Gauss (distribución normal estándar), la cual carece de una antiderivada elemental.
-
-La función a integrar es:
-
-$$
-f(x)=e^{-x^2}
-$$
-
-El objetivo del módulo será aproximar el valor de la integral definida en un intervalo $[a, b]$:
-
-$$
-I = \int_{a}^{b} e^{-x^2} dx
-$$
-
-El documento del laboratorio establece como métodos mínimos para este módulo **Regla del Trapecio Compuesto** y **Regla de Simpson Compuesto**, utilizando inicialmente el intervalo $[0, 1]$ con un número base de $n=10$ subintervalos.
+Para el caso base, $a = 0$, $b = 2$ y $r(t) = t^2 + 1$. Por lo tanto:
+$$\boxed{ V = \int_0^2 (t^2 + 1)\,dt }$$
 
 ---
 
-# 2. Variables del problema
+## 3. Variables y parámetros
 
-| Variable | Descripción                                        | Tipo                 |
-| -------- | -------------------------------------------------- | -------------------- |
-| x        | Variable independiente (Adimensional)              | Variable             |
-| f(x)     | Función de densidad de probabilidad                | Función              |
-| a, b     | Límites inferior y superior de integración         | Parámetros de entrada|
-| n        | Número de subintervalos                            | Parámetro de control |
-| h        | Tamaño del paso $(b-a)/n$                          | Variable calculada   |
+| Símbolo | Descripción | Unidad |
+| :--- | :--- | :--- |
+| $t$ | Tiempo | $\text{s}$ |
+| $r(t)$ | Tasa de transferencia | $\text{MB/s}$ |
+| $V$ | Volumen total transferido | $\text{MB}$ |
+| $a$ | Extremo inferior del intervalo | $\text{s}$ |
+| $b$ | Extremo superior del intervalo | $\text{s}$ |
+| $n$ | Número de subintervalos | Adimensional |
+| $h$ | Tamaño de cada subintervalo | $\text{s}$ |
 
-La función central utilizada por los algoritmos será:
-
-$$
-\boxed{f(x)=e^{-x^2}}
-$$
-
----
-
-# 3. Supuestos
-
-Para el desarrollo inicial del caso se consideran los siguientes supuestos:
-
-1. La función $f(x)$ es continua y evaluable en el intervalo cerrado $[a, b]$.
-2. El intervalo inicial de estudio será $[0, 1]$.
-3. El número de subintervalos $n$ será un entero positivo mayor a 0.
-4. **Condición estricta:** Para la Regla de Simpson 1/3 compuesto, el número de subintervalos $n$ debe ser obligatoriamente un número **par**.
-5. La tolerancia para el análisis del error analítico será $\varepsilon = 10^{-6}$.
-6. El límite máximo de subintervalos por defecto será $n_{max} = 1000$ para evitar desbordamientos de memoria en el navegador.
+El tamaño de paso para una malla uniforme se calcula mediante:
+$$\boxed{ h = \frac{b-a}{n} }$$
 
 ---
 
-# 4. Verificación del tamaño de paso (h)
+## 4. Supuestos del modelo
+Para el caso didáctico se consideran los siguientes supuestos:
 
-Para aplicar los métodos de cuadratura, se divide el intervalo $[a, b]$ en $n$ partes iguales. Para el caso inicial con $a=0$, $b=1$ y $n=2$:
+1. La tasa de transferencia está representada por la función $r(t) = t^2 + 1$.
+2. La tasa es continua dentro del intervalo de análisis.
+3. El intervalo temporal inicial es $[0,2]\text{ s}$.
+4. La malla utilizada por los métodos es uniforme.
+5. El número de subintervalos $n$ es un entero positivo.
+6. Para Simpson 1/3 compuesto, $n$ debe ser par.
+7. La tasa se interpreta físicamente como una cantidad no negativa durante el caso base.
+8. El resultado de integrar una tasa expresada en $\text{MB/s}$ respecto del tiempo expresado en segundos se expresa en $\text{MB}$.
 
-$$
-h = \frac{b-a}{n}
-$$
-
-$$
-h = \frac{1-0}{2} = 0.5
-$$
-
-Los nodos a evaluar serán: $x_0 = 0$, $x_1 = 0.5$, $x_2 = 1$.
+Estas condiciones se derivan del caso y de las restricciones específicas establecidas para el módulo.
 
 ---
 
-# 5. Primera prueba iterativa: Regla del Trapecio (n=2)
+## 5. Dominio y restricciones
 
-Fórmula del Trapecio compuesto para $n=2$:
+**Dominio del caso base:**
+$$\boxed{0 \le t \le 2}$$
 
-$$
-I \approx \frac{h}{2} [f(x_0) + 2f(x_1) + f(x_2)]
-$$
+**Restricción para ambos métodos:**
+$$\boxed{n > 0} \quad \text{y} \quad n \in \mathbb{Z}$$
 
-Evaluando los nodos en $f(x) = e^{-x^2}$:
+**Restricción adicional para Simpson 1/3 compuesto:**
+$$\boxed{n \text{ debe ser par}}$$
 
-$$
-f(0) = e^0 = 1
-$$
-$$
-f(0.5) = e^{-0.25} \approx 0.77880078
-$$
-$$
-f(1) = e^{-1} \approx 0.36787944
-$$
+Por ejemplo:
+
+| $n$ | Trapecio compuesto | Simpson compuesto |
+| :---: | :---: | :---: |
+| 0 | No válido | No válido |
+| 1 | Válido | No válido |
+| 2 | Válido | Válido |
+| 3 | Válido | No válido |
+| 4 | Válido | Válido |
+| 8 | Válido | Válido |
+
+La prueba específica de fallo indicada por la guía es utilizar $n = 3$ para Simpson y $n = 0$ para ambos métodos. La interfaz debe explicar la restricción correspondiente.
+
+---
+
+## 6. Solución de referencia mediante integración exacta
+Para validar los métodos numéricos se obtiene primero una referencia independiente mediante integración analítica.
+
+Tenemos:
+$$V = \int_0^2 (t^2+1)\,dt$$
+
+La integral indefinida es:
+$$\int (t^2+1)\,dt = \frac{t^3}{3} + t$$
+
+Evaluando entre $0$ y $2$:
+$$V = \left[ \frac{t^3}{3}+t \right]_0^2$$
+$$V = \left( \frac{2^3}{3}+2 \right) - \left( \frac{0^3}{3}+0 \right)$$
+$$V = \frac{8}{3}+2 = \frac{8}{3}+\frac{6}{3}$$
+$$\boxed{ V = \frac{14}{3}\text{ MB} }$$
+
+Por tanto:
+$$\boxed{ V \approx 4.6666666667\text{ MB} }$$
+
+Este es el valor de referencia independiente que deberá utilizarse para comparar los resultados de Trapecio y Simpson.
+
+---
+
+## 7. Método del Trapecio compuesto
+Para una función $f(x)$ definida en una malla uniforme, el método del Trapecio compuesto aproxima la integral mediante:
+$$\boxed{ I \approx \frac{h}{2} \left[ f(x_0) + 2\sum_{i=1}^{n-1} f(x_i) + f(x_n) \right] }$$
+
+donde $h = \frac{b-a}{n}$. Para nuestro caso $f(t) = r(t) = t^2 + 1$, por lo que:
+$$\boxed{ V_T = \frac{h}{2} \left[ r(t_0) + 2\sum_{i=1}^{n-1} r(t_i) + r(t_n) \right] }$$
+
+---
+
+## 8. Ejemplo de referencia: Trapecio con $n=4$
+Para $a = 0$, $b = 2$, $n = 4$, el tamaño de paso es:
+$$h = \frac{2-0}{4} = 0.5\text{ s}$$
+
+Los nodos son: $t_0 = 0$, $t_1 = 0.5$, $t_2 = 1$, $t_3 = 1.5$, $t_4 = 2$.
+
+Evaluamos $r(t) = t^2+1$:
+
+| $i$ | $t_i$ (s) | $r(t_i)$ (MB/s) | Peso |
+| :---: | :---: | :---: | :---: |
+| 0 | 0.0 | 1.00 | 1 |
+| 1 | 0.5 | 1.25 | 2 |
+| 2 | 1.0 | 2.00 | 2 |
+| 3 | 1.5 | 3.25 | 2 |
+| 4 | 2.0 | 5.00 | 1 |
 
 Aplicando la fórmula:
-
-$$
-I \approx \frac{0.5}{2} [1 + 2(0.77880078) + 0.36787944]
-$$
-$$
-\boxed{I_{trapecio} \approx 0.731370}
-$$
+$$V_T = \frac{0.5}{2} \left[ 1 + 2(1.25) + 2(2) + 2(3.25) + 5 \right]$$
+$$V_T = 0.25 [1 + 2.5 + 4 + 6.5 + 5]$$
+$$V_T = 0.25(19)$$
+$$\boxed{ V_T = 4.75\text{ MB} }$$
 
 ---
 
-# 6. Primera prueba iterativa: Regla de Simpson 1/3 (n=2)
+## 9. Error absoluto del Trapecio con $n=4$
+La referencia exacta es $V_{\text{exacto}} = \frac{14}{3}$ y el resultado del Trapecio es $V_T = 4.75$.
 
-Fórmula de Simpson 1/3 para $n=2$:
+El error absoluto es:
+$$E_a = \vert{}V_{\text{exacto}} - V_T\vert{}$$
+$$E_a = \left\vert{} \frac{14}{3} - 4.75 \right\vert{}$$
+$$\boxed{ E_a = \frac{1}{12}\text{ MB} }$$
 
-$$
-I \approx \frac{h}{3} [f(x_0) + 4f(x_1) + f(x_2)]
-$$
-
-Utilizando las mismas evaluaciones de la función:
-
-$$
-I \approx \frac{0.5}{3} [1 + 4(0.77880078) + 0.36787944]
-$$
-$$
-\boxed{I_{simpson} \approx 0.747180}
-$$
+Aproximadamente:
+$$\boxed{ E_a \approx 0.0833333333\text{ MB} }$$
 
 ---
 
-# 7. Valor de referencia analítico
+## 10. Método de Simpson 1/3 compuesto
+El método de Simpson 1/3 compuesto utiliza:
+$$\boxed{ I \approx \frac{h}{3} \left[ f(x_0) + f(x_n) + 4\sum_{\substack{i=1 \\ i\text{ impar}}}^{n-1} f(x_i) + 2\sum_{\substack{i=2 \\ i\text{ par}}}^{n-2} f(x_i) \right] }$$
 
-Para verificar el error de truncamiento de las aproximaciones numéricas, se utilizará el valor de alta precisión de la integral en $[0, 1]$:
+La restricción fundamental para la aplicación compuesta es $\boxed{n\text{ par}}$.
 
-$$
-\boxed{I_{real} \approx 0.74682413}
-$$
-
-Esta referencia permitirá calcular el error verdadero absoluto y relativo de los algoritmos de Trapecio y Simpson a medida que se aumenta el valor de $n$.
-
----
-
-# 8. Criterios de ejecución
-
-A diferencia de los métodos de búsqueda de raíces, la integración numérica convencional no utiliza un "criterio de parada" iterativo basado en tolerancias dinámicas, sino que se ejecuta a través de un número fijo de subintervalos $n$. 
-
-El algoritmo deberá:
-* Iterar a través del bucle for exactamente $n-1$ veces para calcular las sumatorias internas.
-* Registrar el tamaño del paso $h$ utilizado.
-* Mostrar el área total aproximada tras evaluar todos los nodos.
+Para nuestro caso:
+$$\boxed{ V_S = \frac{h}{3} \left[ r(t_0) + r(t_n) + 4\sum_{\text{índices impares}} r(t_i) + 2\sum_{\text{índices pares}} r(t_i) \right] }$$
 
 ---
 
-# 9. Situaciones que deben detectarse (Fallos)
+## 11. Ejemplo de referencia: Simpson con $n=4$
+Utilizamos nuevamente $a = 0$, $b = 2$, $n = 4$ ($h = 0.5\text{ s}$).
 
-Los algoritmos deberán contemplar condiciones de error explícitas:
+| $i$ | $t_i$ (s) | $r(t_i)$ (MB/s) | Peso Simpson |
+| :---: | :---: | :---: | :---: |
+| 0 | 0.0 | 1.00 | 1 |
+| 1 | 0.5 | 1.25 | 4 |
+| 2 | 1.0 | 2.00 | 2 |
+| 3 | 1.5 | 3.25 | 4 |
+| 4 | 2.0 | 5.00 | 1 |
 
-### Regla de Simpson
-Debe detectarse y bloquear la ejecución si el usuario ingresa un valor de $n$ impar (ej. $n=5$), ya que la fórmula requiere pares de subintervalos.
+Aplicando Simpson:
+$$V_S = \frac{0.5}{3} \left[ 1 + 5 + 4(1.25) + 2(2) + 4(3.25) \right]$$
+$$V_S = \frac{0.5}{3} [6 + 5 + 4 + 13]$$
+$$V_S = \frac{0.5}{3}(28) = \frac{14}{3}$$
 
-### Errores generales
-Debe detectarse cuando:
-* $n \le 0$ (imposible dividir un intervalo en partes negativas o nulas).
-* $a \ge b$ (se debe alertar si los límites están invertidos o son iguales, donde el área sería 0).
-* Valores de entrada vacíos o no numéricos.
-
----
-
-# 10. Restricciones iniciales del caso
-
-| Parámetro                   |            Valor |
-| --------------------------- | ---------------: |
-| Función objetivo            |        $e^{-x^2}$|
-| Límite inferior (a)         |                0 |
-| Límite superior (b)         |                1 |
-| Subintervalos prueba (n)    |               10 |
-| Tolerancia de error         |         0.000001 |
-| Área de referencia          |       0.74682413 |
+$$\boxed{ V_S = \frac{14}{3}\text{ MB} } \quad \text{o} \quad \boxed{ V_S \approx 4.6666666667\text{ MB} }$$
 
 ---
 
-# 11. Pruebas matemáticas iniciales
+## 12. Comparación inicial de los métodos
 
-Se proponen las siguientes pruebas para verificar la implementación en la calculadora web:
+| Método | $n$ | Resultado (MB) | Referencia (MB) | Error absoluto (MB) |
+| :--- | :---: | :---: | :---: | :---: |
+| Trapecio compuesto | 4 | 4.75 | 4.6666666667 | 0.0833333333 |
+| Simpson 1/3 compuesto | 4 | 4.6666666667 | 4.6666666667 | $\approx 0$ |
 
-| ID   | Prueba                                   | Resultado esperado         |
-| ---- | ---------------------------------------- | -------------------------- |
-| M-01 | $f(0)$                                   | 1                          |
-| M-02 | $f(1)$                                   | $\approx 0.367879$         |
-| M-03 | Trapecio Compuesto ($a=0, b=1, n=2$)     | $\approx 0.731370$         |
-| M-04 | Simpson Compuesto ($a=0, b=1, n=2$)      | $\approx 0.747180$         |
-| M-05 | Validación Simpson con $n=5$             | Error: 'n' debe ser par    |
-| M-06 | Límite $a=b=1$                           | Área = 0                   |
-| M-07 | Entrada inválida ($n=-2$)                | Error: n debe ser positivo |
+---
+
+## 13. Análisis del refinamiento de la partición
+El refinamiento consiste en aumentar el número de subintervalos ($n = 2 \rightarrow 4 \rightarrow 8$). Como $h = \frac{b-a}{n}$, al aumentar $n$, disminuye $h$.
+
+Para el intervalo $[0,2]$:
+
+| $n$ | $h$ (s) |
+| :---: | :---: |
+| 2 | 1.00 |
+| 4 | 0.50 |
+| 8 | 0.25 |
+---
+
+## 14. Unidades del resultado
+La función representa una tasa ($r(t) = \text{MB/s}$) y la variable de integración representa tiempo ($dt = \text{s}$). Por lo tanto:
+$$(\text{MB/s})(\text{s}) = \text{MB} \implies \boxed{ \int r(t)\,dt = \text{MB} }$$
+
+El resultado de los métodos numéricos representa un volumen acumulado de datos, no una tasa.
+
+---
+
+## 15. Parámetros editables
+Se propone representar la función general como:
+$$\boxed{ r(t) = at^2 + bt + c }$$
+
+| Parámetro | Descripción |
+| :---: | :--- |
+| $a$ | Coeficiente cuadrático |
+| $b$ | Coeficiente lineal |
+| $c$ | Término independiente |
+| $a_t$ | Extremo inferior del intervalo |
+| $b_t$ | Extremo superior del intervalo |
+
+Para el caso base: $a = 1, b = 0, c = 1$ y $a_t = 0, b_t = 2$.
+$$r(t) = 1t^2 + 0t + 1 = t^2 + 1$$
+
+---
+## 16. Ficha breve de derivación numérica
+Para aproximar la derivada de una función utilizando valores equidistantes alrededor de un punto, se utiliza la diferencia central:
+$$\boxed{ f'(x) \approx \frac{f(x+h) - f(x-h)}{2h} }$$
+
+Para el caso $r(t) = t^2+1$, utilizando $t = 1$ y $h = 0.1$:
+* $r(1.1) = 1.1^2 + 1 = 2.21$
+* $r(0.9) = 0.9^2 + 1 = 1.81$
+
+Aplicando diferencia central:
+$$r'(1) \approx \frac{r(1.1) - r(0.9)}{2(0.1)} = \frac{2.21 - 1.81}{0.2} = \frac{0.40}{0.2}$$
+$$\boxed{ r'(1) \approx 2\text{ MB/s}^2 }$$
+
+---
+
+## 18. Casos de prueba matemática iniciales
+
+| ID | Método | Entrada | Resultado esperado |
+| :---: | :--- | :--- | :--- |
+| M-01 | Trapecio | $a=0, b=2, n=4$ | $4.75\text{ MB}$ |
+| M-02 | Simpson | $a=0, b=2, n=4$ | $14/3\text{ MB}$ |
+| M-03 | Trapecio | $a=0, b=2, n=2$ | Calcular y comparar con referencia |
+| M-04 | Simpson | $a=0, b=2, n=2$ | Calcular y comparar con referencia |
+| M-05 | Trapecio | $a=0, b=2, n=8$ | Calcular y comparar con referencia |
+| M-06 | Simpson | $a=0, b=2, n=8$ | Calcular y comparar con referencia |
+| M-07 | Simpson | $a=0, b=2, n=3$ | Entrada inválida |
+| M-08 | Ambos | $a=0, b=2, n=0$ | Entrada inválida |
+
