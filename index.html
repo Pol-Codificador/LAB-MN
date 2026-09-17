@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo 4: Integración Numérica - UNSA</title>
+    <title>Modulo 4: Integracion Numerica - UNSA</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f6; padding: 20px; color: #333; line-height: 1.6; }
         .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
@@ -19,33 +19,33 @@
 </head>
 <body>
     <div class="container">
-        <h1>📐 Módulo 4: Integración Numérica</h1>
+        <h1>Modulo 4: Integracion Numerica</h1>
         <p><strong>Equipo:</strong> Paul (P), Renato (M), Massiel (D) y Ronald (V)</p>
         
         <div class="theory-box">
-            <strong>📝 Componente Transversal (En construcción):</strong><br>
-            Teoría breve de Derivación Numérica (Diferencias finitas). 
-            <em>(Asignación especial del Equipo 4 para consulta del portal común).</em>
+            <strong>Componente Transversal (En construccion):</strong><br>
+            Teoria breve de Derivacion Numerica (Diferencias finitas). 
+            <em>(Asignacion especial del Equipo 4 para consulta del portal comun).</em>
         </div>
 
         <div class="info-box">
-            <strong>Caso de estudio:</strong> Integral de f(x) = eˣ · cos(x)<br>
-            <strong>Límites:</strong> a = 0, b = 2 | <strong>Máx subintervalos (n):</strong> 100
+            <strong>Caso de estudio (Campana de Gauss):</strong> Integral de f(x) = e^(-x^2)<br>
+            <strong>Limites por defecto:</strong> a = 0, b = 1 | <strong>Max subintervalos (n):</strong> 1000
         </div>
 
         <div class="panel">
             <h3>Calculadora: Regla del Trapecio Compuesto</h3>
-            <label>Límite Inf (a):</label> <input type="number" id="val_a" value="0" step="0.1">
-            <label>Límite Sup (b):</label> <input type="number" id="val_b" value="2" step="0.1">
-            <label>Intervalos (n):</label> <input type="number" id="val_n" value="10" min="1" max="100">
-            <button onclick="ejecutarTrapecio()">Calcular Área</button>
+            <label>Limite Inf (a):</label> <input type="number" id="val_a" value="0" step="0.1">
+            <label>Limite Sup (b):</label> <input type="number" id="val_b" value="1" step="0.1">
+            <label>Intervalos (n):</label> <input type="number" id="val_n" value="10" min="1" max="1000">
+            <button onclick="ejecutarTrapecio()">Calcular Area</button>
             <div id="resultado"></div>
         </div>
     </div>
 
     <script>
-        // Función a integrar: e^x * cos(x)
-        const f = (x) => Math.exp(x) * Math.cos(x);
+        // funcion a integrar de la campana de gauss
+        const f = (x) => Math.exp(-(x * x));
 
         function ejecutarTrapecio() {
             let a = parseFloat(document.getElementById('val_a').value);
@@ -53,12 +53,13 @@
             let n = parseInt(document.getElementById('val_n').value);
             let divRes = document.getElementById('resultado');
 
+            // validacion basica para que no rompa si meten letras
             if (isNaN(a) || isNaN(b) || isNaN(n) || n <= 0) {
-                divRes.innerHTML = "<span style='color:red;'>Error: Ingrese valores válidos. 'n' debe ser > 0.</span>";
+                divRes.innerHTML = "<span style='color:red;'>Error: Ingrese valores numericos validos. n debe ser mayor a 0.</span>";
                 return;
             }
 
-            // Lógica: Trapecio Compuesto
+            // logica principal del trapecio compuesto
             let h = (b - a) / n;
             let suma = f(a) + f(b);
             
@@ -68,11 +69,12 @@
             
             let area = (h / 2) * suma;
 
+            // mostrar resultado en pantalla
             divRes.innerHTML = `
                 <div style="padding:15px; border-left:5px solid #2ecc71; background:#eafaf1; margin-top:15px;">
-                    <strong>✅ Resultado Exitoso (Prototipo V1):</strong><br>
-                    Tamaño de paso (h): ${h.toFixed(4)}<br>
-                    Área Aproximada: <strong>${area.toFixed(6)}</strong>
+                    <strong>Resultado Exitoso (Prototipo V1):</strong><br>
+                    Tamaño de paso (h): ${h.toFixed(5)}<br>
+                    Area Aproximada calculada: <strong>${area.toFixed(7)}</strong>
                 </div>
             `;
         }
