@@ -44,6 +44,26 @@
         </div>
 
         <div id="resultado"></div>
+        <script>
+        // Modelo matematico
+        const f = (x) => Math.pow(x, 3) - x - 2;
+        const df = (x) => 3 * Math.pow(x, 2) - 1;
+
+        function ejecutarPrueba() {
+            let inputVal = document.getElementById('x_inicial').value;
+            let divResultado = document.getElementById('resultado');
+            let x0 = parseFloat(inputVal);
+            let derivada = df(x0);
+            
+            // Calculo del paso de prueba
+            let x1 = x0 - (f(x0) / derivada);
+            let residuo = Math.abs(f(x1));
+            
+            // Impresion temporal basica
+            divResultado.innerHTML = `x0: ${x0} | x1: ${x1} | Residuo: ${residuo}`;
+            divResultado.style.display = "block";
+        }
+    </script>
     </div>
 </body>
 </html>
