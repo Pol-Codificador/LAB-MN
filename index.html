@@ -45,23 +45,51 @@
 
         <div id="resultado"></div>
         <script>
-        // Modelo matematico
+        // Modelo matemtico
         const f = (x) => Math.pow(x, 3) - x - 2;
         const df = (x) => 3 * Math.pow(x, 2) - 1;
 
         function ejecutarPrueba() {
             let inputVal = document.getElementById('x_inicial').value;
             let divResultado = document.getElementById('resultado');
+            
+            // Validacio robusta de entrada de software
+            if (inputVal.trim() === "" || isNaN(inputVal)) {
+                mostrarAlerta(divResultado, "Error de entrada: Por favor, ingrese un valor numerico valido.", "#e74c3c");
+                return;
+            }
+
             let x0 = parseFloat(inputVal);
             let derivada = df(x0);
-            
+
+            // Validacion matematica (Derivada nula)
+            if (Math.abs(derivada) < 1e-12) {
+                mostrarAlerta(divResultado, `Error algoritmico: Derivada nula o muy pequeña en x = ${x0}. Division por cero evitada.`, "#e67e22");
+                return;
+            }
+
             // Calculo del paso de prueba
             let x1 = x0 - (f(x0) / derivada);
             let residuo = Math.abs(f(x1));
             
-            // Impresion temporal basica
-            divResultado.innerHTML = `x0: ${x0} | x1: ${x1} | Residuo: ${residuo}`;
-            divResultado.style.display = "block";
+            let htmlExito = `
+                <strong>Prueba de comunicacion exitosa:</strong><br><br>
+                <ul>
+                    <li>Valor inicial (x₀): ${x0}</li>
+                    <li>Derivada f'(x₀): ${derivada.toFixed(5)}</li>
+                    <li>Nueva aproximación (x₁): <strong>${x1.toFixed(10)}</strong></li>
+                    <li>Residuo actual |f(x₁)|: ${residuo.toFixed(7)}</li>
+                </ul>
+                <em>Nota: El control de iteraciones y cálculo de errores relativos se implementará en la sesión de desarrollo.</em>
+            `;
+            mostrarAlerta(divResultado, htmlExito, "#2ecc71", "#eafaf1");
+        }
+
+        function mostrarAlerta(elemento, html, colorBorde, colorFondo = "#fff") {
+            elemento.innerHTML = html;
+            elemento.style.borderLeft = `5px solid ${colorBorde}`;
+            elemento.style.backgroundColor = colorFondo;
+            elemento.style.display = "block";
         }
     </script>
     </div>
