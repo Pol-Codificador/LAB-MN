@@ -1,6 +1,6 @@
 ## Semana 01 — Definición del problema y acuerdo de equipo
 
-**Módulo:** Ecuaciones no lineales y errores
+**Módulo:** Integración Numérica
 **Semana:** 01
 **Responsable:** Renato Xavier Ponce Llerena
 
@@ -8,33 +8,21 @@
 
 # 1. Caso matemático seleccionado
 
-El caso base establecido para el módulo es:
+El caso base establecido para el módulo de Integración Numérica es calcular el área bajo la curva de la campana de Gauss (distribución normal estándar), la cual carece de una antiderivada elemental.
+
+La función a integrar es:
 
 $$
-g(x)=x^3-x
+f(x)=e^{-x^2}
 $$
 
-Se desea encontrar el valor de \(x\) que produce una respuesta objetivo igual a:
+El objetivo del módulo será aproximar el valor de la integral definida en un intervalo $[a, b]$:
 
 $$
-g(x)=2
+I = \int_{a}^{b} e^{-x^2} dx
 $$
 
-Por lo tanto, el problema puede expresarse como una ecuación no lineal:
-
-$$
-x^3-x=2
-$$
-
-Llevando todos los términos a un lado:
-
-$$
-\boxed{f(x)=x^3-x-2=0}
-$$
-
-El objetivo del módulo será utilizar métodos numéricos para aproximar la raíz de esta ecuación y analizar el comportamiento de la convergencia.
-
-El documento del laboratorio establece como métodos mínimos para este módulo **Bisección** y **Newton**, utilizando inicialmente el intervalo [1,2] para Bisección y x<sub>0</sub> = 1.5 como aproximación inicial para Newton.
+El documento del laboratorio establece como métodos mínimos para este módulo **Regla del Trapecio Compuesto** y **Regla de Simpson Compuesto**, utilizando inicialmente el intervalo $[0, 1]$ con un número base de $n=10$ subintervalos.
 
 ---
 
@@ -42,21 +30,16 @@ El documento del laboratorio establece como métodos mínimos para este módulo 
 
 | Variable | Descripción                                        | Tipo                 |
 | -------- | -------------------------------------------------- | -------------------- |
-| x    | Variable cuyo valor permite satisfacer la ecuación | Variable de decisión |
-| g(x) | Función original del problema                      | Función              |
-| f(x) | Función transformada para búsqueda de la raíz      | Función              |
-| 2    | Respuesta objetivo                                 | Constante            |
+| x        | Variable independiente (Adimensional)              | Variable             |
+| f(x)     | Función de densidad de probabilidad                | Función              |
+| a, b     | Límites inferior y superior de integración         | Parámetros de entrada|
+| n        | Número de subintervalos                            | Parámetro de control |
+| h        | Tamaño del paso $(b-a)/n$                          | Variable calculada   |
 
-La función utilizada por los algoritmos será:
-
-$$
-f(x)=x^3-x-2
-$$
-
-Su derivada, necesaria para el método de Newton, es:
+La función central utilizada por los algoritmos será:
 
 $$
-\boxed{f'(x)=3x^2-1}
+\boxed{f(x)=e^{-x^2}}
 $$
 
 ---
@@ -65,288 +48,116 @@ $$
 
 Para el desarrollo inicial del caso se consideran los siguientes supuestos:
 
-1. La función f(x) = x<sup>3</sup> - x - 2 es evaluable para los valores utilizados durante las iteraciones.
-2. Se busca una raíz real de la ecuación.
-3. El intervalo inicial para Bisección es [1,2].
-4. Para Newton se utilizará inicialmente x<sub>0</sub> = 1.5.
-5. La tolerancia inicial será:
-
-$$
-\varepsilon=0.000001
-$$
-
-6. El número máximo de iteraciones será:
-
-$$
-N_{\max}=100
-$$
-
-7. Los resultados obtenidos mediante los métodos numéricos serán aproximaciones y deberán verificarse mediante el valor del residuo.
-
-Estas condiciones corresponden al caso base definido para el módulo.
+1. La función $f(x)$ es continua y evaluable en el intervalo cerrado $[a, b]$.
+2. El intervalo inicial de estudio será $[0, 1]$.
+3. El número de subintervalos $n$ será un entero positivo mayor a 0.
+4. **Condición estricta:** Para la Regla de Simpson 1/3 compuesto, el número de subintervalos $n$ debe ser obligatoriamente un número **par**.
+5. La tolerancia para el análisis del error analítico será $\varepsilon = 10^{-6}$.
+6. El límite máximo de subintervalos por defecto será $n_{max} = 1000$ para evitar desbordamientos de memoria en el navegador.
 
 ---
 
-# 4. Verificación del intervalo inicial
+# 4. Verificación del tamaño de paso (h)
 
-Para aplicar Bisección se debe comprobar que exista cambio de signo:
-
-$$
-f(1)=1^3-1-2
-$$
+Para aplicar los métodos de cuadratura, se divide el intervalo $[a, b]$ en $n$ partes iguales. Para el caso inicial con $a=0$, $b=1$ y $n=2$:
 
 $$
-f(1)=-2
-$$
-
-Mientras que:
-
-$$
-f(2)=2^3-2-2
+h = \frac{b-a}{n}
 $$
 
 $$
-f(2)=4
+h = \frac{1-0}{2} = 0.5
 $$
 
-Por lo tanto:
-
-$$
-f(1)<0
-$$
-
-y
-
-$$
-f(2)>0
-$$
-
-Se cumple:
-
-$$
-f(1)f(2)<0
-$$
-
-Por tanto, el intervalo inicial:
-
-$$
-\boxed{[1,2]}
-$$
-
-es adecuado para iniciar el método de Bisección.
+Los nodos a evaluar serán: $x_0 = 0$, $x_1 = 0.5$, $x_2 = 1$.
 
 ---
 
-# 5. Primera iteración de Bisección
+# 5. Primera prueba iterativa: Regla del Trapecio (n=2)
 
-El punto medio inicial es:
-
-$$
-x_r=\frac{x_l+x_u}{2}
-$$
-
-Con:
+Fórmula del Trapecio compuesto para $n=2$:
 
 $$
-x_l=1,\qquad x_u=2
+I \approx \frac{h}{2} [f(x_0) + 2f(x_1) + f(x_2)]
 $$
 
-se obtiene:
+Evaluando los nodos en $f(x) = e^{-x^2}$:
 
 $$
-x_r=\frac{1+2}{2}=1.5
+f(0) = e^0 = 1
+$$
+$$
+f(0.5) = e^{-0.25} \approx 0.77880078
+$$
+$$
+f(1) = e^{-1} \approx 0.36787944
 $$
 
-Evaluando:
+Aplicando la fórmula:
 
 $$
-f(1.5)=1.5^3-1.5-2
+I \approx \frac{0.5}{2} [1 + 2(0.77880078) + 0.36787944]
 $$
-
 $$
-\boxed{f(1.5)=-0.125}
+\boxed{I_{trapecio} \approx 0.731370}
 $$
-
-Como:
-
-$$
-f(1.5)<0
-$$
-
-y:
-
-$$
-f(2)>0
-$$
-
-el nuevo intervalo es:
-
-$$
-\boxed{[1.5,2]}
-$$
-
-Este resultado constituye una prueba inicial que puede ser utilizada para verificar la implementación del algoritmo.
 
 ---
 
-# 6. Primera iteración de Newton
+# 6. Primera prueba iterativa: Regla de Simpson 1/3 (n=2)
 
-El método de Newton utiliza:
-
-$$
-x_{i+1}=x_i-\frac{f(x_i)}{f'(x_i)}
-$$
-
-Para el problema:
+Fórmula de Simpson 1/3 para $n=2$:
 
 $$
-f(x)=x^3-x-2
+I \approx \frac{h}{3} [f(x_0) + 4f(x_1) + f(x_2)]
 $$
 
-y:
+Utilizando las mismas evaluaciones de la función:
 
 $$
-f'(x)=3x^2-1
+I \approx \frac{0.5}{3} [1 + 4(0.77880078) + 0.36787944]
 $$
-
-se utiliza:
-
 $$
-x_0=1.5
+\boxed{I_{simpson} \approx 0.747180}
 $$
-
-Primero:
-
-$$
-f(1.5)=-0.125
-$$
-
-y:
-
-$$
-f'(1.5)=3(1.5)^2-1
-$$
-
-$$
-f'(1.5)=5.75
-$$
-
-Entonces:
-
-$$
-x_1=1.5-\frac{-0.125}{5.75}
-$$
-
-$$
-\boxed{x_1\approx1.5217391304}
-$$
-
-Este valor puede utilizarse como prueba de la implementación inicial del método de Newton.
 
 ---
 
-# 7. Valor de referencia
+# 7. Valor de referencia analítico
 
-Para verificar los resultados obtenidos mediante los métodos numéricos, se utilizará como referencia:
+Para verificar el error de truncamiento de las aproximaciones numéricas, se utilizará el valor de alta precisión de la integral en $[0, 1]$:
 
 $$
-\boxed{x\approx1.5213797068}
+\boxed{I_{real} \approx 0.74682413}
 $$
 
-La referencia permitirá diferenciar entre:
-
-* aproximación numérica;
-* residuo de la función;
-* error de la aproximación;
-* cumplimiento de la tolerancia.
-
-Se proporciona este valor como raíz de referencia para el caso base.
+Esta referencia permitirá calcular el error verdadero absoluto y relativo de los algoritmos de Trapecio y Simpson a medida que se aumenta el valor de $n$.
 
 ---
 
-# 8. Criterios de parada
+# 8. Criterios de ejecución
 
-Para la implementación de los métodos se deberán considerar criterios de parada explícitos.
+A diferencia de los métodos de búsqueda de raíces, la integración numérica convencional no utiliza un "criterio de parada" iterativo basado en tolerancias dinámicas, sino que se ejecuta a través de un número fijo de subintervalos $n$. 
 
-### Bisección
-
-Se puede utilizar como condición de parada el tamaño del intervalo o la cota del error del punto medio:
-
-$$
-E_a\leq\frac{x_u-x_l}{2}
-$$
-
-y/o la tolerancia establecida:
-
-$$
-E_a<\varepsilon
-$$
-
-con:
-
-$$
-\varepsilon=10^{-6}
-$$
-
-También deberá registrarse el valor del residuo:
-
-$$
-|f(x_r)|
-$$
-
-### Newton
-
-Para Newton se debe registrar:
-
-* aproximación actual \(x_i\);
-* valor de \(f(x_i)\);
-* cambio entre aproximaciones:
-
-$$
-|x_{i+1}-x_i|
-$$
-
-* residuo:
-
-$$
-|f(x_i)|
-$$
-
-La implementación no deberá considerar que existe convergencia únicamente porque se alcanzó el número máximo de iteraciones.
+El algoritmo deberá:
+* Iterar a través del bucle for exactamente $n-1$ veces para calcular las sumatorias internas.
+* Registrar el tamaño del paso $h$ utilizado.
+* Mostrar el área total aproximada tras evaluar todos los nodos.
 
 ---
 
-# 9. Situaciones que deben detectarse
+# 9. Situaciones que deben detectarse (Fallos)
 
-Los algoritmos deberán contemplar condiciones de error o fallo.
+Los algoritmos deberán contemplar condiciones de error explícitas:
 
-### Bisección
+### Regla de Simpson
+Debe detectarse y bloquear la ejecución si el usuario ingresa un valor de $n$ impar (ej. $n=5$), ya que la fórmula requiere pares de subintervalos.
 
+### Errores generales
 Debe detectarse cuando:
-
-$$
-f(x_l)f(x_u)>0
-$$
-
-Esto significa que no se ha verificado el cambio de signo requerido para iniciar el método.
-
-### Newton
-
-Debe detectarse cuando:
-
-$$
-f'(x_i)=0
-$$
-
-o cuando la derivada sea demasiado pequeña para realizar de forma segura la división.
-
-También deberán controlarse:
-
-* valores no finitos;
-* número máximo de iteraciones;
-* ausencia de cumplimiento de la tolerancia.
-
-Estas condiciones están especificadas en el caso técnico del módulo.
+* $n \le 0$ (imposible dividir un intervalo en partes negativas o nulas).
+* $a \ge b$ (se debe alertar si los límites están invertidos o son iguales, donde el área sería 0).
+* Valores de entrada vacíos o no numéricos.
 
 ---
 
@@ -354,29 +165,25 @@ Estas condiciones están especificadas en el caso técnico del módulo.
 
 | Parámetro                   |            Valor |
 | --------------------------- | ---------------: |
-| Función                     |      x<sup>3</sup> - x - 2 |
-| Intervalo Bisección         |        [1,2] |
-| Aproximación inicial Newton |          1.5 |
-| Tolerancia                  |     0.000001 |
-| Máximo de iteraciones       |          100 |
-| Raíz de referencia          | 1.5213797068 |
-
-Estas restricciones corresponden al caso base de la Semana 01 y podrán modificarse posteriormente para realizar pruebas adicionales.
+| Función objetivo            |        $e^{-x^2}$|
+| Límite inferior (a)         |                0 |
+| Límite superior (b)         |                1 |
+| Subintervalos prueba (n)    |               10 |
+| Tolerancia de error         |         0.000001 |
+| Área de referencia          |       0.74682413 |
 
 ---
 
 # 11. Pruebas matemáticas iniciales
 
-Se proponen las siguientes pruebas para verificar posteriormente la implementación:
+Se proponen las siguientes pruebas para verificar la implementación en la calculadora web:
 
 | ID   | Prueba                                   | Resultado esperado         |
 | ---- | ---------------------------------------- | -------------------------- |
-| M-01 | f(1)                                 | -2                     |
-| M-02 | f(2)                                 | 4                      |
-| M-03 | f(1.5)                               | -0.125                 |
-| M-04 | Primera iteración Newton con x<sub>0</sub>=1.5 | x<sub>1</sub> ≈ 1.5217391304 |
-| M-05 | Bisección en [1,2]                   | Intervalo válido           |
-| M-06 | Bisección en [2,3]                   | Error: sin cambio de signo |
-| M-07 | Newton para f(x) = x<sup>3</sup>-1, x<sub>0</sub> = 0    | Error: derivada cero       |
-
-Las pruebas M-06 y M-07 corresponden a los escenarios de fallo indicados para el módulo.
+| M-01 | $f(0)$                                   | 1                          |
+| M-02 | $f(1)$                                   | $\approx 0.367879$         |
+| M-03 | Trapecio Compuesto ($a=0, b=1, n=2$)     | $\approx 0.731370$         |
+| M-04 | Simpson Compuesto ($a=0, b=1, n=2$)      | $\approx 0.747180$         |
+| M-05 | Validación Simpson con $n=5$             | Error: 'n' debe ser par    |
+| M-06 | Límite $a=b=1$                           | Área = 0                   |
+| M-07 | Entrada inválida ($n=-2$)                | Error: n debe ser positivo |
