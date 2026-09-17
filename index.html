@@ -3,95 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo 1: Ecuaciones No Lineales - UNSA</title>
+    <title>Módulo 4: Integración Numérica - UNSA</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f6; padding: 20px; color: #333; line-height: 1.6; }
-        .container { max-width: 700px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         h1 { color: #2c3e50; font-size: 24px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        .badge { background: #e74c3c; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
         .info-box { background: #e8f4f8; padding: 15px; border-left: 4px solid #3498db; margin-bottom: 20px; }
-        .error-theory-box { background: #f9ebea; padding: 15px; border-left: 4px solid #c0392b; margin-bottom: 20px; }
-        .input-group { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px; }
-        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 120px; font-size: 16px; }
+        .theory-box { background: #fdf2e9; padding: 15px; border-left: 4px solid #e67e22; margin-bottom: 20px; }
+        .panel { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px; }
+        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px; margin-right: 10px; }
         button { padding: 10px 15px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
         button:hover { background: #2980b9; }
-        button.secondary { background: #7f8c8d; margin-left: 10px; }
-        #resultado { margin-top: 20px; padding: 15px; border-radius: 5px; display: none; }
+        #resultado { margin-top: 15px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Modulo 1: Ecuaciones No Lineales <span class="badge">Prototipo V1</span></h1>
-        <p><strong>Equipo de Desarrollo:</strong> Paul (P), Renato (M), Massiel (D) y Ronald (V)</p>
+        <h1>📐 Módulo 4: Integración Numérica</h1>
+        <p><strong>Equipo:</strong> Paul (P), Renato (M), Massiel (D) y Ronald (V)</p>
         
-        <div class="error-theory-box">
-            <strong>📘 Componente Transversal (En construcción):</strong><br>
-            Ficha comun de Error Absoluto, Error Relativo y Tolerancia. 
-            <em>(Este recurso sera enlazado por los equipos 2, 3, 4 y 5).</em>
+        <div class="theory-box">
+            <strong>📝 Componente Transversal (En construcción):</strong><br>
+            Teoría breve de Derivación Numérica (Diferencias finitas). 
+            <em>(Asignación especial del Equipo 4 para consulta del portal común).</em>
         </div>
 
         <div class="info-box">
-            <strong>Caso de calibración:</strong> f(x) = x³ - x - 2 = 0 <br>
-            <strong>Parámetros de parada:</strong> Tolerancia = 10⁻⁶ | Iteraciones máx = 100
-        </div>
-        <div class="input-group">
-            <h3>Prueba de Integración (Paso único de Newton)</h3>
-            <label>Ingrese Punto Inicial (x₀):</label>
-            <input type="number" id="x_inicial" value="1.5" step="0.1">
-            <br><br>
-            <button onclick="ejecutarPrueba()">Ejecutar Función de Prueba</button>
-            <button class="secondary" disabled>Ver Iteraciones Completas (Próxima Fase)</button>
+            <strong>Caso de estudio:</strong> Integral de f(x) = eˣ · cos(x)<br>
+            <strong>Límites:</strong> a = 0, b = 2 | <strong>Máx subintervalos (n):</strong> 100
         </div>
 
-        <div id="resultado"></div>
-        <script>
-        // Modelo matemtico
-        const f = (x) => Math.pow(x, 3) - x - 2;
-        const df = (x) => 3 * Math.pow(x, 2) - 1;
+        <div class="panel">
+            <h3>Calculadora: Regla del Trapecio Compuesto</h3>
+            <label>Límite Inf (a):</label> <input type="number" id="val_a" value="0" step="0.1">
+            <label>Límite Sup (b):</label> <input type="number" id="val_b" value="2" step="0.1">
+            <label>Intervalos (n):</label> <input type="number" id="val_n" value="10" min="1" max="100">
+            <button onclick="ejecutarTrapecio()">Calcular Área</button>
+            <div id="resultado"></div>
+        </div>
+    </div>
 
-        function ejecutarPrueba() {
-            let inputVal = document.getElementById('x_inicial').value;
-            let divResultado = document.getElementById('resultado');
-            
-            // Validacio robusta de entrada de software
-            if (inputVal.trim() === "" || isNaN(inputVal)) {
-                mostrarAlerta(divResultado, "Error de entrada: Por favor, ingrese un valor numerico valido.", "#e74c3c");
+    <script>
+        // Función a integrar: e^x * cos(x)
+        const f = (x) => Math.exp(x) * Math.cos(x);
+
+        function ejecutarTrapecio() {
+            let a = parseFloat(document.getElementById('val_a').value);
+            let b = parseFloat(document.getElementById('val_b').value);
+            let n = parseInt(document.getElementById('val_n').value);
+            let divRes = document.getElementById('resultado');
+
+            if (isNaN(a) || isNaN(b) || isNaN(n) || n <= 0) {
+                divRes.innerHTML = "<span style='color:red;'>Error: Ingrese valores válidos. 'n' debe ser > 0.</span>";
                 return;
             }
 
-            let x0 = parseFloat(inputVal);
-            let derivada = df(x0);
-
-            // Validacion matematica (Derivada nula)
-            if (Math.abs(derivada) < 1e-12) {
-                mostrarAlerta(divResultado, `Error algoritmico: Derivada nula o muy pequeña en x = ${x0}. Division por cero evitada.`, "#e67e22");
-                return;
-            }
-
-            // Calculo del paso de prueba
-            let x1 = x0 - (f(x0) / derivada);
-            let residuo = Math.abs(f(x1));
+            // Lógica: Trapecio Compuesto
+            let h = (b - a) / n;
+            let suma = f(a) + f(b);
             
-            let htmlExito = `
-                <strong>Prueba de comunicacion exitosa:</strong><br><br>
-                <ul>
-                    <li>Valor inicial (x₀): ${x0}</li>
-                    <li>Derivada f'(x₀): ${derivada.toFixed(5)}</li>
-                    <li>Nueva aproximación (x₁): <strong>${x1.toFixed(10)}</strong></li>
-                    <li>Residuo actual |f(x₁)|: ${residuo.toFixed(7)}</li>
-                </ul>
-                <em>Nota: El control de iteraciones y cálculo de errores relativos se implementará en la sesión de desarrollo.</em>
+            for (let i = 1; i < n; i++) {
+                suma += 2 * f(a + i * h);
+            }
+            
+            let area = (h / 2) * suma;
+
+            divRes.innerHTML = `
+                <div style="padding:15px; border-left:5px solid #2ecc71; background:#eafaf1; margin-top:15px;">
+                    <strong>✅ Resultado Exitoso (Prototipo V1):</strong><br>
+                    Tamaño de paso (h): ${h.toFixed(4)}<br>
+                    Área Aproximada: <strong>${area.toFixed(6)}</strong>
+                </div>
             `;
-            mostrarAlerta(divResultado, htmlExito, "#2ecc71", "#eafaf1");
-        }
-
-        function mostrarAlerta(elemento, html, colorBorde, colorFondo = "#fff") {
-            elemento.innerHTML = html;
-            elemento.style.borderLeft = `5px solid ${colorBorde}`;
-            elemento.style.backgroundColor = colorFondo;
-            elemento.style.display = "block";
         }
     </script>
-    </div>
 </body>
 </html>
