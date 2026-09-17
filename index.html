@@ -23,29 +23,28 @@
         <p><strong>Equipo:</strong> Paul (P), Renato (M), Massiel (D) y Ronald (V)</p>
         
         <div class="theory-box">
-            <strong>Componente Transversal (En construccion):</strong><br>
-            Teoria breve de Derivacion Numerica (Diferencias finitas). 
-            <em>(Asignacion especial del Equipo 4 para consulta del portal comun).</em>
+            <strong>Componente Transversal (Equipo 4):</strong><br>
+            Teoria de Derivacion Numerica (Diferencias finitas) agregada en la documentacion.
         </div>
 
         <div class="info-box">
-            <strong>Caso de estudio (Campana de Gauss):</strong> Integral de f(x) = e^(-x^2)<br>
-            <strong>Limites por defecto:</strong> a = 0, b = 1 | <strong>Max subintervalos (n):</strong> 1000
+            <strong>Caso de estudio (Trafico de datos):</strong> Tasa r(t) = t^2 + 1<br>
+            <strong>Limites por defecto:</strong> a = 0, b = 2 | <strong>Max subintervalos (n):</strong> 1000
         </div>
 
         <div class="panel">
             <h3>Calculadora: Regla del Trapecio Compuesto</h3>
             <label>Limite Inf (a):</label> <input type="number" id="val_a" value="0" step="0.1">
-            <label>Limite Sup (b):</label> <input type="number" id="val_b" value="1" step="0.1">
-            <label>Intervalos (n):</label> <input type="number" id="val_n" value="10" min="1" max="1000">
-            <button onclick="ejecutarTrapecio()">Calcular Area</button>
+            <label>Limite Sup (b):</label> <input type="number" id="val_b" value="2" step="0.1">
+            <label>Intervalos (n):</label> <input type="number" id="val_n" value="4" min="1" max="1000">
+            <button onclick="ejecutarTrapecio()">Calcular Volumen (MB)</button>
             <div id="resultado"></div>
         </div>
     </div>
 
     <script>
-        // funcion a integrar de la campana de gauss
-        const f = (x) => Math.exp(-(x * x));
+        // funcion a integrar: r(t) = t^2 + 1
+        const f = (t) => (t * t) + 1;
 
         function ejecutarTrapecio() {
             let a = parseFloat(document.getElementById('val_a').value);
@@ -53,7 +52,6 @@
             let n = parseInt(document.getElementById('val_n').value);
             let divRes = document.getElementById('resultado');
 
-            // validacion basica para que no rompa si meten letras
             if (isNaN(a) || isNaN(b) || isNaN(n) || n <= 0) {
                 divRes.innerHTML = "<span style='color:red;'>Error: Ingrese valores numericos validos. n debe ser mayor a 0.</span>";
                 return;
@@ -67,14 +65,14 @@
                 suma += 2 * f(a + i * h);
             }
             
-            let area = (h / 2) * suma;
+            let volumen = (h / 2) * suma;
 
             // mostrar resultado en pantalla
             divRes.innerHTML = `
                 <div style="padding:15px; border-left:5px solid #2ecc71; background:#eafaf1; margin-top:15px;">
-                    <strong>Resultado Exitoso (Prototipo V1):</strong><br>
-                    Tamaño de paso (h): ${h.toFixed(5)}<br>
-                    Area Aproximada calculada: <strong>${area.toFixed(7)}</strong>
+                    <strong>Resultado Exitoso:</strong><br>
+                    Tamaño de paso (h): ${h.toFixed(5)} s<br>
+                    Volumen Aproximado: <strong>${volumen.toFixed(7)} MB</strong>
                 </div>
             `;
         }
