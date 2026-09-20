@@ -3,56 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo Numérico - Prototipo</title>
+    <title>Modulo 4: Integracion Numerica - UNSA</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            margin: 0;
-            padding: 40px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        h1 { color: #2c3e50; font-size: 24px;}
-        h3 { color: #7f8c8d; font-size: 16px; margin-bottom: 20px;}
-        .info-box {
-            background: #e8f4f8;
-            padding: 15px;
-            border-left: 4px solid #3498db;
-            margin-bottom: 20px;
-        }
-        .input-group { margin-top: 15px; }
-        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        button { 
-            padding: 9px 15px; background: #3498db; color: white; 
-            border: none; border-radius: 4px; cursor: not-allowed; opacity: 0.7;
-        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f6; padding: 20px; color: #333; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; font-size: 24px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .info-box { background: #e8f4f8; padding: 15px; border-left: 4px solid #3498db; margin-bottom: 20px; }
+        .theory-box { background: #fdf2e9; padding: 15px; border-left: 4px solid #e67e22; margin-bottom: 20px; }
+        .panel { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px; }
+        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px; margin-right: 10px; }
+        button { padding: 10px 15px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #2980b9; }
+        #resultado { margin-top: 15px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Módulo de Ecuaciones No Lineales</h1>
-        <h3>Equipo: Paul (P), Renato (M), Massiel (D) y Ronald (V)</h3>
+        <h1>Modulo 4: Integracion Numerica</h1>
+        <p><strong>Equipo:</strong> Paul (P), Renato (M), Massiel (D) y Ronald (V)</p>
         
-        <div class="info-box">
-            <strong>Caso de calibración activo:</strong> <br>
-            f(x) = x³ - x - 2 = 0
+        <div class="theory-box">
+            <strong>Componente Transversal (Equipo 4):</strong><br>
+            Teoria de Derivacion Numerica (Diferencias finitas) agregada en la documentacion.
         </div>
 
-        <p><em>Entorno de trabajo local inicializado. Pendiente integración del motor Python/JS.</em></p>
+        <div class="info-box">
+            <strong>Caso de estudio (Trafico de datos):</strong> Tasa r(t) = t^2 + 1<br>
+            <strong>Limites por defecto:</strong> a = 0, b = 2 | <strong>Max subintervalos (n):</strong> 1000
+        </div>
 
-        <div class="input-group">
-            <label>Punto Inicial (x₀):</label>
-            <input type="text" value="1.5" disabled>
-            <button disabled>Ejecutar Newton (En desarrollo)</button>
+        <div class="panel">
+            <h3>Calculadora: Regla del Trapecio Compuesto</h3>
+            <label>Limite Inf (a):</label> <input type="number" id="val_a" value="0" step="0.1">
+            <label>Limite Sup (b):</label> <input type="number" id="val_b" value="2" step="0.1">
+            <label>Intervalos (n):</label> <input type="number" id="val_n" value="4" min="1" max="1000">
+            <button onclick="ejecutarTrapecio()">Calcular Volumen (MB)</button>
+            <div id="resultado"></div>
         </div>
     </div>
+
+    <script>
+        // funcion a integrar: r(t) = t^2 + 1
+        const f = (t) => (t * t) + 1;
+
+        function ejecutarTrapecio() {
+            let a = parseFloat(document.getElementById('val_a').value);
+            let b = parseFloat(document.getElementById('val_b').value);
+            let n = parseInt(document.getElementById('val_n').value);
+            let divRes = document.getElementById('resultado');
+
+            if (isNaN(a) || isNaN(b) || isNaN(n) || n <= 0) {
+                divRes.innerHTML = "<span style='color:red;'>Error: Ingrese valores numericos validos. n debe ser mayor a 0.</span>";
+                return;
+            }
+
+            // logica principal del trapecio compuesto
+            let h = (b - a) / n;
+            let suma = f(a) + f(b);
+            
+            for (let i = 1; i < n; i++) {
+                suma += 2 * f(a + i * h);
+            }
+            
+            let volumen = (h / 2) * suma;
+
+            // mostrar resultado en pantalla
+            divRes.innerHTML = `
+                <div style="padding:15px; border-left:5px solid #2ecc71; background:#eafaf1; margin-top:15px;">
+                    <strong>Resultado Exitoso:</strong><br>
+                    Tamaño de paso (h): ${h.toFixed(5)} s<br>
+                    Volumen Aproximado: <strong>${volumen.toFixed(7)} MB</strong>
+                </div>
+            `;
+        }
+    </script>
 </body>
 </html>
