@@ -809,7 +809,124 @@ function resolverMetodo() {
     }
 }
 
+/* ========================================
+   MÉTODO DE NEWTON-RAPHSON (Aporte Rol P - Paul)
+======================================== */
 
+function resolverNewton() {
+    /* ----------------------------------------
+       OBTENER DATOS DE LA INTERFAZ
+    ---------------------------------------- */
+    const campoFuncion = document.getElementById("funcion");
+    const campoX = document.getElementById("valorX"); // x inicial
+    const campoTolerancia = document.getElementById("tolerancia");
+    const campoIteraciones = document.getElementById("iteraciones");
+    const resultadoMetodo = document.getElementById("resultadoMetodo");
+    const tablaContenedor = document.getElementById("tablaBiseccion"); // Reutilizamos el contenedor
+
+    if (!campoFuncion || !campoX || !campoTolerancia || !campoIteraciones || !resultadoMetodo) return;
+
+    const expresionOriginal = campoFuncion.value.trim();
+    const x0 = Number(campoX.value);
+    const tolerancia = Number(campoTolerancia.value);
+    const maxIteraciones = Number(campoIteraciones.value);
+
+    /* ----------------------------------------
+       VALIDACIONES ESTRICTAS (Rol P)
+    ---------------------------------------- */
+    if (expresionOriginal === "") {
+        resultadoMetodo.textContent = "Escribe una función f(x).";
+        return;
+    }
+    if (!Number.isFinite(x0)) {
+        resultadoMetodo.textContent = "Ingresa un valor válido para x₀.";
+        return;
+    }
+    if (!Number.isFinite(tolerancia) || tolerancia <= 0) {
+        resultadoMetodo.textContent = "La tolerancia debe ser mayor que 0.";
+        return;
+    }
+
+    /* ----------------------------------------
+       PARSER DE LA FUNCIÓN (Reutilizando lógica de Massiel)
+    ---------------------------------------- */
+    let expresion = expresionOriginal
+        .replace(/\^/g, "**").replace(/π/g, "Math.PI").replace(/\be\b/g, "Math.E")
+        .replace(/sqrt\(/g, "Math.sqrt(").replace(/ln\(/g, "Math.log(")
+        .replace(/log\(/g, "Math.log10(").replace(/sin\(/g, "Math.sin(")
+        .replace(/cos\(/g, "Math.cos(").replace(/tan\(/g, "Math.tan(");
+
+    let funcion;
+    try {
+        funcion = new Function("x", "return " + expresion);
+        if (!Number.isFinite(funcion(x0))) throw new Error();
+    } catch (error) {
+        resultadoMetodo.textContent = "La función ingresada no es válida.";
+        return;
+    }
+
+    /* ----------------------------------------
+       LÓGICA DE NEWTON-RAPHSON
+    ---------------------------------------- */
+    let iter = 0;
+    let x = x0;
+    let error = tolerancia + 1; // Para forzar entrada al bucle
+    const iteraciones = [];
+
+    while (error > tolerancia && iter < maxIteraciones) {
+        let fx = funcion(x);
+        
+        // Derivada numérica (Diferencias finitas centradas)
+        let h = 1e-7;
+        let dfx = (funcion(x + h) - funcion(x - h)) / (2 * h);
+
+        // MITIGACIÓN DE RIESGOS (División por cero)
+        if (Math.abs(dfx) < 1e-12) {
+            resultadoMetodo.innerHTML = `<span style='color:red;'>Error Crítico: La derivada es cero o casi cero (f'(x) ≈ 0). El método falla por división por cero.</span>`;
+            return;
+        }
+
+        let xSiguiente = x - (fx / dfx);
+        error = Math.abs(xSiguiente - x);
+
+        iteraciones.push({ iter: iter, x: x, fx: fx, dfx: dfx, error: iter === 0 ? null : error });
+
+        x = xSiguiente;
+        iter++;
+    }
+
+    /* ----------------------------------------
+       DIBUJAR TABLA
+    ---------------------------------------- */
+    if (tablaContenedor) {
+        let html = `<h3>Tabla de Newton-Raphson</h3>
+            <table><thead><tr>
+            <th>Iteración</th><th>xₙ</th><th>f(xₙ)</th><th>f'(xₙ)</th><th>Error |xₙ₊₁ - xₙ|</th>
+            </tr></thead><tbody>`;
+
+        iteraciones.forEach(it => {
+            let errStr = it.error === null ? "-" : it.error.toFixed(8);
+            html += `<tr>
+                <td>${it.iter}</td>
+                <td><strong>${it.x.toFixed(8)}</strong></td>
+                <td>${it.fx.toFixed(6)}</td>
+                <td>${it.dfx.toFixed(6)}</td>
+                <td>${errStr}</td>
+            </tr>`;
+        });
+        html += `</tbody></table>`;
+        tablaContenedor.innerHTML = html;
+    }
+
+    /* ----------------------------------------
+       MOSTRAR RESULTADO FINAL
+    ---------------------------------------- */
+    if (iter >= maxIteraciones) {
+        resultadoMetodo.innerHTML = `Método: Newton-Raphson<br>No se alcanzó la tolerancia.<br>Última aproximación: x = ${x.toFixed(8)}<br>Iteraciones: ${iter}`;
+    } else {
+        resultadoMetodo.innerHTML = `Método: Newton-Raphson<br><span style='color:green; font-size:18px;'>Raíz encontrada: x = <strong>${x.toFixed(8)}</strong></span><br>Iteraciones: ${iter}`;
+    }
+}
 /* ========================================
    MÉTODO DE BISECCIÓN
 ======================================== */
