@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ejercicios Resueltos - Módulo 1</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <style>
+
+        .contenedor-teoria {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .encabezado-teoria {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .encabezado-teoria h1 {
+            font-family: "Courier New", monospace;
+            color: #173b57;
+            margin-bottom: 10px;
+        }
+
+        .encabezado-teoria p {
+        color: #555;
+        font-size: 18px;
+        line-height: 1.6;
+        }
+
+        .tarjeta-teoria {
+            background-color: #ffffff;
+            border: 2px solid #173b57;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.10);
+        }
+
+        .tarjeta-teoria h2 {
+            font-family: "Courier New", monospace;
+            color: #173b57;
+            margin-top: 0;
+            font-size: 25px;
+        }
+
+        .tarjeta-teoria h3 {
+            font-family: "Courier New", monospace;
+            color: #7b4fa3;
+            margin-top: 25px;
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+
+        .tarjeta-teoria p {
+            line-height: 1.7;
+            color: #444;
+            font-size: 17px;
+        }
+
+        .boton-regresar {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #173b57;
+            text-decoration: none;
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+        }
+
+        .boton-regresar:hover {
+            color: #2c7a9b;
+        }
+
+        .formula {
+            background-color: #eef2f5;
+            border-left: 4px solid #2c7a9b;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-family: "Courier New", monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #173b57;
+            border-radius: 5px;
+        }
+
+        .paso {
+            background-color: #f7f9fa;
+            border-left: 4px solid #7b4fa3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .paso strong {
+            color: #173b57;
+            font-family: "Courier New", monospace;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .tabla-resueltos {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background-color: white;
+        }
+
+        .tabla-resueltos th {
+            background-color: #173b57;
+            color: white;
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .tabla-resueltos td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .tabla-resueltos tr:nth-child(even) {
+            background-color: #f7f9fa;
+        }
+
+        .resultado {
+            background-color: #eef2f5;
+            border: 2px solid #2c7a9b;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .resultado h3 {
+            margin-top: 0;
+            color: #173b57;
+        }
+
+        .resultado-final {
+            font-family: "Courier New", monospace;
+            font-size: 20px;
+            font-weight: bold;
+            color: #7b4fa3;
+        }
+
+        .comparacion {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparacion th {
+            background-color: #173b57;
+            color: white;
+            padding: 12px;
+            border: 1px solid #ccc;
+        }
+
+        .comparacion td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .comparacion tr:nth-child(even) {
+            background-color: #f7f9fa;
+        }
+
+        .material-completo {
+            text-align: center;
+            border-style: dashed;
+        }
+
+        .boton-teoria {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 22px;
+            background-color: #173b57;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+        }
+
+        .boton-teoria:hover {
+            background-color: #2c7a9b;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ========================================
+         NAVEGACIÓN
+    ========================================= -->
+
+    <nav class="navegacion">
+
+        <a href="modulo1.html">
+            ← Volver al Módulo 1
+        </a>
+
+        <a href="index.html">
+            Inicio
+        </a>
+
+    </nav>
+
+
+    <main class="contenedor-teoria">
+
+        <!-- ========================================
+             BOTÓN REGRESAR
+        ========================================= -->
+
+        <a href="modulo1.html" class="boton-regresar">
+            ← REGRESAR AL MÓDULO
+        </a>
+
+
+        <!-- ========================================
+             ENCABEZADO
+        ========================================= -->
+
+        <header class="encabezado-teoria">
+
+            <h1>📝 EJERCICIOS RESUELTOS — MÓDULO 1</h1>
+
+            <p>
+                Ecuaciones No Lineales y Métodos Numéricos
+            </p>
+
+            <p>
+                En esta sección se presentan ejercicios resueltos
+                paso a paso utilizando los métodos de Bisección y
+                Newton-Raphson.
+            </p>
+
+        </header>
+
+
+        <!-- ========================================
+             1. BISECCIÓN
+        ========================================= -->
+
+        <section class="tarjeta-teoria">
+
+            <h2>📊 1. Ejercicio resuelto — Método de Bisección</h2>
+
+            <p>
+                Encontrar una raíz aproximada de la función:
+            </p>
+
+            <div class="formula">
+                f(x) = x³ − x − 2
+            </div>
+
+            <p>
+                utilizando el método de Bisección, considerando el
+                intervalo inicial [1, 2] y una tolerancia:
+            </p>
+
+            <div class="formula">
+                ε = 10⁻⁶
+            </div>
+
+
+            <h3>🔹 Paso 1. Verificar el intervalo inicial</h3>
+
+            <p>
+                Primero evaluamos la función en los extremos del
+                intervalo:
+            </p>
+
+            <div class="paso">
+
+                <strong>Para x = 1:</strong>
+
+                <div class="formula">
+                    f(1) = (1)³ − 1 − 2 = −2
+                </div>
+
+                <strong>Para x = 2:</strong>
+
+                <div class="formula">
+                    f(2) = (2)³ − 2 − 2 = 4
+                </div>
+
+            </div>
+
+            <p>
+                Como los signos son diferentes, se cumple:
+            </p>
+
+            <div class="formula">
+                f(1) · f(2) &lt; 0
+            </div>
+
+            <p>
+                Por lo tanto, existe al menos una raíz dentro del
+                intervalo [1, 2], considerando que la función es
+                continua.
+            </p>
+
+
+            <h3>🔹 Paso 2. Calcular el punto medio</h3>
+
+            <p>
+                El punto medio del intervalo se calcula mediante:
+            </p>
+
+            <div class="formula">
+                c = (a + b) / 2
+            </div>
+
+            <p>
+                Para la primera iteración:
+            </p>
+
+            <div class="formula">
+                c = (1 + 2) / 2 = 1.5
+            </div>
+
+
+            <h3>🔹 Paso 3. Evaluar la función en el punto medio</h3>
+
+            <div class="formula">
+                f(1.5) = (1.5)³ − 1.5 − 2
+            </div>
+
+            <div class="formula">
+                f(1.5) = −0.125
+            </div>
+
+            <p>
+                Como f(1.5) es negativo y f(2) es positivo,
+                el nuevo intervalo será:
+            </p>
+
+            <div class="formula">
+                [1.5, 2]
+            </div>
+
+
+            <h3>🔹 Paso 4. Continuar con las iteraciones</h3>
+
+            <p>
+                El mismo procedimiento se repite en cada iteración:
+                se calcula el punto medio, se evalúa la función y
+                se selecciona el subintervalo que conserva el cambio
+                de signo.
+            </p>
+
+
+            <div class="tabla-contenedor">
+
+                <table class="tabla-resueltos">
+
+                    <thead>
+
+                        <tr>
+                            <th>n</th>
+                            <th>a</th>
+                            <th>b</th>
+                            <th>c = (a+b)/2</th>
+                            <th>f(c)</th>
+                            <th>Error</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>0</td>
+                            <td>1.000000</td>
+                            <td>2.000000</td>
+                            <td>1.500000</td>
+                            <td>-0.125000</td>
+                            <td>0.500000</td>
+                        </tr>
+
+                        <tr>
+                            <td>1</td>
+                            <td>1.500000</td>
+                            <td>2.000000</td>
+                            <td>1.750000</td>
+                            <td>1.609375</td>
+                            <td>0.250000</td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>1.500000</td>
+                            <td>1.750000</td>
+                            <td>1.625000</td>
+                            <td>0.666016</td>
+                            <td>0.125000</td>
+                        </tr>
+
+                        <tr>
+                            <td>3</td>
+                            <td>1.500000</td>
+                            <td>1.625000</td>
+                            <td>1.562500</td>
+                            <td>0.252197</td>
+                            <td>0.062500</td>
+                        </tr>
+
+                        <tr>
+                            <td>4</td>
+                            <td>1.500000</td>
+                            <td>1.562500</td>
+                            <td>1.531250</td>
+                            <td>0.059641</td>
+                            <td>0.031250</td>
+                        </tr>
+
+                        <tr>
+                            <td>5</td>
+                            <td>1.500000</td>
+                            <td>1.531250</td>
+                            <td>1.515625</td>
+                            <td>-0.032682</td>
+                            <td>0.015625</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <h3>🔹 Paso 5. Criterio de parada</h3>
+
+            <p>
+                El proceso continúa reduciendo el tamaño del intervalo
+                hasta que el error estimado sea menor que la tolerancia
+                establecida:
+            </p>
+
+            <div class="formula">
+                Error ≤ 10⁻⁶
+            </div>
+
+            <p>
+                Debido a que el intervalo inicial tiene una longitud
+                de 1, se requieren aproximadamente 20 iteraciones para
+                alcanzar una precisión del orden de 10⁻⁶.
+            </p>
+
+
+            <div class="resultado">
+
+                <h3>✅ Resultado del método de Bisección</h3>
+
+                <p>
+                    La raíz aproximada obtenida es:
+                </p>
+
+                <p class="resultado-final">
+                    x ≈ 1.5213797068
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================
+             2. NEWTON-RAPHSON
+        ========================================= -->
+
+        <section class="tarjeta-teoria">
+
+            <h2>📈 2. Ejercicio resuelto — Método de Newton-Raphson</h2>
+
+            <p>
+                Resolver aproximadamente la misma ecuación:
+            </p>
+
+            <div class="formula">
+                f(x) = x³ − x − 2
+            </div>
+
+            <p>
+                utilizando el método de Newton-Raphson, con:
+            </p>
+
+            <div class="formula">
+                x₀ = 1.5
+                <br>
+                ε = 10⁻⁶
+            </div>
+
+
+            <h3>🔹 Paso 1. Calcular la derivada</h3>
+
+            <p>
+                Para aplicar Newton-Raphson necesitamos calcular
+                la derivada de la función:
+            </p>
+
+            <div class="formula">
+                f′(x) = 3x² − 1
+            </div>
+
+
+            <h3>🔹 Paso 2. Escribir la fórmula</h3>
+
+            <p>
+                La fórmula del método de Newton-Raphson es:
+            </p>
+
+            <div class="formula">
+
+                x<sub>n+1</sub> =
+                x<sub>n</sub> −
+                f(x<sub>n</sub>) /
+                f′(x<sub>n</sub>)
+
+            </div>
+
+
+            <h3>🔹 Paso 3. Primera iteración</h3>
+
+            <p>
+                Partimos de:
+            </p>
+
+            <div class="formula">
+                x₀ = 1.5
+            </div>
+
+            <p>
+                Evaluamos la función:
+            </p>
+
+            <div class="formula">
+                f(1.5) = (1.5)³ − 1.5 − 2
+            </div>
+
+            <div class="formula">
+                f(1.5) = −0.125
+            </div>
+
+            <p>
+                Calculamos la derivada:
+            </p>
+
+            <div class="formula">
+                f′(1.5) = 3(1.5)² − 1
+            </div>
+
+            <div class="formula">
+                f′(1.5) = 5.75
+            </div>
+
+            <p>
+                Ahora aplicamos la fórmula:
+            </p>
+
+            <div class="formula">
+
+                x₁ =
+                1.5 −
+                (−0.125 / 5.75)
+
+            </div>
+
+            <div class="formula">
+                x₁ ≈ 1.5217391304
+            </div>
+
+
+            <h3>🔹 Paso 4. Segunda iteración</h3>
+
+            <p>
+                Utilizamos ahora:
+            </p>
+
+            <div class="formula">
+                x₁ = 1.5217391304
+            </div>
+
+            <p>
+                Evaluamos nuevamente la función y su derivada:
+            </p>
+
+            <div class="formula">
+                f(1.5217391304) ≈ 0.002138
+            </div>
+
+            <div class="formula">
+                f′(1.5217391304) ≈ 5.947073
+            </div>
+
+            <p>
+                Aplicando nuevamente la fórmula:
+            </p>
+
+            <div class="formula">
+
+                x₂ =
+                x₁ −
+                f(x₁) /
+                f′(x₁)
+
+            </div>
+
+            <div class="formula">
+                x₂ ≈ 1.5213797
+            </div>
+
+
+            <h3>🔹 Paso 5. Continuar las iteraciones</h3>
+
+            <p>
+                Al continuar con el mismo procedimiento, las
+                aproximaciones se acercan rápidamente a la raíz.
+            </p>
+
+
+            <div class="tabla-contenedor">
+
+                <table class="tabla-resueltos">
+
+                    <thead>
+
+                        <tr>
+                            <th>n</th>
+                            <th>xₙ</th>
+                            <th>f(xₙ)</th>
+                            <th>|xₙ₊₁ − xₙ|</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>0</td>
+                            <td>1.5000000000</td>
+                            <td>-0.125000</td>
+                            <td>0.0217391304</td>
+                        </tr>
+
+                        <tr>
+                            <td>1</td>
+                            <td>1.5217391304</td>
+                            <td>0.002138</td>
+                            <td>0.0003594</td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>1.5213797...</td>
+                            <td>≈ 10⁻⁶ – 10⁻⁷</td>
+                            <td>≈ 10⁻⁷</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <h3>🔹 Paso 6. Criterio de parada</h3>
+
+            <p>
+                El proceso continúa hasta que la diferencia entre dos
+                aproximaciones consecutivas sea suficientemente pequeña:
+            </p>
+
+            <div class="formula">
+                |x<sub>n+1</sub> − x<sub>n</sub>| &lt; ε
+            </div>
+
+            <p>
+                En este ejercicio se utiliza:
+            </p>
+
+            <div class="formula">
+                ε = 10⁻⁶
+            </div>
+
+
+            <div class="resultado">
+
+                <h3>✅ Resultado del método de Newton-Raphson</h3>
+
+                <p>
+                    La raíz aproximada obtenida es:
+                </p>
+
+                <p class="resultado-final">
+                    x ≈ 1.5213797
+                </p>
+
+                <p>
+                    El método alcanza la solución en pocas iteraciones.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================
+             3. COMPARACIÓN
+        ========================================= -->
+
+        <section class="tarjeta-teoria">
+
+            <h2>🔎 3. Comparación de los métodos</h2>
+
+            <p>
+                Ambos métodos permiten encontrar una aproximación
+                de la raíz de la ecuación, pero utilizan procedimientos
+                diferentes.
+            </p>
+
+
+            <div class="tabla-contenedor">
+
+                <table class="comparacion">
+
+                    <thead>
+
+                        <tr>
+                            <th>Característica</th>
+                            <th>Bisección</th>
+                            <th>Newton-Raphson</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Función</td>
+                            <td>Necesaria</td>
+                            <td>Necesaria</td>
+                        </tr>
+
+                        <tr>
+                            <td>Derivada</td>
+                            <td>No necesita</td>
+                            <td>Necesita</td>
+                        </tr>
+
+                        <tr>
+                            <td>Valor inicial</td>
+                            <td>Intervalo [a,b]</td>
+                            <td>Un valor x₀</td>
+                        </tr>
+
+                        <tr>
+                            <td>Cambio de signo</td>
+                            <td>Necesario</td>
+                            <td>No es requisito del método</td>
+                        </tr>
+
+                        <tr>
+                            <td>Velocidad de convergencia</td>
+                            <td>Más gradual</td>
+                            <td>Puede ser muy rápida cerca de la raíz</td>
+                        </tr>
+
+                        <tr>
+                            <td>Ejemplo estudiado</td>
+                            <td>≈ 20 iteraciones</td>
+                            <td>≈ 3–4 iteraciones</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================================
+             4. CONCLUSIÓN
+        ========================================= -->
+
+        <section class="tarjeta-teoria">
+
+            <h2>📌 4. Conclusión</h2>
+
+            <p>
+                En ambos ejercicios se obtuvo aproximadamente la misma
+                raíz para la ecuación:
+            </p>
+
+            <div class="formula">
+                x³ − x − 2 = 0
+            </div>
+
+            <p>
+                La solución aproximada encontrada es:
+            </p>
+
+            <div class="resultado">
+
+                <p class="resultado-final">
+                    x ≈ 1.5213797
+                </p>
+
+            </div>
+
+            <p>
+                El método de Bisección trabaja reduciendo progresivamente
+                el intervalo donde se encuentra la raíz. Por otro lado,
+                Newton-Raphson utiliza la derivada para generar nuevas
+                aproximaciones a partir de un valor inicial.
+            </p>
+
+            <p>
+                Estos ejercicios permiten observar cómo diferentes
+                métodos numéricos pueden llegar a una misma solución
+                aproximada utilizando procedimientos distintos.
+            </p>
+
+        </section>
+
+
+        <!-- ========================================
+             5. VOLVER A LA TEORÍA
+        ========================================= -->
+
+        <section class="tarjeta-teoria material-completo">
+
+            <h2>📚 ¿Quieres repasar la teoría?</h2>
+
+            <p>
+                Puedes volver a la sección de teoría del módulo para
+                revisar los conceptos y fórmulas utilizados en estos
+                ejercicios.
+            </p>
+
+            <a
+                href="teoria.html"
+                class="boton-teoria">
+
+                📖 VOLVER A LA TEORÍA
+
+            </a>
+
+        </section>
+
+
+    </main>
+
+</body>
+</html>
