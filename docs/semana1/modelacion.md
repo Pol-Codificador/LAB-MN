@@ -1,261 +1,335 @@
-## Equipo 4 — Integración Numérica
-### Semana 01 — Definición del problema y acuerdo de equipo
 
-* **Proyecto:** Página web de Métodos Numéricos
-* **Rol:** M — Matemática y modelación
-* **Semana:** 01
-* **Responsable:** Renato Xavier Ponce Llerena
-
----
-## 1. Definición del problema
-
-### 1.1 Contexto
-Se plantea un caso didáctico relacionado con tráfico de datos.
-La tasa sintética de transferencia de datos está definida por:
-$$r(t) = t^2 + 1$$
-
-donde $t$ representa el tiempo transcurrido. La tasa está expresada en $\text{MB/s}$ y el intervalo de análisis corresponde a $0 \le t \le 2\text{ s}$.
-
-El objetivo es determinar el volumen total de datos transferidos durante dicho intervalo mediante integración numérica.
+# Ficha de Modelación Matemática
+## Módulo: Ecuaciones No Lineales — Bisección y Newton-Raphson
 
 ---
 
-## 2. Formulación matemática
-Si $r(t)$ representa una tasa de transferencia en $\text{MB/s}$, el volumen acumulado durante un intervalo de tiempo se obtiene mediante:
-$$V = \int_a^b r(t)\,dt$$
+## 1. Objetivo del módulo
 
-Para el caso base, $a = 0$, $b = 2$ y $r(t) = t^2 + 1$. Por lo tanto:
-$$\boxed{ V = \int_0^2 (t^2 + 1)\,dt }$$
+Diseñar un módulo que determine un parámetro de configuración a partir de una ecuación no lineal, comparando el método de Bisección y el método de Newton-Raphson, y que sea capaz de explicar —con criterios verificables— cuándo cada método converge y cuándo no.
 
 ---
 
-## 3. Variables y parámetros
 
-| Símbolo | Descripción | Unidad |
-| :--- | :--- | :--- |
-| $t$ | Tiempo | $\text{s}$ |
-| $r(t)$ | Tasa de transferencia | $\text{MB/s}$ |
-| $V$ | Volumen total transferido | $\text{MB}$ |
-| $a$ | Extremo inferior del intervalo | $\text{s}$ |
-| $b$ | Extremo superior del intervalo | $\text{s}$ |
-| $n$ | Número de subintervalos | Adimensional |
-| $h$ | Tamaño de cada subintervalo | $\text{s}$ |
+## 2. Teoría transversal de errores
 
-El tamaño de paso para una malla uniforme se calcula mediante:
-$$\boxed{ h = \frac{b-a}{n} }$$
+### 2.1 Error absoluto y relativo
 
----
+Si $x^{*}$ es el valor exacto (o de referencia) y $x_n$ la aproximación en la iteración $n$:
 
-## 4. Supuestos del modelo
-Para el caso didáctico se consideran los siguientes supuestos:
+- Error absoluto: $E_a = |x^{*} - x_n|$
+- Error relativo: $E_r = \dfrac{|x^{*}-x_n|}{|x^{*}|}$ (indefinido si $x^{*}=0$; en ese caso usar error absoluto)
 
-1. La tasa de transferencia está representada por la función $r(t) = t^2 + 1$.
-2. La tasa es continua dentro del intervalo de análisis.
-3. El intervalo temporal inicial es $[0,2]\text{ s}$.
-4. La malla utilizada por los métodos es uniforme.
-5. El número de subintervalos $n$ es un entero positivo.
-6. Para Simpson 1/3 compuesto, $n$ debe ser par.
-7. La tasa se interpreta físicamente como una cantidad no negativa durante el caso base.
-8. El resultado de integrar una tasa expresada en $\text{MB/s}$ respecto del tiempo expresado en segundos se expresa en $\text{MB}$.
+En la práctica $x^{*}$ es desconocido, por lo que se usan **estimadores** del error:
 
-Estas condiciones se derivan del caso y de las restricciones específicas establecidas para el módulo.
+- Estimador de paso: $|x_{n+1}-x_n|$ (o su versión relativa $|x_{n+1}-x_n|/|x_{n+1}|$).
+- **Residuo**: $|f(x_n)|$ — mide qué tan cerca está $f$ de anularse, **no** es lo mismo que el error de la raíz. Un residuo pequeño no siempre implica un error pequeño (por ejemplo, si $f'$ es muy pequeña cerca de la raíz, un residuo chico puede corresponder a un $x_n$ todavía lejano del cero real).
+- En bisección existe una **cota de error garantizada**: al cerrar el intervalo $[a_n,b_n]$, el punto medio $c_n$ satisface
 
----
+$$|c_n - x^{*}| \le \frac{b_n-a_n}{2} = \frac{b_0-a_0}{2^{\,n+1}}$$
 
-## 5. Dominio y restricciones
+Esta cota es la que se debe mostrar junto al punto medio en cada iteración de bisección.
 
-**Dominio del caso base:**
-$$\boxed{0 \le t \le 2}$$
+### 2.2 Tolerancia y criterios de parada (concepto general)
 
-**Restricción para ambos métodos:**
-$$\boxed{n > 0} \quad \text{y} \quad n \in \mathbb{Z}$$
+La tolerancia $\varepsilon$ define cuándo una aproximación se considera "suficientemente buena". Un criterio de parada combina típicamente:
 
-**Restricción adicional para Simpson 1/3 compuesto:**
-$$\boxed{n \text{ debe ser par}}$$
+1. Un criterio de precisión (paso pequeño o cota de error pequeña),
+2. Opcionalmente, un criterio de residuo (función cerca de cero),
+3. Un límite de iteraciones **como salvaguarda**, nunca como prueba de convergencia.
 
-Por ejemplo:
+> **Regla explícita:** alcanzar el máximo de iteraciones **no** implica que el método convergió. Si se llega a $N$ sin cumplir el criterio de tolerancia, el resultado debe reportarse como *"no convergió en N iteraciones"*, mostrando el último residuo y la última cota de error.
 
-| $n$ | Trapecio compuesto | Simpson compuesto |
-| :---: | :---: | :---: |
-| 0 | No válido | No válido |
-| 1 | Válido | No válido |
-| 2 | Válido | Válido |
-| 3 | Válido | No válido |
-| 4 | Válido | Válido |
-| 8 | Válido | Válido |
+### 2.3 Derivación numérica
 
-La prueba específica de fallo indicada por la guía es utilizar $n = 3$ para Simpson y $n = 0$ para ambos métodos. La interfaz debe explicar la restricción correspondiente.
+Cuando no se dispone de $f'(x)$ en forma analítica, se puede aproximar mediante diferencias finitas:
+
+- Diferencia progresiva: $f'(x)\approx \dfrac{f(x+h)-f(x)}{h}$ (error $O(h)$)
+- Diferencia centrada: $f'(x)\approx \dfrac{f(x+h)-f(x-h)}{2h}$ (error $O(h^2)$, más precisa)
+
+Para este módulo, $f'(x)=3x^2-1$ se conoce analíticamente y **debe** usarse tal cual en Newton; la diferenciación numérica se documenta como alternativa de respaldo (por ejemplo, si en el futuro se cambia $f$ por una función sin derivada conocida en forma cerrada), no como método principal.
 
 ---
 
-## 6. Solución de referencia mediante integración exacta
-Para validar los métodos numéricos se obtiene primero una referencia independiente mediante integración analítica.
+## 3. Método de Bisección
 
-Tenemos:
-$$V = \int_0^2 (t^2+1)\,dt$$
+### 3.1 Fundamento y supuestos
+- $f$ continua en $[a,b]$.
+- $f(a)\cdot f(b) < 0$ (cambio de signo).
+- Garantiza convergencia a una raíz si los supuestos se cumplen (convergencia global, orden **lineal**, se reduce el intervalo a la mitad en cada paso).
 
-La integral indefinida es:
-$$\int (t^2+1)\,dt = \frac{t^3}{3} + t$$
+### 3.2 Fórmulas
+Punto medio: $c = \dfrac{a+b}{2}$
 
-Evaluando entre $0$ y $2$:
-$$V = \left[ \frac{t^3}{3}+t \right]_0^2$$
-$$V = \left( \frac{2^3}{3}+2 \right) - \left( \frac{0^3}{3}+0 \right)$$
-$$V = \frac{8}{3}+2 = \frac{8}{3}+\frac{6}{3}$$
-$$\boxed{ V = \frac{14}{3}\text{ MB} }$$
+Actualización del intervalo:
+- Si $f(a)\cdot f(c) < 0$: la raíz está en $[a,c]$ → $b \leftarrow c$
+- Si $f(a)\cdot f(c) > 0$: la raíz está en $[c,b]$ → $a \leftarrow c$
+- Si $f(c) = 0$: $c$ es la raíz (parada inmediata)
 
-Por tanto:
-$$\boxed{ V \approx 4.6666666667\text{ MB} }$$
+Cota de error en la iteración $n$: $\dfrac{b_0-a_0}{2^{\,n+1}}$
 
-Este es el valor de referencia independiente que deberá utilizarse para comparar los resultados de Trapecio y Simpson.
+### 3.3 Criterio de parada
+Detener cuando $\dfrac{b_n-a_n}{2} < \varepsilon$ (cota de error del punto medio) **o** $f(c_n)=0$ exactamente. Si se alcanza $N=100$ sin cumplir esto, marcar como no convergido.
 
----
-
-## 7. Método del Trapecio compuesto
-Para una función $f(x)$ definida en una malla uniforme, el método del Trapecio compuesto aproxima la integral mediante:
-$$\boxed{ I \approx \frac{h}{2} \left[ f(x_0) + 2\sum_{i=1}^{n-1} f(x_i) + f(x_n) \right] }$$
-
-donde $h = \frac{b-a}{n}$. Para nuestro caso $f(t) = r(t) = t^2 + 1$, por lo que:
-$$\boxed{ V_T = \frac{h}{2} \left[ r(t_0) + 2\sum_{i=1}^{n-1} r(t_i) + r(t_n) \right] }$$
+### 3.4 Limitaciones
+- Requiere conocer un intervalo con cambio de signo (no siempre trivial de encontrar).
+- No detecta raíces de multiplicidad par (el signo no cambia alrededor de ellas), aunque exista una raíz real.
+- Convergencia lineal: comparativamente lenta frente a Newton cuando este converge bien.
+- Solo garantiza **una** raíz dentro del intervalo si $f$ es monótona ahí; si hay varias raíces con cambios de signo múltiples, converge a alguna de ellas, no necesariamente a una en particular.
 
 ---
 
-## 8. Ejemplo de referencia: Trapecio con $n=4$
-Para $a = 0$, $b = 2$, $n = 4$, el tamaño de paso es:
-$$h = \frac{2-0}{4} = 0.5\text{ s}$$
+## 4. Método de Newton-Raphson
 
-Los nodos son: $t_0 = 0$, $t_1 = 0.5$, $t_2 = 1$, $t_3 = 1.5$, $t_4 = 2$.
+### 4.1 Fundamento y supuestos
+- $f$ derivable en un entorno de la raíz.
+- $f'(x_n) \ne 0$ en cada iteración (y no "demasiado pequeña", numéricamente).
+- $x_0$ suficientemente cercano a la raíz para garantizar convergencia (no es global como bisección).
+- Si la raíz es simple ($f'(x^{*})\ne0$) y $x_0$ está en la cuenca de convergencia, el orden de convergencia es **cuadrático**.
 
-Evaluamos $r(t) = t^2+1$:
+### 4.2 Fórmulas
+Iteración: $x_{n+1} = x_n - \dfrac{f(x_n)}{f'(x_n)}$
 
-| $i$ | $t_i$ (s) | $r(t_i)$ (MB/s) | Peso |
-| :---: | :---: | :---: | :---: |
-| 0 | 0.0 | 1.00 | 1 |
-| 1 | 0.5 | 1.25 | 2 |
-| 2 | 1.0 | 2.00 | 2 |
-| 3 | 1.5 | 3.25 | 2 |
-| 4 | 2.0 | 5.00 | 1 |
+Para el caso base, $f'(x)=3x^2-1$, de modo que
 
-Aplicando la fórmula:
-$$V_T = \frac{0.5}{2} \left[ 1 + 2(1.25) + 2(2) + 2(3.25) + 5 \right]$$
-$$V_T = 0.25 [1 + 2.5 + 4 + 6.5 + 5]$$
-$$V_T = 0.25(19)$$
-$$\boxed{ V_T = 4.75\text{ MB} }$$
+$$x_{n+1} = x_n - \frac{x_n^3 - x_n - 2}{3x_n^2 - 1}$$
 
----
+Residuo en la iteración $n$: $|f(x_n)|$. Cambio entre iteraciones: $|x_{n+1}-x_n|$.
 
-## 9. Error absoluto del Trapecio con $n=4$
-La referencia exacta es $V_{\text{exacto}} = \frac{14}{3}$ y el resultado del Trapecio es $V_T = 4.75$.
+### 4.4 Criterio de parada
+Detener cuando $|f(x_n)| < \varepsilon$ **o** $|x_{n+1}-x_n| < \varepsilon$ (se recomienda exigir ambos o al menos reportar ambos valores, porque no son equivalentes: ver Sección 4.1). Antes de cada paso, verificar que $f'(x_n)$ sea finita y de magnitud no despreciable (p. ej. $|f'(x_n)| > 10^{-12}$); si no, detener con error explícito en vez de dividir. Si se alcanza $N=100$ sin cumplir el criterio de tolerancia, marcar como no convergido.
 
-El error absoluto es:
-$$E_a = \vert{}V_{\text{exacto}} - V_T\vert{}$$
-$$E_a = \left\vert{} \frac{14}{3} - 4.75 \right\vert{}$$
-$$\boxed{ E_a = \frac{1}{12}\text{ MB} }$$
-
-Aproximadamente:
-$$\boxed{ E_a \approx 0.0833333333\text{ MB} }$$
+### 4.5 Limitaciones
+- No garantiza convergencia global; depende críticamente de $x_0$.
+- Falla si $f'(x_n)=0$ en algún paso (división por cero) o si es muy pequeña (paso gigante, posible divergencia).
+- Puede oscilar, divergir, o converger a una raíz distinta de la esperada.
+- Cerca de raíces múltiples, el orden de convergencia se degrada a lineal (ver Sección 9.4).
+- Requiere poder evaluar $f'(x)$ (analítica o numéricamente).
 
 ---
 
-## 10. Método de Simpson 1/3 compuesto
-El método de Simpson 1/3 compuesto utiliza:
-$$\boxed{ I \approx \frac{h}{3} \left[ f(x_0) + f(x_n) + 4\sum_{\substack{i=1 \\ i\text{ impar}}}^{n-1} f(x_i) + 2\sum_{\substack{i=2 \\ i\text{ par}}}^{n-2} f(x_i) \right] }$$
+## 5. Caso aplicado de partida
 
-La restricción fundamental para la aplicación compuesta es $\boxed{n\text{ par}}$.
+Se modela una respuesta normalizada mediante
 
-Para nuestro caso:
-$$\boxed{ V_S = \frac{h}{3} \left[ r(t_0) + r(t_n) + 4\sum_{\text{índices impares}} r(t_i) + 2\sum_{\text{índices pares}} r(t_i) \right] }$$
+$$g(x) = x^3 - x$$
 
----
+Se busca el valor positivo de $x$ que produce una respuesta objetivo $b$. Esto equivale a hallar la raíz de
 
-## 11. Ejemplo de referencia: Simpson con $n=4$
-Utilizamos nuevamente $a = 0$, $b = 2$, $n = 4$ ($h = 0.5\text{ s}$).
+$$f(x) = g(x) - b = x^3 - x - b$$
 
-| $i$ | $t_i$ (s) | $r(t_i)$ (MB/s) | Peso Simpson |
-| :---: | :---: | :---: | :---: |
-| 0 | 0.0 | 1.00 | 1 |
-| 1 | 0.5 | 1.25 | 4 |
-| 2 | 1.0 | 2.00 | 2 |
-| 3 | 1.5 | 3.25 | 4 |
-| 4 | 2.0 | 5.00 | 1 |
+Para el **caso base**, el objetivo es $b = 2$:
 
-Aplicando Simpson:
-$$V_S = \frac{0.5}{3} \left[ 1 + 5 + 4(1.25) + 2(2) + 4(3.25) \right]$$
-$$V_S = \frac{0.5}{3} [6 + 5 + 4 + 13]$$
-$$V_S = \frac{0.5}{3}(28) = \frac{14}{3}$$
+$$f(x) = x^3 - x - 2$$
 
-$$\boxed{ V_S = \frac{14}{3}\text{ MB} } \quad \text{o} \quad \boxed{ V_S \approx 4.6666666667\text{ MB} }$$
+### 5.1 Justificación del intervalo inicial
+
+Se evalúa $f$ en los extremos candidatos:
+
+| $x$ | $f(x)=x^3-x-2$ |
+|---|---|
+| 1 | $1-1-2=-2$ |
+| 2 | $8-2-2=4$ |
+
+Como $f(1)\cdot f(2) = (-2)(4) = -8 < 0$, por el **Teorema de Bolzano** (f continua en $[1,2]$, cambio de signo en los extremos) existe al menos una raíz en $(1,2)$. Además, $f'(x) = 3x^2-1$ no cambia de signo en $(1,2)$ salvo en $x=1/\sqrt3\approx0.577$ (fuera del intervalo), por lo que $f$ es estrictamente creciente en $[1,2]$ y la raíz en ese intervalo es **única**. Este es el intervalo que debe usarse en bisección para el caso base.
 
 ---
 
-## 12. Comparación inicial de los métodos
+## 5. Supuestos y parámetros del módulo
 
-| Método | $n$ | Resultado (MB) | Referencia (MB) | Error absoluto (MB) |
-| :--- | :---: | :---: | :---: | :---: |
-| Trapecio compuesto | 4 | 4.75 | 4.6666666667 | 0.0833333333 |
-| Simpson 1/3 compuesto | 4 | 4.6666666667 | 4.6666666667 | $\approx 0$ |
+**Supuestos matemáticos:**
+- $f$ es continua en el dominio de trabajo (requerido por Bolzano para bisección).
+- $f$ es derivable, y se conoce (o se puede derivar) $f'(x)$ para Newton.
+- Se trabaja en aritmética de punto flotante de doble precisión; valores no finitos (`NaN`, `±Inf`) son evidencia de error numérico, no de convergencia.
+- El objetivo $b$ y el punto inicial $x_0$ son parámetros configurables del módulo, no constantes fijas del código.
 
----
+**Parámetros por defecto (caso base):**
 
-## 13. Análisis del refinamiento de la partición
-El refinamiento consiste en aumentar el número de subintervalos ($n = 2 \rightarrow 4 \rightarrow 8$). Como $h = \frac{b-a}{n}$, al aumentar $n$, disminuye $h$.
-
-Para el intervalo $[0,2]$:
-
-| $n$ | $h$ (s) |
-| :---: | :---: |
-| 2 | 1.00 |
-| 4 | 0.50 |
-| 8 | 0.25 |
----
-
-## 14. Unidades del resultado
-La función representa una tasa ($r(t) = \text{MB/s}$) y la variable de integración representa tiempo ($dt = \text{s}$). Por lo tanto:
-$$(\text{MB/s})(\text{s}) = \text{MB} \implies \boxed{ \int r(t)\,dt = \text{MB} }$$
-
-El resultado de los métodos numéricos representa un volumen acumulado de datos, no una tasa.
+| Parámetro | Valor |
+|---|---|
+| Función | $f(x)=x^3-x-2$ |
+| Intervalo de bisección | $[a_0,b_0]=[1,2]$ |
+| Punto inicial de Newton | $x_0 = 1.5$ |
+| Tolerancia $\varepsilon$ | $1\times10^{-6}$ |
+| Máximo de iteraciones $N$ | 100 |
 
 ---
 
-## 15. Parámetros editables
-Se propone representar la función general como:
-$$\boxed{ r(t) = at^2 + bt + c }$$
+## 6. Detección de fallos y casos degenerados
 
-| Parámetro | Descripción |
-| :---: | :--- |
-| $a$ | Coeficiente cuadrático |
-| $b$ | Coeficiente lineal |
-| $c$ | Término independiente |
-| $a_t$ | Extremo inferior del intervalo |
-| $b_t$ | Extremo superior del intervalo |
+El módulo debe detectar explícitamente, sin afirmar convergencia en ningún caso:
 
-Para el caso base: $a = 1, b = 0, c = 1$ y $a_t = 0, b_t = 2$.
-$$r(t) = 1t^2 + 0t + 1 = t^2 + 1$$
+1. **Intervalo sin cambio de signo** (bisección): $f(a)\cdot f(b) \ge 0$ → abortar antes de iterar.
+2. **Derivada nula o demasiado pequeña** (Newton): $|f'(x_n)|$ por debajo de un umbral (o exactamente 0) → abortar el paso, no dividir.
+3. **Valores no finitos**: si $x_n$, $f(x_n)$ o $f'(x_n)$ resultan `NaN` o `±Inf` → abortar y reportarlo.
+4. **Agotamiento del límite de iteraciones**: llegar a $N$ sin cumplir tolerancia → reportar "no convergió", nunca como éxito.
 
----
-## 16. Ficha breve de derivación numérica
-Para aproximar la derivada de una función utilizando valores equidistantes alrededor de un punto, se utiliza la diferencia central:
-$$\boxed{ f'(x) \approx \frac{f(x+h) - f(x-h)}{2h} }$$
+### 6.1 Pruebas de fallo específicas
 
-Para el caso $r(t) = t^2+1$, utilizando $t = 1$ y $h = 0.1$:
-* $r(1.1) = 1.1^2 + 1 = 2.21$
-* $r(0.9) = 0.9^2 + 1 = 1.81$
+**(a) Bisección con intervalo mal elegido — $f(x)=x^3-x-2$ en $[2,3]$:**
 
-Aplicando diferencia central:
-$$r'(1) \approx \frac{r(1.1) - r(0.9)}{2(0.1)} = \frac{2.21 - 1.81}{0.2} = \frac{0.40}{0.2}$$
-$$\boxed{ r'(1) \approx 2\text{ MB/s}^2 }$$
+$$f(2)=8-2-2=4 \qquad f(3)=27-3-2=22$$
+
+$f(2)\cdot f(3) = 88 > 0$ → **no hay cambio de signo**. El módulo debe rechazar este intervalo antes de iterar y explicar por qué (no basta con "no se encontró raíz"; debe indicar que el supuesto de Bolzano no se cumple en $[2,3]$, aunque sí exista una raíz real fuera de ese intervalo).
+
+**(b) Newton con derivada nula al inicio — modelo alternativo $f(x)=x^3-1$, $x_0=0$:**
+
+$$f'(x) = 3x^2 \quad\Rightarrow\quad f'(0) = 0$$
+
+En el primer paso, $x_1 = 0 - \dfrac{f(0)}{f'(0)} = 0 - \dfrac{-1}{0}$ es una división por cero. El módulo debe detectar $f'(x_0)=0$ **antes** de intentar la división y detener con el mensaje de "derivada nula", no dejar que el error se propague como `Inf`/`NaN`.
 
 ---
 
-## 18. Casos de prueba matemática iniciales
+## 7. Ejemplo resuelto paso a paso — Bisección
 
-| ID | Método | Entrada | Resultado esperado |
-| :---: | :--- | :--- | :--- |
-| M-01 | Trapecio | $a=0, b=2, n=4$ | $4.75\text{ MB}$ |
-| M-02 | Simpson | $a=0, b=2, n=4$ | $14/3\text{ MB}$ |
-| M-03 | Trapecio | $a=0, b=2, n=2$ | Calcular y comparar con referencia |
-| M-04 | Simpson | $a=0, b=2, n=2$ | Calcular y comparar con referencia |
-| M-05 | Trapecio | $a=0, b=2, n=8$ | Calcular y comparar con referencia |
-| M-06 | Simpson | $a=0, b=2, n=8$ | Calcular y comparar con referencia |
-| M-07 | Simpson | $a=0, b=2, n=3$ | Entrada inválida |
-| M-08 | Ambos | $a=0, b=2, n=0$ | Entrada inválida |
+Función: $f(x)=x^3-x-2$, intervalo $[1,2]$, $\varepsilon=10^{-6}$.
 
+| n | a | b | c=(a+b)/2 | f( c ) | cota de error (b−a)/2 |
+|---|---|---|---|---|---|
+| 0 | 1.000000 | 2.000000 | 1.500000 | −0.125000 | 0.500000 |
+| 1 | 1.500000 | 2.000000 | 1.750000 | 1.609375 | 0.250000 |
+| 2 | 1.500000 | 1.750000 | 1.625000 | 0.666016 | 0.125000 |
+| 3 | 1.500000 | 1.625000 | 1.562500 | 0.252197 | 0.062500 |
+| 4 | 1.500000 | 1.562500 | 1.531250 | 0.059641 | 0.031250 |
+| 5 | 1.500000 | 1.531250 | 1.515625 | −0.032682 | 0.015625 |
+| … | … | … | … | … | … |
+
+El proceso continúa reduciendo el intervalo a la mitad en cada paso; para alcanzar $\varepsilon=10^{-6}$ partiendo de un intervalo de longitud 1 se necesitan aproximadamente $\lceil \log_2(1/10^{-6}) \rceil = 20$ iteraciones. El resultado converge a
+
+$$x^{*} \approx 1.5213797068$$
+
+---
+
+## 8. Ejemplo resuelto paso a paso — Newton
+
+Función: $f(x)=x^3-x-2$, $f'(x)=3x^2-1$, $x_0=1.5$, $\varepsilon=10^{-6}$.
+
+**Iteración 0 → 1:**
+$$f(1.5) = 3.375 - 1.5 - 2 = -0.125 \qquad f'(1.5) = 3(2.25)-1 = 5.75$$
+$$x_1 = 1.5 - \frac{-0.125}{5.75} = 1.5 + 0.0217391304 = 1.5217391304$$
+
+**Iteración 1 → 2:**
+$$f(1.5217391304) \approx 0.002138 \qquad f'(1.5217391304) \approx 5.947073$$
+$$x_2 = 1.5217391304 - \frac{0.002138}{5.947073} \approx 1.5213797$$
+
+**Iteración 2 → 3:** el residuo ya es del orden de $10^{-6}$–$10^{-7}$; $x_3$ prácticamente no cambia frente a $x_2$ (ilustra la convergencia cuadrática: el número de dígitos correctos aproximadamente se duplica en cada paso).
+
+| n | $x_n$ | $f(x_n)$ (residuo) | $\lvert x_{n+1}-x_n\rvert$ (cambio) |
+|---|---|---|---|
+| 0 | 1.5000000000 | −0.125000 | 0.0217391304 |
+| 1 | 1.5217391304 | 0.002138 | 0.0003594 |
+| 2 | 1.5213797... | ≈ $10^{-6}$–$10^{-7}$ | ≈ $10^{-7}$ |
+
+Converge a $x^{*}\approx 1.5213797068$ en solo 3–4 iteraciones, frente a las ~20 que necesita bisección: esa es la comparación cuantitativa que debe mostrar el módulo.
+
+---
+
+## 9. Caso aplicado comparativo (Bisección vs. Newton)
+
+Reutilizando el caso base ($f(x)=x^3-x-2$, raíz de referencia $x^{*}\approx1.5213797068$):
+
+| Criterio | Bisección $[1,2]$ | Newton $x_0=1.5$ |
+|---|---|---|
+| Iteraciones hasta $\varepsilon=10^{-6}$ | ≈ 20 | 3–4 |
+| Orden de convergencia | Lineal (garantizado) | Cuadrático (si converge) |
+| Garantía de convergencia | Sí, si $f(a)f(b)<0$ | No, depende de $x_0$ y de $f'$ |
+| Información usada por paso | Solo signo de $f$ | Valor y derivada de $f$ |
+| Robustez ante mal condicionamiento | Alta | Baja (falla si $f'\approx0$) |
+
+**Interpretación:** Newton converge mucho más rápido cuando el punto inicial está en su cuenca de convergencia y la derivada no se anula, pero bisección es la opción robusta que garantiza hallar la raíz si existe cambio de signo, a costa de más iteraciones. El módulo debe destacar que "más rápido" (menos iteraciones) no es sinónimo de "más confiable"; ambos criterios deben reportarse por separado.
+
+---
+
+## 10. Análisis de sensibilidad: variación del objetivo $b$ y del punto inicial
+
+### 10.1 Variando el objetivo $b$ en $f(x)=x^3-x-b$ (Newton, $x_0=1.5$)
+
+| $b$ (objetivo) | Raíz aproximada | Iteraciones aprox. hasta $10^{-6}$ |
+|---|---|---|
+| 2 | 1.5213797068 | 3–4 |
+| 3 | 1.6716959 | 4–5 |
+| 5 | 1.9041609 | 4–6 |
+
+*(Valores calculados analíticamente para contraste; el código debe validarlos con su propia ejecución, no sustituyen la corrida numérica real.)*
+
+### 10.2 Variando el punto inicial $x_0$ (Newton, $b=2$ fijo)
+
+| $x_0$ | $x_1$ | Comentario |
+|---|---|---|
+| 1.5 | 1.5217391304 | Convergencia rápida (dentro de la cuenca, cerca de la raíz) |
+| 2.0 | $2-4/11=1.636364$ | Converge, pero necesita 1–2 iteraciones más que desde 1.5 |
+| 0 (en $f(x)=x^3-1$) | división por cero | Caso de fallo: $f'(0)=0$ |
+
+**Conclusión esperada del módulo:** al variar $b$ y $x_0$ se debe comparar número de iteraciones, residuo final y robustez, evitando reportar el residuo como si fuera el error de la raíz (son magnitudes distintas).
+
+---
+
+## 11. Especificación de los gráficos requeridos
+
+**Gráfico 1 — Función del problema:** $f(x)=x^3-x-2$ para $x\in[1,2]$ (o un rango algo mayor para dar contexto). Debe marcarse el cruce por cero (la raíz $x^{*}\approx1.5213797068$) y, opcionalmente, el intervalo sombreado. Explicar por qué el cambio de signo garantiza la existencia de la raíz ahí.
+
+**Gráfico 2 — Comparación de convergencia:** eje horizontal: número de iteración $n$. Eje vertical: error/residuo en escala logarítmica . Dos series: Bisección y Newton, sobre el caso base. Debe evidenciar visualmente la caída lineal (bisección) frente a la caída cuadrática (Newton).
+
+---
+
+## 12. Valores de referencia para verificación del código
+
+| Dato | Valor |
+|---|---|
+| Función caso base | $f(x)=x^3-x-2$ |
+| Raíz de referencia | $x^{*}\approx 1.5213797068$ |
+| Bisección, intervalo inicial | $[1,2]$ |
+| Bisección, primer punto medio | $c_0=1.5$, $f(1.5)=-0.125$ |
+| Bisección, intervalo tras iter. 0 | $[1.5,\,2]$ |
+| Newton, punto inicial | $x_0=1.5$ |
+| Newton, primer paso | $x_1=1.5217391304$ |
+| Tolerancia | $10^{-6}$ |
+| Máximo de iteraciones | 100 |
+| Fallo bisección (sin cambio de signo) | intervalo $[2,3]$ sobre $f(x)=x^3-x-2$ |
+| Fallo Newton (derivada nula) | $f(x)=x^3-1$, $x_0=0$, $f'(0)=0$ |
+
+---
+
+## 13. Ejercicios propuestos
+
+**Intermedio 1.** Usando bisección con $f(x)=x^3-x-3$ en $[1,2]$ y $\varepsilon=10^{-6}$, encontrar la raíz.
+*Solución verificada:* $x^{*}\approx 1.6716959$ (accesible mediante botón/enlace de solución, no visible por defecto).
+
+**Intermedio 2.** Usando Newton con $f(x)=x^3-x-2$, $x_0=2$, comparar el número de iteraciones necesarias frente a partir de $x_0=1.5$.
+*Solución verificada:* $x_1=2-4/11\approx1.636364$; converge en 1–2 iteraciones adicionales respecto a $x_0=1.5$, hacia $x^{*}\approx1.5213797068$.
+
+**Difícil 1.** Comparar bisección (intervalo $[2,3]$) y Newton ($x_0=2$) para $f(x)=x^3-2x-5$ (ejemplo clásico de Chapra y Canale).
+*Solución verificada:* $x^{*}\approx 2.0945514815$; con Newton, $x_1=2.1$, $x_2\approx2.094568$, convergencia muy rápida; con bisección se requieren del orden de 20 iteraciones para la misma tolerancia.
+
+**Difícil 2.** Analizar la convergencia de Newton para $f(x)=x^3-3x+2=(x-1)^2(x+2)$ partiendo de $x_0=1.5$ (cerca de la raíz doble $x=1$) y explicar por qué el orden de convergencia deja de ser cuadrático.
+*Solución verificada:* $x_1=1.266667$, $x_2\approx1.138689$, …; la convergencia se vuelve **lineal** (no cuadrática) por tratarse de una raíz de multiplicidad 2, ya que $f'(1)=0$ también.
+
+---
+
+## 14. Preguntas de autoevaluación
+
+1. **(Selección múltiple)** ¿Qué condición es necesaria para aplicar bisección en $[a,b]$?
+   a) $f$ convexa — b) $f$ continua y $f(a)\cdot f(b)<0$ — c) $f$ diferenciable y $f'(a)\ne0$ — d) $f$ monótona en todo su dominio  
+   **Respuesta:** b. *Bolzano exige continuidad y cambio de signo en los extremos; no exige derivabilidad ni convexidad.*
+
+2. **(Selección múltiple)** Cerca de una raíz simple, el orden de convergencia típico de Newton-Raphson es:
+   a) Lineal — b) Cuadrático — c) Cúbico — d) No converge  
+   **Respuesta:** b. *El número de dígitos correctos se duplica aproximadamente en cada iteración cuando $f'(x^{*})\ne0$.*
+
+3. **(Verdadero/Falso)** Bisección puede no detectar una raíz real si esta tiene multiplicidad par dentro del intervalo.  
+**Respuesta:** Verdadero. *En una raíz de multiplicidad par, $f$ no cambia de signo alrededor de ella, por lo que el criterio de Bolzano no la detecta aunque exista.*
+
+4. **(Verdadero/Falso)** Si un método alcanza el número máximo de iteraciones, se puede afirmar que convergió.  
+**Respuesta:** Falso. *Alcanzar el límite de iteraciones es una salvaguarda, no una prueba de convergencia; debe reportarse como "no convergió" junto con el último residuo y cota de error.*
+
+5. **(Respuesta numérica con tolerancia)** Para $f(x)=x^3-x-2$ en $[1,2]$, el primer punto medio de bisección es ______ (tolerancia ±0.0001).  
+**Respuesta:** 1.5. *Es el punto medio de $[1,2]$; además $f(1.5)=-0.125$.*
+
+6. **(Respuesta numérica con tolerancia)** Con Newton, $x_0=1.5$, sobre $f(x)=x^3-x-2$, el valor de $x_1$ es ______ (tolerancia ±0.000001).  
+**Respuesta:** 1.5217391304. *Se obtiene de $x_1=1.5-f(1.5)/f'(1.5)=1.5-(-0.125)/5.75$.*
+
+---
+
+## 15. Referencia bibliográfica
+
+Chapra, S. C. y Canale, R. P. — *Métodos numéricos para ingenieros*. (Capítulos de raíces de ecuaciones: bisección, Newton-Raphson, falsa posición y secante).

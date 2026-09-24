@@ -3,96 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modulo 4: Integracion Numerica - UNSA</title>
+    <title>Módulo 4: Integracion Numerica - UNSA</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f6; padding: 20px; color: #333; line-height: 1.6; }
-        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; font-size: 24px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        .info-box { background: #e8f4f8; padding: 15px; border-left: 4px solid #3498db; margin-bottom: 20px; }
-        .theory-box { background: #fdf2e9; padding: 15px; border-left: 4px solid #e67e22; margin-bottom: 20px; }
-        .panel { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px; }
-        input, select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100px; margin-right: 10px; }
-        button { padding: 10px 15px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        /* Estilos base y navegación */
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f6; color: #333; line-height: 1.6; margin: 0; padding-top: 60px; }
+        header { background: #2c3e50; color: white; padding: 15px 20px; position: fixed; top: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2); display: flex; justify-content: space-between; align-items: center;}
+        header h1 { margin: 0; font-size: 20px; }
+        nav a { color: #ecf0f1; text-decoration: none; margin-left: 15px; font-weight: bold; }
+        nav a:hover { color: #3498db; }
+        .return-link { background: #e74c3c; padding: 5px 10px; border-radius: 4px; font-size: 14px; }
+        
+        /* Contenedores y secciones */
+        .container { max-width: 900px; margin: 20px auto; padding: 0 20px; }
+        section { background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 30px; scroll-margin-top: 80px; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        
+        /* Formulario y Calculadora */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: inline-block; width: 160px; font-weight: bold; }
+        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 100px; }
+        button { padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px;}
         button:hover { background: #2980b9; }
-        #resultado { margin-top: 15px; }
+        
+        /* Alertas */
+        .alert-success { padding: 15px; border-left: 5px solid #2ecc71; background: #eafaf1; margin-top: 20px; }
+        .alert-error { padding: 15px; border-left: 5px solid #e74c3c; background: #fadbd8; margin-top: 20px; }
     </style>
 </head>
 <body>
+
+    <!-- Menu de Navegacion -->
+    <heade>
+        <h1>Equipo 4: Integración Numérica</h1>
+        <nav>
+            <a href="#inicio">Inicio</a>
+            <a href="#teoria">Teoría</a>
+            <a href="#calculadora">Calculadora</a>
+            <a href="#ejemplos">Ejemplos</a>
+            <a href="#ejercicios">Ejercicios</a>
+            <a href="#equipo">Equipo</a>
+            <a href="../index.html" class="return-link">← Volver al Portal</a>
+        </nav>
+    </header>
+
     <div class="container">
-        <h1>Modulo 4: Integracion Numerica</h1>
-        <p><strong>Equipo:</strong> Paul (P), Renato (M), Massiel (D) y Ronald (V)</p>
         
-        <div class="theory-box">
-            <strong>Riesgo R1 Mitigado:</strong><br>
-            Validación de <em>n</em> par implementada para el método de Simpson 1/3.
-        </div>
+        <section id="inicio">
+            <h2>Inicio</h2>
+            <p>Bienvenido al módulo de <strong>Integración Numérica</strong>. Este módulo te permite calcular una cantidad acumulada (como el volumen de datos en MB) a partir de una tasa de transferencia variable en el tiempo, utilizando el método del <strong>Trapecio Compuesto</strong>.</p>
+        </section>
 
-        <div class="info-box">
-            <strong>Caso de estudio (Tráfico de datos):</strong> Tasa r(t) = t^2 + 1<br>
-            <strong>Límites por defecto:</strong> a = 0, b = 2 | <strong>Max subintervalos (n):</strong> 1000
-        </div>
+        <section id="teoria">
+            <h2>Teoría Breve: Trapecio Compuesto</h2>
+            <p>El método consiste en dividir el intervalo de tiempo en <em>n</em> tramos iguales. En cada tramo, se aproxima la curva de la función con una línea recta, formando un trapecio. La suma de todas estas áreas nos da una estimación del volumen total.</p>
+            <p><strong>Fórmula del paso:</strong> h = (x₁ − x₀) / n</p>
+        </section>
 
-        <div class="panel">
-            <h3>Calculadora Numérica</h3>
-            <label>Método:</label> 
-            <select id="metodo">
-                <option value="trapecio">Trapecio</option>
-                <option value="simpson">Simpson 1/3</option>
-            </select><br><br>
+        <section id="calculadora">
+            <h2>Calculadora: Método del Trapecio</h2>
+            <p>Función de tasa: <strong>r(t) = a·t² + b·t + c</strong> (MB/s)</p>
             
-            <label>Límite Inf (a):</label> <input type="number" id="val_a" value="0" step="0.1">
-            <label>Límite Sup (b):</label> <input type="number" id="val_b" value="2" step="0.1">
-            <label>Intervalos (n):</label> <input type="number" id="val_n" value="3" min="1" max="1000"> <!-- Puesto en 3 a propósito para la prueba de fallo -->
+            <!-- Formulario con etiquetas (Cumple rúbrica de accesibilidad) -->
+            <div class="form-group">
+                <label for="coef_a">Coeficiente a (t²):</label>
+                <input type="number" id="coef_a" value="1" step="0.1">
+            </div>
+            <div class="form-group">
+                <label for="coef_b">Coeficiente b (t):</label>
+                <input type="number" id="coef_b" value="0" step="0.1">
+            </div>
+            <div class="form-group">
+                <label for="coef_c">Coeficiente c (cte):</label>
+                <input type="number" id="coef_c" value="1" step="0.1">
+            </div>
+            <div class="form-group">
+                <label for="val_x0">Extremo x₀ (s):</label>
+                <input type="number" id="val_x0" value="0" step="0.1">
+            </div>
+            <div class="form-group">
+                <label for="val_x1">Extremo x₁ (s):</label>
+                <input type="number" id="val_x1" value="2" step="0.1">
+            </div>
+            <div class="form-group">
+                <label for="val_n">Subintervalos (n):</label>
+                <input type="number" id="val_n" value="4" min="1" max="1000">
+            </div>
             
-            <button onclick="ejecutarMetodo()">Calcular Volumen (MB)</button>
-            <div id="resultado"></div>
-        </div>
+            <button onclick="procesarFormulario()">Calcular Volumen</button>
+            
+            <div id="pantalla_resultado"></div>
+        </section>
+
+        <section id="ejemplos">
+            <h2>Ejemplo de Referencia</h2>
+            <p>Si evaluamos la tasa <code>r(t) = t² + 1</code> entre 0 y 2 segundos con 4 subintervalos, el resultado manual esperado es <strong>4.75 MB</strong> con un tamaño de paso <em>h = 0.5 s</em>. (Inténtalo en la calculadora de arriba).</p>
+        </section>
+        
+        <section id="ejercicios">
+            <h2>Ejercicios y Autoevaluación</h2>
+            <p><em>(En construcción para la Semana 3. Aquí irán los 4 ejercicios propuestos).</em></p>
+        </section>
+
+        <section id="equipo">
+            <h2>Nuestro Equipo (Equipo 4)</h2>
+            <ul>
+                <li><strong>A (Matemática):</strong> Renato (Modelo y ficha matemática)</li>
+                <li><strong>B (Programación):</strong> Deivick Paul Eddi Chavez Cuno (Estructura de la función y estados)</li>
+                <li><strong>C (Diseño):</strong> Massiel (Navegación y UX)</li>
+                <li><strong>D (Validación):</strong> Ronald Rodrigo Camani Chambi (Pruebas unitarias e índice)</li>
+            </ul>
+        </section>
+
     </div>
 
     <script>
-        // Función a integrar: r(t) = t^2 + 1
-        const f = (t) => (t * t) + 1;
-
-        function ejecutarMetodo() {
-            let a = parseFloat(document.getElementById('val_a').value);
-            let b = parseFloat(document.getElementById('val_b').value);
-            let n = parseInt(document.getElementById('val_n').value);
-            let metodo = document.getElementById('metodo').value;
-            let divRes = document.getElementById('resultado');
-
-            // 1. Validaciones generales
-            if (isNaN(a) || isNaN(b) || isNaN(n) || n <= 0) {
-                divRes.innerHTML = "<span style='color:red;'>Error: Ingrese valores numéricos válidos. n debe ser mayor a 0.</span>";
-                return;
+        /**
+         * TAREA SEMANA 2 - ROL P (Programación):
+         * Estructura pura del algoritmo independiente de la interfaz.
+         * Devuelve códigos de estado según el pseudocódigo del Rol M.
+         */
+        function algoritmoTrapecio(a, b, c, x0, x1, n) {
+            // 1. Validaciones (Límites y estados)
+            if (x0 >= x1) {
+                return { estado: "error", mensaje: "El extremo x₀ debe ser menor que x₁." };
+            }
+            if (!Number.isInteger(n) || n < 1) {
+                return { estado: "error", mensaje: "El número de subintervalos (n) debe ser un entero >= 1." };
             }
 
-            // 2. MITIGACIÓN DE RIESGO R1 (Tu tarea clave)
-            if (metodo === 'simpson' && n % 2 !== 0) {
-                divRes.innerHTML = "<div style='padding:15px; border-left:5px solid #e74c3c; background:#fadbd8; margin-top:15px;'><strong>Error de Validación (Riesgo R1):</strong><br>El método de Simpson 1/3 exige que el número de intervalos (n) sea PAR. El valor n=" + n + " es impar.</div>";
-                return;
+            // 2. Definición de la función de tasa r(t)
+            const r = (t) => (a * t * t) + (b * t) + c;
+
+            // 3. Verificación de tasa negativa (Regla de negocio)
+            // Solo validamos los extremos para simplificar en esta versión
+            if (r(x0) < 0 || r(x1) < 0) {
+                // No aborta, pero levanta una advertencia según la sección 5 de la ficha
+                console.warn("Advertencia: La tasa toma valores negativos.");
             }
 
-            // 3. Lógica (Por ahora solo calcula Trapecio, Simpson se dejara pendiente)
-            let h = (b - a) / n;
-            let suma = f(a) + f(b);
+            // 4. Cálculo central del Trapecio Compuesto
+            let h = (x1 - x0) / n;
+            let suma = (r(x0) + r(x1)) / 2;
             
-            if (metodo === 'trapecio') {
-                for (let i = 1; i < n; i++) {
-                    suma += 2 * f(a + i * h);
-                }
-                let volumen = (h / 2) * suma;
+            // Array para guardar los pasos (si luego lo quieren mostrar en una tabla)
+            let pasos = []; 
+            pasos.push({ i: 0, ti: x0, rti: r(x0), peso: 1 });
 
-                // Mostrar resultado
+            for (let i = 1; i < n; i++) {
+                let ti = x0 + i * h;
+                let rti = r(ti);
+                suma += rti;
+                pasos.push({ i: i, ti: ti, rti: rti, peso: 2 });
+            }
+            
+            pasos.push({ i: n, ti: x1, rti: r(x1), peso: 1 });
+            let volumen = h * suma;
+
+            // 5. Salida estructurada
+            return {
+                estado: "ok",
+                h: h,
+                resultado: volumen,
+                pasos: pasos
+            };
+        }
+
+        /**
+         * Función puente: Conecta el HTML con el algoritmo matemático
+         */
+        function procesarFormulario() {
+            // Leer entradas
+            let a = parseFloat(document.getElementById('coef_a').value);
+            let b = parseFloat(document.getElementById('coef_b').value);
+            let c = parseFloat(document.getElementById('coef_c').value);
+            let x0 = parseFloat(document.getElementById('val_x0').value);
+            let x1 = parseFloat(document.getElementById('val_x1').value);
+            let n = parseFloat(document.getElementById('val_n').value); // Leído como float para que el algoritmo valide si es entero
+
+            let divRes = document.getElementById('pantalla_resultado');
+
+            // Llamar al algoritmo puro
+            let respuesta = algoritmoTrapecio(a, b, c, x0, x1, n);
+
+            // Renderizar segun el estado devuelto
+            if (respuesta.estado === "error") {
+                divRes.innerHTML = `<div class="alert-error"><strong>Error E4-P04:</strong> ${respuesta.mensaje}</div>`;
+            } else {
                 divRes.innerHTML = `
-                    <div style="padding:15px; border-left:5px solid #2ecc71; background:#eafaf1; margin-top:15px;">
-                        <strong>Resultado Exitoso (Trapecio):</strong><br>
-                        Tamaño de paso (h): ${h.toFixed(5)} s<br>
-                        Volumen Aproximado: <strong>${volumen.toFixed(7)} MB</strong>
+                    <div class="alert-success">
+                        <strong>Cálculo Exitoso:</strong><br>
+                        Tamaño de paso (h): ${respuesta.h.toFixed(5)} s<br>
+                        Volumen Aproximado: <strong>${respuesta.resultado.toFixed(6)} MB</strong>
                     </div>
                 `;
-            } else if (metodo === 'simpson') {
-                //mensaje provicional esta seccion se programara en un futuro 
-                divRes.innerHTML = "<span style='color:#f39c12;'>Validación de 'n' par exitosa. Código de Simpson en desarrollo.</span>";
             }
         }
     </script>
