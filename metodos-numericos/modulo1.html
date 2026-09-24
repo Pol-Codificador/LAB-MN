@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Módulo 1 - Ecuaciones No Lineales y Errores
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/modulos.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ========================================
+         NAVEGACIÓN
+    ========================================= -->
+
+    <nav class="navegacion">
+
+        <a href="modulos.html">
+            ← Módulos
+        </a>
+
+        <a href="index.html">
+            ← Inicio
+        </a>
+
+    </nav>
+
+
+
+    <!-- ========================================
+         ENCABEZADO
+    ========================================= -->
+
+    <header class="encabezado">
+
+        <h1>
+            MÓDULO 1
+        </h1>
+
+        <h2>
+            ECUACIONES NO LINEALES Y ERRORES
+        </h2>
+
+        <p>
+            Aprende los conceptos y practica paso a paso
+            los métodos numéricos para resolver ecuaciones
+            no lineales.
+        </p>
+
+    </header>
+
+
+
+    <!-- ========================================
+         CALCULADORA LATERAL
+    ========================================= -->
+
+    <aside class="calculadora-lateral">
+
+        <div class="calculadora">
+
+
+            <!-- Título -->
+
+            <div class="calculadora-titulo">
+
+                🧮 CALCULADORA
+
+            </div>
+
+
+
+            <!-- Pantalla -->
+
+            <div class="pantalla-calculadora">
+
+                <div id="expresion">
+                    0
+                </div>
+
+                <div id="resultado">
+                    0
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================
+                 FUNCIONES CIENTÍFICAS
+            ================================== -->
+
+            <div class="titulo-seccion-calculadora">
+
+                FUNCIONES
+
+            </div>
+
+
+            <div class="teclas-cientificas">
+
+
+                <button
+                    type="button"
+                    onclick="agregar('sin(')"
+                >
+                    sin
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('cos(')"
+                >
+                    cos
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('tan(')"
+                >
+                    tan
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('ln(')"
+                >
+                    ln
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('log(')"
+                >
+                    log
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('sqrt(')"
+                >
+                    √
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('^2')"
+                >
+                    x²
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('^')"
+                >
+                    xʸ
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('e^(')"
+                >
+                    eˣ
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('π')"
+                >
+                    π
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('(')"
+                >
+                    (
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar(')')"
+                >
+                    )
+                </button>
+
+
+            </div>
+
+
+            <!-- =================================
+                VARIABLES
+            ================================== -->
+
+        <div class="titulo-seccion-calculadora">
+
+                VARIABLES
+
+        </div>
+
+
+        <div class="teclas-variables">
+
+            <button
+            type="button"
+            onclick="agregar('x')"
+        >
+            x
+        </button>
+
+        <button
+            type="button"
+            onclick="agregar('a')"
+        >
+            a
+        </button>
+
+        <button
+            type="button"
+            onclick="agregar('b')"
+        >
+            b
+        </button>
+
+        <button
+            type="button"
+            onclick="agregar('e')"
+        >
+            e
+        </button>
+
+    </div>
+
+
+<!-- =================================
+     FUNCIÓN f(x)
+================================== -->
+
+    <div class="funcion-metodo">
+
+        <div class="titulo-seccion-calculadora">
+
+            FUNCIÓN f(x)
+
+        </div>
+
+
+        <label for="funcion">
+
+            f(x) =
+
+        </label>
+
+    <input
+        type="text"
+        id="funcion"
+        placeholder="Ej. x^2 - 4"
+    >
+
+    <button
+        type="button"
+        onclick="evaluarFuncion()"
+        class="boton-funcion"
+    >
+        EVALUAR f(x)
+    </button>
+
+    <div
+        id="resultadoFuncion"
+        class="resultado-funcion"
+    >
+
+        Resultado
+
+    </div>
+        <button
+            type="button"
+            onclick="graficarFuncion()"
+            class="boton-graficar"
+        >
+
+            📈 GRAFICAR f(x)
+
+        </button>
+
+    </div>
+            
+    <!-- =================================
+     MÉTODO NUMÉRICO
+    ================================== -->
+
+    <div class="metodo-numerico">
+
+    <div class="titulo-seccion-calculadora">
+
+        MÉTODO NUMÉRICO
+
+    </div>
+
+    <label for="metodo">
+
+        Seleccionar método:
+
+    </label>
+
+    <select id="metodo">
+
+        <option value="biseccion">
+            Bisección
+        </option>
+
+        <option value="newton">
+            Newton-Raphson
+        </option>
+
+    </select>
+
+    </div>
+
+    <!-- =================================
+     PARÁMETROS DEL MÉTODO
+================================== -->
+
+<div class="parametros-metodo">
+
+    <div class="titulo-seccion-calculadora">
+
+        PARÁMETROS
+
+    </div>
+
+    <label for="tolerancia">
+        Tolerancia:
+    </label>
+
+    <input
+        type="number"
+        id="tolerancia"
+        value="0.0001"
+        step="any"
+    >
+
+    <label for="iteraciones">
+        Máximo de iteraciones:
+    </label>
+
+    <input
+        type="number"
+        id="iteraciones"
+        value="50"
+        min="1"
+    >
+
+</div>
+
+            <!-- =================================
+                 TECLADO NUMÉRICO
+            ================================== -->
+
+            <div class="teclado">
+
+
+                <button
+                    type="button"
+                    onclick="agregar('7')"
+                >
+                    7
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('8')"
+                >
+                    8
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('9')"
+                >
+                    9
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('/')"
+                >
+                    ÷
+                </button>
+
+
+
+                <button
+                    type="button"
+                    onclick="agregar('4')"
+                >
+                    4
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('5')"
+                >
+                    5
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('6')"
+                >
+                    6
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('*')"
+                >
+                    ×
+                </button>
+
+
+
+                <button
+                    type="button"
+                    onclick="agregar('1')"
+                >
+                    1
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('2')"
+                >
+                    2
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('3')"
+                >
+                    3
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('-')"
+                >
+                    −
+                </button>
+
+
+
+                <button
+                    type="button"
+                    onclick="agregar('0')"
+                >
+                    0
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('.')"
+                >
+                    .
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="agregar('+')"
+                >
+                    +
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="calcular()"
+                >
+                    =
+                </button>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 CONTROLES
+            ================================== -->
+
+            <div class="controles">
+
+
+                <button
+                    type="button"
+                    onclick="borrarUltimo()"
+                >
+                    ⌫
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="limpiar()"
+                >
+                    C
+                </button>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 VALORES DE LAS VARIABLES
+            ================================== -->
+
+            <div class="valores-metodo">
+
+    <div class="titulo-seccion-calculadora">
+
+        VALORES
+
+    </div>
+
+    <!-- VALORES PARA BISECCIÓN -->
+
+    <div id="valoresBiseccion">
+
+        <label for="valorA">
+            a =
+        </label>
+
+        <input
+            type="number"
+            id="valorA"
+            placeholder="Ej. 1"
+            step="any"
+        >
+
+        <label for="valorB">
+            b =
+        </label>
+
+        <input
+            type="number"
+            id="valorB"
+            placeholder="Ej. 3"
+            step="any"
+        >
+
+    </div>
+
+
+    <!-- VALOR PARA NEWTON-RAPHSON -->
+
+    <div id="valoresNewton" style="display: none;">
+
+        <label for="valorX">
+            x₀ =
+        </label>
+
+        <input
+            type="number"
+            id="valorX"
+            placeholder="Ej. 2"
+            step="any"
+        >
+
+    </div>
+
+</div>
+
+            <!-- =================================
+     EJECUTAR MÉTODO
+================================== -->
+
+<div class="ejecutar-metodo">
+
+    <button
+        type="button"
+        onclick="resolverMetodo()"
+    >
+        CALCULAR RAÍZ
+    </button>
+
+</div>
+
+<div
+    id="resultadoMetodo"
+    class="resultado-metodo"
+>
+    Resultado
+</div>
+    
+    <div id="tablaBiseccion" class="tabla-biseccion"></div>
+    <div
+    id="tablaBiseccion"
+    class="tabla-biseccion"
+    >
+    </div>
+
+                <label for="valorX">
+                    x =
+                </label>
+
+
+                <input
+                    type="number"
+                    id="valorX"
+                    placeholder="Ej. 2"
+                >
+
+
+
+                <label for="valorA">
+                    a =
+                </label>
+
+
+                <input
+                    type="number"
+                    id="valorA"
+                    placeholder="Ej. 1"
+                >
+
+
+
+                <label for="valorB">
+                    b =
+                </label>
+
+
+                <input
+                    type="number"
+                    id="valorB"
+                    placeholder="Ej. 3"
+                >
+
+
+            </div>
+
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ========================================
+         CONTENIDO PRINCIPAL
+    ========================================= -->
+
+    <main class="contenedor">
+       
+        <!-- =================================
+             TEORÍA
+        ================================== -->
+
+        <section class="opcion">
+
+            <h3>
+                📖 TEORÍA
+            </h3>
+
+            <p>
+                Aprende los conceptos, fórmulas y características
+                de los métodos de resolución.
+            </p>
+
+            <button type="button" onclick="irA('teoria.html')">
+                📖 TEORÍA
+            </button>
+
+        </section>
+
+
+
+        <!-- =================================
+             EJERCICIOS RESUELTOS
+        ================================== -->
+
+        <section class="opcion">
+
+            <h3>
+                📝 EJERCICIOS RESUELTOS
+            </h3>
+
+            <p>
+                Revisa ejercicios desarrollados paso a paso
+                y observa cómo se aplican los métodos.
+            </p>
+
+            <button
+                type="button"
+                onclick="irA('ejercicios-resueltos.html')"
+            >
+                VER EJERCICIOS →
+            </button>
+        </section>
+<!-- =================================
+     EVALUACIÓN
+================================== -->
+
+    <section class="opcion">
+
+        <h3>
+            📝 EVALUACIÓN
+        </h3>
+
+        <p>
+            Pon a prueba tus conocimientos mediante ejercicios
+            propuestos y una autoevaluación del módulo.
+        </p>
+
+    <button
+        type="button"
+        onclick="irA('evaluacion.html')"
+    >
+        IR A EVALUACIÓN →
+    </button>
+
+    </section>
+
+    </main>
+    <!-- ========================================
+         VENTANA EMERGENTE DE LA GRÁFICA
+    ========================================= -->
+
+    <div id="modalGrafica" class="modal-grafica">
+
+        <div class="contenido-modal-grafica">
+
+            <div class="encabezado-modal-grafica">
+
+                <h2>
+                    📈 GRÁFICA DE f(x)
+                </h2>
+
+                <button
+                    type="button"
+                    class="cerrar-modal"
+                    onclick="cerrarGrafica()"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+
+            <p id="nombreFuncionGrafica">
+                Gráfica de la función
+            </p>
+
+
+            <div class="grafica-contenedor">
+
+                <canvas id="graficaFuncion"></canvas>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="boton-cerrar-grafica"
+                onclick="cerrarGrafica()"
+            >
+                CERRAR
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================
+         JAVASCRIPT
+    ========================================= -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/modulo1.js"></script>
+
+
+</body>
+
+</html>
+
+     

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Evaluación - Módulo 1</title>
+
+    <link rel="stylesheet" href="css/estilo.css">
+
+    <style>
+
+        .contenedor-evaluacion {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .encabezado-evaluacion {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .encabezado-evaluacion h1 {
+            font-family: "Courier New", monospace;
+            color: #173b57;
+        }
+
+        .encabezado-evaluacion p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .tarjeta-evaluacion {
+            background-color: #ffffff;
+            border: 2px solid #173b57;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.10);
+        }
+
+        .tarjeta-evaluacion h2 {
+            font-family: "Courier New", monospace;
+            color: #173b57;
+            margin-top: 0;
+        }
+
+        .ejercicio {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f8fafb;
+        }
+
+        .ejercicio h3 {
+            font-family: "Courier New", monospace;
+            color: #7b4fa3;
+            margin-top: 0;
+        }
+
+        .ejercicio p {
+            line-height: 1.7;
+        }
+
+        .boton-solucion {
+            padding: 8px 15px;
+            border: 1px solid #7b4fa3;
+            background-color: #f3ecf8;
+            color: #7b4fa3;
+            border-radius: 5px;
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .boton-solucion:hover {
+            background-color: #e5d8ed;
+        }
+
+        .solucion {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #eef2f5;
+            border-left: 4px solid #2c7a9b;
+            line-height: 1.6;
+        }
+
+        .pregunta {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f8fafb;
+        }
+
+        .pregunta h3 {
+            font-family: "Courier New", monospace;
+            color: #173b57;
+            margin-top: 0;
+        }
+
+        .opcion {
+            display: block;
+            margin: 10px 0;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .opcion:hover {
+            background-color: #eef2f5;
+            border-radius: 5px;
+        }
+
+        .respuesta-numerica {
+            padding: 10px;
+            width: 180px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            font-family: "Courier New", monospace;
+        }
+
+        .boton-evaluar {
+            display: block;
+            margin: 30px auto 10px;
+            padding: 12px 30px;
+            background-color: #173b57;
+            color: white;
+            border: 1px solid #173b57;
+            border-radius: 5px;
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .boton-evaluar:hover {
+            background-color: #2c7a9b;
+        }
+
+        #resultadoEvaluacion {
+            text-align: center;
+            margin-top: 20px;
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .boton-regresar {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #173b57;
+            text-decoration: none;
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+        }
+
+        .boton-regresar:hover {
+            color: #2c7a9b;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <nav class="navegacion">
+
+        <a href="modulo1.html">
+            ← Módulo 1
+        </a>
+
+        <a href="index.html">
+            Inicio
+        </a>
+
+    </nav>
+
+
+    <main class="contenedor-evaluacion">
+
+
+        <a href="modulo1.html" class="boton-regresar">
+            ← REGRESAR AL MÓDULO
+        </a>
+
+
+        <header class="encabezado-evaluacion">
+
+            <h1>📝 EVALUACIÓN — MÓDULO 1</h1>
+
+            <p>
+                Ecuaciones No Lineales y Errores
+            </p>
+
+            <p>
+                Resuelve los ejercicios propuestos y posteriormente
+                comprueba tus conocimientos mediante la autoevaluación.
+            </p>
+
+        </header>
+
+
+        <!-- =====================================
+             EJERCICIOS PROPUESTOS
+        ====================================== -->
+
+        <section class="tarjeta-evaluacion">
+
+            <h2>📚 Ejercicios propuestos</h2>
+
+
+            <div class="ejercicio">
+
+                <h3>Intermedio 1</h3>
+
+                <p>
+                    Usando bisección con
+                    <strong>f(x) = x³ − x − 3</strong>
+                    en <strong>[1,2]</strong> y
+                    <strong>ε = 10⁻⁶</strong>,
+                    encontrar la raíz.
+                </p>
+
+                <button
+                    type="button"
+                    class="boton-solucion"
+                    onclick="mostrarSolucion('solucion1')">
+
+                    👁 VER SOLUCIÓN
+
+                </button>
+
+                <div id="solucion1" class="solucion">
+
+                    <strong>Solución verificada:</strong>
+
+                    x* ≈ 1.6716959
+
+                </div>
+
+            </div>
+
+
+            <div class="ejercicio">
+
+                <h3>Intermedio 2</h3>
+
+                <p>
+                    Usando Newton con
+                    <strong>f(x) = x³ − x − 2</strong>,
+                    x₀ = 2, comparar el número de iteraciones
+                    necesarias frente a partir de x₀ = 1.5.
+                </p>
+
+                <button
+                    type="button"
+                    class="boton-solucion"
+                    onclick="mostrarSolucion('solucion2')">
+
+                    👁 VER SOLUCIÓN
+
+                </button>
+
+                <div id="solucion2" class="solucion">
+
+                    <strong>Solución verificada:</strong>
+
+                    x₁ = 2 − 4/11 ≈ 1.636364.
+
+                    El método converge hacia:
+
+                    x* ≈ 1.5213797068.
+
+                </div>
+
+            </div>
+
+
+            <div class="ejercicio">
+
+                <h3>Difícil 1</h3>
+
+                <p>
+                    Comparar bisección, con intervalo
+                    <strong>[2,3]</strong>, y Newton,
+                    con <strong>x₀ = 2</strong>,
+                    para:
+
+                    <strong>f(x) = x³ − 2x − 5</strong>.
+                </p>
+
+                <button
+                    type="button"
+                    class="boton-solucion"
+                    onclick="mostrarSolucion('solucion3')">
+
+                    👁 VER SOLUCIÓN
+
+                </button>
+
+                <div id="solucion3" class="solucion">
+
+                    <strong>Solución verificada:</strong>
+
+                    x* ≈ 2.0945514815.
+
+                    Con Newton:
+
+                    x₁ = 2.1
+
+                    y
+
+                    x₂ ≈ 2.094568.
+
+                </div>
+
+            </div>
+
+
+            <div class="ejercicio">
+
+                <h3>Difícil 2</h3>
+
+                <p>
+                    Analizar la convergencia de Newton para:
+
+                    <strong>
+                        f(x) = x³ − 3x + 2
+                    </strong>
+
+                    partiendo de x₀ = 1.5.
+                </p>
+
+                <button
+                    type="button"
+                    class="boton-solucion"
+                    onclick="mostrarSolucion('solucion4')">
+
+                    👁 VER SOLUCIÓN
+
+                </button>
+
+                <div id="solucion4" class="solucion">
+
+                    <strong>Solución verificada:</strong>
+
+                    x₁ = 1.266667,
+
+                    x₂ ≈ 1.138689, …
+
+                    La convergencia se vuelve lineal debido
+                    a que x = 1 es una raíz de multiplicidad 2.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             AUTOEVALUACIÓN
+        ====================================== -->
+
+        <section class="tarjeta-evaluacion">
+
+            <h2>✅ Autoevaluación</h2>
+
+            <p>
+                Selecciona la respuesta que consideres correcta.
+                En las preguntas numéricas introduce el valor solicitado.
+            </p>
+
+
+            <!-- PREGUNTA 1 -->
+
+            <div class="pregunta">
+
+                <h3>
+                    1. ¿Qué condición es necesaria para aplicar
+                    bisección en [a,b]?
+                </h3>
+
+                <label class="opcion">
+                    <input type="radio" name="p1" value="a">
+                    a) f convexa
+                </label>
+
+                <label class="opcion">
+                    <input type="radio" name="p1" value="b">
+                    b) f continua y f(a) · f(b) &lt; 0
+                </label>
+
+                <label class="opcion">
+                    <input type="radio" name="p1" value="c">
+                    c) f diferenciable y f'(a) ≠ 0
+                </label>
+
+                <label class="opcion">
+                    <input type="radio" name="p1" value="d">
+                    d) f monótona en todo su dominio
+                </label>
+
+            </div>
+
+
+            <!-- PREGUNTA 2 -->
+
+            <div class="pregunta">
+
+                <h3>
+                    2. Cerca de una raíz simple, el orden de
+                    convergencia típico de Newton-Raphson es:
+                </h3>
+
+                <label class="opcion">
+                    <input type="radio" name="p2" value="a">
+                    a) Lineal
+                </label>
+
+                <label class="opcion">
+                    <input type="radio" name="p2" value="b">
+                    b) Cuadrático
+                </label>
+
+                <label class="opcion">
+                    <input type="radio" name="p2" value="c">
+                    c) Cúbico
+                </label>
+
+                <label class="opcion">
+                    <input type="radio" name="p2" value="d">
+                    d) No converge
+                </label>
+
+            </div>
+
+
+            <!-- PREGUNTA 3 -->
+
+            <div class="pregunta">
+
+                <h3>
+                    3. Bisección puede no detectar una raíz real
+                    si esta tiene multiplicidad par dentro del intervalo.
+                </h3>
+
+                <label class="opcion">
+                    <input type="radio" name="p3" value="v">
+                    Verdadero
+                </label>
+
+                <label class="opcion">
+                    <input type="radio" name="p3" value="f">
+                    Falso
+                </label>
+
+            </div>
+
+
+            <!-- PREGUNTA 4 -->
+
+            <div class="pregunta">
+
+                <h3>
+                    4. Si un método alcanza el número máximo
+                    de iteraciones, se puede afirmar que convergió.
+                </h3>
+
+                <label class="opcion">
+                    <input type="radio" name="p4" value="v">
+                    Verdadero
+                </label>
+
+                <label class="opcion">
+                    <input type="radio" name="p4" value="f">
+                    Falso
+                </label>
+
+            </div>
+
+
+            <!-- PREGUNTA 5 -->
+
+            <div class="pregunta">
+
+                <h3>
+                    5. Para f(x) = x³ − x − 2 en [1,2],
+                    ¿cuál es el primer punto medio de bisección?
+                </h3>
+
+                <input
+                    type="number"
+                    step="0.0001"
+                    id="p5"
+                    class="respuesta-numerica"
+                    placeholder="Respuesta">
+
+            </div>
+
+
+            <!-- PREGUNTA 6 -->
+
+            <div class="pregunta">
+
+                <h3>
+                    6. Con Newton, x₀ = 1.5,
+                    sobre f(x) = x³ − x − 2,
+                    ¿cuál es el valor de x₁?
+                </h3>
+
+                <input
+                    type="number"
+                    step="0.000001"
+                    id="p6"
+                    class="respuesta-numerica"
+                    placeholder="Respuesta">
+
+            </div>
+
+
+            <button
+                type="button"
+                class="boton-evaluar"
+                onclick="evaluarAutoevaluacion()">
+
+                ✅ COMPROBAR RESPUESTAS
+
+            </button>
+
+
+            <div id="resultadoEvaluacion"></div>
+
+        </section>
+
+
+    </main>
+
+
+    <script>
+
+        function mostrarSolucion(id) {
+
+            const solucion = document.getElementById(id);
+
+            if (!solucion) return;
+
+            if (solucion.style.display === "block") {
+
+                solucion.style.display = "none";
+
+            } else {
+
+                solucion.style.display = "block";
+
+            }
+
+        }
+
+
+        function evaluarAutoevaluacion() {
+
+            let puntos = 0;
+
+            // Pregunta 1
+            const p1 = document.querySelector('input[name="p1"]:checked');
+
+            if (p1 && p1.value === "b") {
+                puntos++;
+            }
+
+
+            // Pregunta 2
+            const p2 = document.querySelector('input[name="p2"]:checked');
+
+            if (p2 && p2.value === "b") {
+                puntos++;
+            }
+
+
+            // Pregunta 3
+            const p3 = document.querySelector('input[name="p3"]:checked');
+
+            if (p3 && p3.value === "v") {
+                puntos++;
+            }
+
+
+            // Pregunta 4
+            const p4 = document.querySelector('input[name="p4"]:checked');
+
+            if (p4 && p4.value === "f") {
+                puntos++;
+            }
+
+
+            // Pregunta 5
+            const p5 = Number(document.getElementById("p5").value);
+
+            if (Math.abs(p5 - 1.5) <= 0.0001) {
+                puntos++;
+            }
+
+
+            // Pregunta 6
+            const p6 = Number(document.getElementById("p6").value);
+
+            if (Math.abs(p6 - 1.5217391304) <= 0.000001) {
+                puntos++;
+            }
+
+
+            const resultado =
+                document.getElementById("resultadoEvaluacion");
+
+            resultado.textContent =
+                "Resultado: " + puntos + " / 6 respuestas correctas.";
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

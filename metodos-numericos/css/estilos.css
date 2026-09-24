@@ -1,0 +1,344 @@
+/* ========================================
+   CONFIGURACIÓN GENERAL
+======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    padding: 20px;
+
+    background-color: #eeeeee;
+
+    font-family: "Courier New", monospace;
+
+    color: #111;
+}
+
+
+/* ========================================
+   PORTADA
+======================================== */
+
+.portada {
+
+    max-width: 850px;
+
+    margin: 25px auto;
+
+    padding: 25px;
+
+    /* Rojo muy suave */
+
+    background-color: #fff7f7;
+
+    border: 2px dashed #777;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ========================================
+   ENCABEZADO
+======================================== */
+
+.encabezado {
+
+    padding: 30px;
+
+    background-color: #ffffff;
+
+    border: 2px dashed #777;
+
+    text-align: center;
+}
+
+
+.encabezado h1 {
+
+    margin: 0;
+
+    font-size:30px;
+
+    font-family: "Courier New", monospace;
+
+    letter-spacing: 1px;
+}
+
+
+/* ========================================
+   IMAGEN PRINCIPAL
+======================================== */
+
+.imagen-portada {
+
+    width: 100%;
+
+    height: 300px;
+
+    margin-top: 25px;
+
+    padding: 5px;
+
+    overflow: hidden;
+
+    /* Borde exterior */
+
+    border: 2px dashed #888;
+
+    /* Fondo blanco alrededor de la imagen */
+
+    background-color: white;
+}
+
+
+.imagen-portada img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    /* Borde blanco */
+
+    border: 4px solid white;
+}
+
+
+/* ========================================
+   OBJETIVO
+======================================== */
+
+.objetivo {
+
+    margin-top: 25px;
+
+    padding: 20px;
+
+    background-color: white;
+
+    border: 2px dashed #888;
+
+    text-align: center;
+}
+
+
+.objetivo h2 {
+
+    margin-top: 0;
+
+    font-size: 22px;
+}
+
+
+.objetivo p {
+
+    line-height: 1.6;
+
+    margin-bottom: 0;
+}
+
+
+/* ========================================
+   INTEGRANTES
+======================================== */
+
+.integrantes {
+
+    margin-top: 30px;
+}
+
+
+.integrantes h2 {
+
+    text-align: center;
+
+    font-size: 22px;
+
+    margin-bottom: 20px;
+}
+
+
+/* ========================================
+   LISTA DE INTEGRANTES
+======================================== */
+
+.lista-integrantes {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+}
+
+
+/* ========================================
+   TARJETAS DE INTEGRANTES
+======================================== */
+
+.integrante {
+
+    padding: 18px;
+
+    background-color: white;
+
+    border: 2px dashed #888;
+
+    transition: 0.2s ease;
+}
+
+
+.integrante:hover {
+
+    background-color: #f7f7f7;
+
+    transform: translateY(-2px);
+}
+
+
+/* ========================================
+   DATOS
+======================================== */
+
+.datos h3 {
+
+    margin-top: 0;
+
+    margin-bottom: 8px;
+
+    font-size: 15px;
+}
+
+
+.datos p {
+
+    margin: 0;
+
+    font-size: 16px;
+
+    line-height: 1.5;
+}
+
+
+/* ========================================
+   BOTÓN INGRESAR
+======================================== */
+
+.boton-ingreso {
+
+    text-align: center;
+
+    margin-top: 35px;
+
+    padding-bottom: 10px;
+}
+
+
+.boton-ingreso a {
+
+    display: inline-block;
+
+    padding: 13px 30px;
+
+    /* Botón */
+
+    background-color: #ffffff;
+
+    color: #111;
+
+    text-decoration: none;
+
+    border: 2px solid #555;
+
+    border-radius: 3px;
+
+    font-family: "Courier New", monospace;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Efecto al pasar el mouse */
+
+.boton-ingreso a:hover {
+
+    background-color: #eeeeee;
+
+    border-color: #333;
+
+    transform: translateY(-2px);
+
+}
+
+
+/* Efecto al hacer clic */
+
+.boton-ingreso a:active {
+
+    transform: translateY(0);
+
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 700px) {
+
+    body {
+
+        padding: 10px;
+    }
+
+
+    .portada {
+
+        width: 100%;
+
+        padding: 15px;
+    }
+
+
+    .encabezado {
+
+        padding: 20px;
+    }
+
+
+    .encabezado h1 {
+
+        font-size: 19px;
+    }
+
+
+    .imagen-portada {
+
+        height: 220px;
+    }
+
+
+    .lista-integrantes {
+
+        grid-template-columns: 1fr;
+    }
+
+}

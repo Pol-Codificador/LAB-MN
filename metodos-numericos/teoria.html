@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teoría - Módulo 1</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <style>
+        .contenedor-teoria {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .encabezado-teoria {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .encabezado-teoria h1 {
+            font-family: "Courier New", monospace;
+            color: #173b57;
+            margin-bottom: 10px;
+        }
+
+        .encabezado-teoria p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        .tarjeta-teoria {
+            background-color: #ffffff;
+            border: 2px solid #173b57;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,.10);
+        }
+
+        .tarjeta-teoria h2 {
+            font-family: "Courier New", monospace;
+            color: #173b57;
+            margin-top: 0;
+        }
+
+        .tarjeta-teoria p {
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .boton-repositorio {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 22px;
+            background-color: #173b57;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+        }
+
+        .boton-repositorio:hover {
+            background-color: #2c7a9b;
+        }
+
+        .boton-regresar {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #173b57;
+            text-decoration: none;
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+        }
+
+        .boton-regresar:hover {
+            color: #2c7a9b;
+        }
+
+        .formula {
+            background-color: #eef2f5;
+            border-left: 4px solid #2c7a9b;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-family: "Courier New", monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #173b57;
+            border-radius: 5px;
+        }
+
+        .tarjeta-teoria h3 {
+            font-family: "Courier New", monospace;
+            color: #7b4fa3;
+            margin-top: 25px;
+            margin-bottom: 8px;
+        }
+
+        .tarjeta-teoria p {
+            line-height: 1.7;
+        }
+
+        .material-completo {
+            text-align: center;
+            border-style: dashed;
+        }
+
+        .material-completo p {
+            max-width: 750px;
+            margin: 0 auto 15px;
+        }
+        .videos-guia {
+    margin-top: 30px;
+}
+
+.lista-videos {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.video-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 18px;
+    background-color: #f7f9fa;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.icono-video {
+    width: 55px;
+    height: 55px;
+    min-width: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #173b57;
+    color: white;
+    border-radius: 50%;
+    font-size: 22px;
+}
+
+.info-video {
+    flex: 1;
+}
+
+.info-video h3 {
+    margin: 0 0 6px;
+    font-family: "Courier New", monospace;
+    color: #173b57;
+}
+
+.info-video p {
+    margin: 5px 0 12px;
+}
+
+.boton-video {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #7b4fa3;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.boton-video:hover {
+    background-color: #5f397d;
+}
+
+
+.grupo-videos {
+    margin-top: 30px;
+}
+
+.grupo-videos:first-of-type {
+    margin-top: 20px;
+}
+
+.grupo-videos h3 {
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #aaa;
+}
+
+.info-video h4 {
+    margin: 0 0 12px;
+    font-family: "Courier New", monospace;
+    color: #173b57;
+    font-size: 15px;
+}
+
+.info-video h4::before {
+    content: "🎬 ";
+}
+
+    </style>
+</head>
+
+<body>
+
+    <nav class="navegacion">
+        <a href="modulo1.html">← Volver al Módulo 1</a>
+        <a href="index.html">Inicio</a>
+    </nav>
+
+   <main class="contenedor-teoria">
+
+    <a href="modulo1.html" class="boton-regresar">
+        ← REGRESAR AL MÓDULO
+    </a>
+
+    <header class="encabezado-teoria">
+
+        <h1>📚 TEORÍA — MÓDULO 1</h1>
+
+        <p>
+            Ecuaciones No Lineales y Errores
+        </p>
+
+        <p>
+            En esta sección se presentan los conceptos fundamentales
+            necesarios para comprender los métodos numéricos utilizados
+            en la resolución de ecuaciones no lineales.
+        </p>
+
+    </header>
+
+
+    <!-- ========================================
+         1. OBJETIVO DEL MÓDULO
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>🎯 1. Objetivo del módulo</h2>
+
+        <p>
+            Comprender los fundamentos de los métodos numéricos para
+            encontrar soluciones aproximadas de ecuaciones no lineales,
+            considerando además los errores asociados a los cálculos
+            y los criterios utilizados para determinar la precisión
+            de una solución.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         2. TEORÍA DE ERRORES
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📐 2. Teoría de errores</h2>
+
+        <p>
+            En los métodos numéricos generalmente se obtienen
+            aproximaciones de la solución exacta. Por esta razón,
+            es necesario medir qué tan cercana es una aproximación
+            respecto al valor verdadero o de referencia.
+        </p>
+
+
+        <h3>Error absoluto</h3>
+
+        <p>
+            El error absoluto representa la diferencia entre el
+            valor verdadero y el valor aproximado.
+        </p>
+
+        <div class="formula">
+            E<sub>a</sub> = |x<sub>verdadero</sub> − x<sub>aproximado</sub>|
+        </div>
+
+
+        <h3>Error relativo</h3>
+
+        <p>
+            El error relativo relaciona el error absoluto con el
+            valor verdadero o de referencia.
+        </p>
+
+        <div class="formula">
+            E<sub>r</sub> =
+            |x<sub>verdadero</sub> − x<sub>aproximado</sub>|
+            /
+            |x<sub>verdadero</sub>|
+        </div>
+
+
+        <h3>Error porcentual</h3>
+
+        <p>
+            El error relativo puede expresarse como porcentaje:
+        </p>
+
+        <div class="formula">
+            E<sub>%</sub> = E<sub>r</sub> × 100
+        </div>
+
+
+        <h3>Tolerancia</h3>
+
+        <p>
+            La tolerancia establece el nivel de error permitido para
+            considerar que una aproximación es suficientemente precisa.
+        </p>
+
+        <p>
+            Los métodos numéricos pueden detener sus iteraciones
+            cuando el error estimado sea menor que la tolerancia
+            establecida.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         3. BISECCIÓN
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📊 3. Método de Bisección</h2>
+
+        <p>
+            El método de Bisección es un método numérico utilizado
+            para encontrar una raíz de una función dentro de un
+            intervalo.
+        </p>
+
+        <p>
+            Para aplicar el método se parte de un intervalo
+            [a,b] en el que la función cambia de signo.
+        </p>
+
+
+        <h3>Condición inicial</h3>
+
+        <div class="formula">
+            f(a) · f(b) &lt; 0
+        </div>
+
+        <p>
+            Esta condición indica que existe al menos una raíz
+            dentro del intervalo cuando la función es continua.
+        </p>
+
+
+        <h3>Fórmula del punto medio</h3>
+
+        <p>
+            En cada iteración se calcula el punto medio del intervalo:
+        </p>
+
+        <div class="formula">
+            c = (a + b) / 2
+        </div>
+
+
+        <h3>Actualización del intervalo</h3>
+
+        <p>
+            Después de calcular c, se evalúa el signo de la función
+            y se conserva el subintervalo donde se mantiene el cambio
+            de signo.
+        </p>
+
+
+        <h3>Criterio de parada</h3>
+
+        <p>
+            El proceso puede detenerse cuando el error estimado sea
+            menor que la tolerancia establecida o cuando se alcance
+            el número máximo de iteraciones.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         4. NEWTON-RAPHSON
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📈 4. Método de Newton-Raphson</h2>
+
+        <p>
+            El método de Newton-Raphson permite aproximar una raíz
+            de una función utilizando la función y su derivada.
+        </p>
+
+
+        <h3>Fórmula</h3>
+
+        <div class="formula">
+            x<sub>n+1</sub> =
+            x<sub>n</sub> −
+            f(x<sub>n</sub>) / f′(x<sub>n</sub>)
+        </div>
+
+
+        <h3>Interpretación</h3>
+
+        <p>
+            A partir de una aproximación inicial x₀, el método calcula
+            sucesivas aproximaciones que buscan acercarse a la raíz
+            de la función.
+        </p>
+
+
+        <h3>Condición importante</h3>
+
+        <p>
+            La derivada debe poder evaluarse en los puntos utilizados
+            durante el proceso y no debe ser cero en el denominador.
+        </p>
+
+
+        <h3>Criterio de parada</h3>
+
+        <p>
+            Las iteraciones pueden detenerse cuando la diferencia
+            entre aproximaciones sucesivas sea suficientemente pequeña
+            o cuando se alcance la tolerancia establecida.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         5. MATERIAL COMPLETO
+    ========================================= -->
+
+    <section class="tarjeta-teoria material-completo">
+
+        <h2>📖 Material teórico completo</h2>
+
+        <p>
+            Para consultar la explicación completa, ejemplos,
+            ejercicios y material adicional del módulo, puedes
+            acceder al documento original del repositorio.
+        </p>
+
+        <a
+            href="https://github.com/Pol-Codificador/LAB-MN/blob/main/docs/semana1/modelacion.md#1-objetivo-del-m%C3%B3dulo"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="boton-repositorio">
+
+            🔗 CONSULTAR REPOSITORIO DE TEORÍA
+
+        </a>
+
+    </section>
+
+    <!-- ========================================
+     6. VIDEOS DE GUÍA
+========================================= -->
+
+<section class="tarjeta-teoria videos-guia">
+
+    <h2>🎥 Videos de guía</h2>
+
+    <p>
+        Complementa la teoría del módulo con estos videos
+        seleccionados para reforzar los principales conceptos.
+    </p>
+
+
+    <!-- ==============================
+         TEORÍA DE ERRORES
+    =============================== -->
+
+    <div class="grupo-videos">
+
+        <h3>📐 Teoría de errores</h3>
+
+        <div class="lista-videos">
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Introducción a los errores numéricos</h4>
+
+                    <a
+                        href="https://www.youtube.com/watch?v=rcdv9hlnimU&list=PL1fzt-aRc08oHfVjlowXWvaZ8wdk35Lir&index=1&t=221s"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Teoría de errores</h4>
+
+                    <a
+                        href="https://www.youtube.com/watch?v=l69yxD718Jo"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==============================
+         MÉTODO DE BISECCIÓN
+    =============================== -->
+
+    <div class="grupo-videos">
+
+        <h3>📊 Método de Bisección</h3>
+
+        <div class="lista-videos">
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Explicación del método de Bisección</h4>
+
+                    <a
+                        href="https://youtube.com/shorts/KoJJPJhqHE8?si=TisVPMOlIB4PhHQt"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Ejemplo del método de Bisección</h4>
+
+                    <a
+                        href="https://www.youtube.com/watch?v=8KuOrn2j2rw"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==============================
+         MÉTODO DE NEWTON-RAPHSON
+    =============================== -->
+
+    <div class="grupo-videos">
+
+        <h3>📈 Método de Newton-Raphson</h3>
+
+        <div class="lista-videos">
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Explicación del método de Newton-Raphson</h4>
+
+                    <a
+                        href="https://youtube.com/shorts/sgg5eM15XMc?si=ym3qEZqzGYU_Mkmw"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Ejemplo del método de Newton-Raphson</h4>
+
+                    <a
+                        href="https://youtu.be/uugX9QwErkA?si=0iEWUTY7rRQBSnyn"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+</body>
+</html>
