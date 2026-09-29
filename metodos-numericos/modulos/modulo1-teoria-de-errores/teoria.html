@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teoría - Módulo 1</title>
+
+    <link rel="stylesheet" href="../../css/estilos.css">
+    <link rel="stylesheet" href="../../css/teoria.css">
+
+</head>
+
+<body>
+    
+   <main class="contenedor-teoria">
+
+    <a href="errores.html" class="boton-regresar">
+        ← REGRESAR AL MÓDULO
+    </a>
+
+    <header class="encabezado-teoria">
+
+        <h1>📚 TEORÍA — MÓDULO 1</h1>
+
+        <p>
+            Teoría De Errores
+        </p>
+
+        <p>
+            En esta sección se presentan los conceptos fundamentales
+            necesarios para comprender la teoría de errores.
+        </p>
+
+    </header>
+
+
+    <!-- ========================================
+         1. OBJETIVO DEL MÓDULO
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>🎯 1. Objetivo del módulo</h2>
+
+        <p>
+            Comprender los fundamentos de los métodos numéricos para
+            encontrar soluciones aproximadas de ecuaciones no lineales,
+            considerando además los errores asociados a los cálculos
+            y los criterios utilizados para determinar la precisión
+            de una solución.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         2. TEORÍA DE ERRORES
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📐 2. Teoría de errores</h2>
+
+        <p>
+            En los métodos numéricos generalmente se obtienen
+            aproximaciones de la solución exacta. Por esta razón,
+            es necesario medir qué tan cercana es una aproximación
+            respecto al valor verdadero o de referencia.
+        </p>
+
+
+        <h3>Error absoluto</h3>
+
+        <p>
+            El error absoluto representa la diferencia entre el
+            valor verdadero y el valor aproximado.
+        </p>
+
+        <div class="formula">
+            E<sub>a</sub> = |x<sub>verdadero</sub> − x<sub>aproximado</sub>|
+        </div>
+
+
+        <h3>Error relativo</h3>
+
+        <p>
+            El error relativo relaciona el error absoluto con el
+            valor verdadero o de referencia.
+        </p>
+
+        <div class="formula">
+            E<sub>r</sub> =
+            |x<sub>verdadero</sub> − x<sub>aproximado</sub>|
+            /
+            |x<sub>verdadero</sub>|
+        </div>
+
+
+        <h3>Error porcentual</h3>
+
+        <p>
+            El error relativo puede expresarse como porcentaje:
+        </p>
+
+        <div class="formula">
+            E<sub>%</sub> = E<sub>r</sub> × 100
+        </div>
+
+
+        <h3>Tolerancia</h3>
+
+        <p>
+            La tolerancia establece el nivel de error permitido para
+            considerar que una aproximación es suficientemente precisa.
+        </p>
+
+        <p>
+            Los métodos numéricos pueden detener sus iteraciones
+            cuando el error estimado sea menor que la tolerancia
+            establecida.
+        </p>
+
+    </section>
+
+    <!-- ========================================
+         5. MATERIAL COMPLETO
+    ========================================= -->
+
+    <section class="tarjeta-teoria material-completo">
+
+        <h2>📖 Material teórico completo</h2>
+
+        <p>
+            Para consultar la explicación completa, ejemplos,
+            ejercicios y material adicional del módulo, puedes
+            acceder al documento original del repositorio.
+        </p>
+
+        <a
+            href="https://github.com/Pol-Codificador/LAB-MN/blob/main/docs/semana1/teoria_de_errores.md#1-objetivo-del-m%C3%B3dulo"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="boton-repositorio">
+
+            🔗 CONSULTAR REPOSITORIO DE TEORÍA
+
+        </a>
+
+    </section>
+
+    <!-- ========================================
+     6. VIDEOS DE GUÍA
+========================================= -->
+
+<section class="tarjeta-teoria videos-guia">
+
+    <h2>🎥 Videos de guía</h2>
+
+    <p>
+        Complementa la teoría del módulo con estos videos
+        seleccionados para reforzar los principales conceptos.
+    </p>
+
+
+    <!-- ==============================
+         TEORÍA DE ERRORES
+    =============================== -->
+
+    <div class="grupo-videos">
+
+        <h3>📐 Teoría de errores</h3>
+
+        <div class="lista-videos">
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Introducción a los errores numéricos</h4>
+
+                    <a
+                        href="https://www.youtube.com/watch?v=rcdv9hlnimU&list=PL1fzt-aRc08oHfVjlowXWvaZ8wdk35Lir&index=1&t=221s"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Teoría de errores</h4>
+
+                    <a
+                        href="https://www.youtube.com/watch?v=l69yxD718Jo"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+</body>
+</html>

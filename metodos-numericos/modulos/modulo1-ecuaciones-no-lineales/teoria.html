@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teoría - Módulo 1</title>
+
+    <link rel="stylesheet" href="../../css/estilos.css">
+    <link rel="stylesheet" href="../../css/teoria.css">
+
+</head>
+
+<body>
+
+   <main class="contenedor-teoria">
+
+    <a href="ecuaciones-no-lineales.html" class="boton-regresar">
+        ← REGRESAR AL MÓDULO
+    </a>
+
+    <header class="encabezado-teoria">
+
+        <h1>📚 TEORÍA — MÓDULO 1</h1>
+
+        <p>
+            Ecuaciones No Lineales
+        </p>
+
+        <p>
+            En esta sección se presentan los conceptos fundamentales
+            necesarios para comprender los métodos numéricos utilizados
+            en la resolución de ecuaciones no lineales.
+        </p>
+
+    </header>
+
+
+    <!-- ========================================
+         1. OBJETIVO DEL MÓDULO
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>🎯 1. Objetivo del módulo</h2>
+
+        <p>
+            Comprender los fundamentos de los métodos numéricos para
+            encontrar soluciones aproximadas de ecuaciones no lineales.
+        </p>
+
+    </section>
+
+    <!-- ========================================
+         2. BISECCIÓN
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📊 2. Método de Bisección</h2>
+
+        <p>
+            El método de Bisección es un método numérico utilizado
+            para encontrar una raíz de una función dentro de un
+            intervalo.
+        </p>
+
+        <p>
+            Para aplicar el método se parte de un intervalo
+            [a,b] en el que la función cambia de signo.
+        </p>
+
+
+        <h3>Condición inicial</h3>
+
+        <div class="formula">
+            f(a) · f(b) &lt; 0
+        </div>
+
+        <p>
+            Esta condición indica que existe al menos una raíz
+            dentro del intervalo cuando la función es continua.
+        </p>
+
+
+        <h3>Fórmula del punto medio</h3>
+
+        <p>
+            En cada iteración se calcula el punto medio del intervalo:
+        </p>
+
+        <div class="formula">
+            c = (a + b) / 2
+        </div>
+
+
+        <h3>Actualización del intervalo</h3>
+
+        <p>
+            Después de calcular c, se evalúa el signo de la función
+            y se conserva el subintervalo donde se mantiene el cambio
+            de signo.
+        </p>
+
+
+        <h3>Criterio de parada</h3>
+
+        <p>
+            El proceso puede detenerse cuando el error estimado sea
+            menor que la tolerancia establecida o cuando se alcance
+            el número máximo de iteraciones.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         3. NEWTON-RAPHSON
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📈 3. Método de Newton-Raphson</h2>
+
+        <p>
+            El método de Newton-Raphson permite aproximar una raíz
+            de una función utilizando la función y su derivada.
+        </p>
+
+
+        <h3>Fórmula</h3>
+
+        <div class="formula">
+            x<sub>n+1</sub> =
+            x<sub>n</sub> −
+            f(x<sub>n</sub>) / f′(x<sub>n</sub>)
+        </div>
+
+
+        <h3>Interpretación</h3>
+
+        <p>
+            A partir de una aproximación inicial x₀, el método calcula
+            sucesivas aproximaciones que buscan acercarse a la raíz
+            de la función.
+        </p>
+
+
+        <h3>Condición importante</h3>
+
+        <p>
+            La derivada debe poder evaluarse en los puntos utilizados
+            durante el proceso y no debe ser cero en el denominador.
+        </p>
+
+
+        <h3>Criterio de parada</h3>
+
+        <p>
+            Las iteraciones pueden detenerse cuando la diferencia
+            entre aproximaciones sucesivas sea suficientemente pequeña
+            o cuando se alcance la tolerancia establecida.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         4. MATERIAL COMPLETO
+    ========================================= -->
+
+    <section class="tarjeta-teoria material-completo">
+
+        <h2>📖 Material teórico completo</h2>
+
+        <p>
+            Para consultar la explicación completa, ejemplos,
+            ejercicios y material adicional del módulo, puedes
+            acceder al documento original del repositorio.
+        </p>
+
+        <a
+            href="https://github.com/Pol-Codificador/LAB-MN/blob/main/docs/semana1/biyeccion_newton.md#1-objetivo-del-m%C3%B3dulo"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="boton-repositorio">
+
+            🔗 CONSULTAR REPOSITORIO DE TEORÍA
+
+        </a>
+
+    </section>
+
+    <!-- ========================================
+     5. VIDEOS DE GUÍA
+========================================= -->
+
+<section class="tarjeta-teoria videos-guia">
+
+    <h2>🎥 Videos de guía</h2>
+
+    <p>
+        Complementa la teoría del módulo con estos videos
+        seleccionados para reforzar los principales conceptos.
+    </p>
+
+    <!-- ==============================
+         MÉTODO DE BISECCIÓN
+    =============================== -->
+
+    <div class="grupo-videos">
+
+        <h3>📊 Método de Bisección</h3>
+
+        <div class="lista-videos">
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Explicación del método de Bisección</h4>
+
+                    <a
+                        href="https://youtube.com/shorts/KoJJPJhqHE8?si=TisVPMOlIB4PhHQt"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Ejemplo del método de Bisección</h4>
+
+                    <a
+                        href="https://www.youtube.com/watch?v=8KuOrn2j2rw"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==============================
+         MÉTODO DE NEWTON-RAPHSON
+    =============================== -->
+
+    <div class="grupo-videos">
+
+        <h3>📈 Método de Newton-Raphson</h3>
+
+        <div class="lista-videos">
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Explicación del método de Newton-Raphson</h4>
+
+                    <a
+                        href="https://youtube.com/shorts/sgg5eM15XMc?si=ym3qEZqzGYU_Mkmw"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Ejemplo del método de Newton-Raphson</h4>
+
+                    <a
+                        href="https://youtu.be/uugX9QwErkA?si=0iEWUTY7rRQBSnyn"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+</body>
+</html>
