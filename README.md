@@ -49,6 +49,27 @@ Este proyecto fue desarrollado de manera colaborativa, aplicando metodologías �
 | **Diseñadora (D)** | Carpio Coa, Massiel Evagelina | Arquitectura UI/UX, maquetación HTML/CSS, integración gráfica e interactividad del frontend. |
 | **Verificador (V)** | Camani Chambi, Ronald Rodrigo | Diseño de la matriz de pruebas, control de calidad, contraste numérico y gestión de incidencias. |
 
+| Rol Inicial (Semanas 4-6) | Integrante | Responsabilidad Principal en el Hito |
+| :--- | :--- | :--- |
+| **Modelador (M)** | Camani Chambi, Ronald Rodrigo | Fundamento matemático, modelación de casos de prueba y cálculos analíticos de referencia. |
+| **Programador (P)** | Ponce Llerena, Renato Xavier | Desarrollo del motor lógico en JavaScript, algoritmos de convergencia y mitigación de fallos técnicos. |
+| **Diseñadora (D)** | Chavez Cuno, Deivick Paul Eddi | Arquitectura UI/UX, maquetación HTML/CSS, integración gráfica e interactividad del frontend. |
+| **Verificador (V)** | Carpio Coa, Massiel Evagelina | Diseño de la matriz de pruebas, control de calidad, contraste numérico y gestión de incidencias. |
+
+| Rol Inicial (Semanas 7-9) | Integrante | Responsabilidad Principal en el Hito |
+| :--- | :--- | :--- |
+| **Modelador (M)** | Carpio Coa, Massiel Evagelina | Fundamento matemático, modelación de casos de prueba y cálculos analíticos de referencia. |
+| **Programador (P)** | Camani Chambi, Ronald Rodrigo | Desarrollo del motor lógico en JavaScript, algoritmos de convergencia y mitigación de fallos técnicos. |
+| **Diseñadora (D)** | Ponce Llerena, Renato Xavier | Arquitectura UI/UX, maquetación HTML/CSS, integración gráfica e interactividad del frontend. |
+| **Verificador (V)** | Chavez Cuno Deivick Paul Eddi | Diseño de la matriz de pruebas, control de calidad, contraste numérico y gestión de incidencias. |
+
+| Rol Inicial (Semanas 10-12) | Integrante | Responsabilidad Principal en el Hito |
+| :--- | :--- | :--- |
+| **Modelador (M)** | Chavez Cuno Deivick Paul Eddi | Fundamento matemático, modelación de casos de prueba y cálculos analíticos de referencia. |
+| **Programador (P)** | Carpio Coa, Massiel Evagelina | Desarrollo del motor lógico en JavaScript, algoritmos de convergencia y mitigación de fallos técnicos. |
+| **Diseñadora (D)** | Camani Chambi, Ronald Rodrigo | Arquitectura UI/UX, maquetación HTML/CSS, integración gráfica e interactividad del frontend. |
+| **Verificador (V)** | Ponce Llerena, Renato Xavier | Diseño de la matriz de pruebas, control de calidad, contraste numérico y gestión de incidencias. |
+
 ## Información Académica
 
 **Universidad Nacional de San Agustín de Arequipa (UNSA)**  
