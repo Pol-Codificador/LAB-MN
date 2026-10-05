@@ -4,392 +4,177 @@
 
 let expresionActual = "";
 
-
 /* ========================================
    AGREGAR ELEMENTO
 ======================================== */
 
 function agregar(valor) {
-    expresionActual += valor;
-    actualizarPantalla();
+  expresionActual += valor;
+  actualizarPantalla();
 }
-
 
 /* ========================================
    ACTUALIZAR PANTALLA
 ======================================== */
 
 function actualizarPantalla() {
-
-    const expresion =
-        document.getElementById("expresion");
-
-    if (expresion) {
-        expresion.textContent =
-            expresionActual || "0";
-    }
+  const expresion = document.getElementById("expresion");
+  if (expresion) {
+    expresion.textContent = expresionActual || "0";
+  }
 }
-
 
 /* ========================================
    BORRAR ÚLTIMO
 ======================================== */
 
 function borrarUltimo() {
-
-    expresionActual =
-        expresionActual.slice(0, -1);
-
-    actualizarPantalla();
+  expresionActual = expresionActual.slice(0, -1);
+  actualizarPantalla();
 }
-
 
 /* ========================================
    LIMPIAR
 ======================================== */
 
 function limpiar() {
+  expresionActual = "";
 
-    expresionActual = "";
+  const expresion = document.getElementById("expresion");
+  const resultado = document.getElementById("resultado");
 
-    const expresion =
-        document.getElementById("expresion");
+  if (expresion) {
+    expresion.textContent = "0";
+  }
 
-    const resultado =
-        document.getElementById("resultado");
-
-    if (expresion) {
-        expresion.textContent = "0";
-    }
-
-    if (resultado) {
-        resultado.textContent = "0";
-    }
+  if (resultado) {
+    resultado.textContent = "0";
+  }
 }
-
 
 /* ========================================
    CALCULAR
 ======================================== */
 
 function calcular() {
+  try {
+    let expresion = expresionActual;
 
-    try {
+    // Potencia
+    expresion = expresion.replace(/\^/g, "**");
+    // PI
+    expresion = expresion.replace(/π/g, "Math.PI");
+    // E
+    expresion = expresion.replace(/\be\b/g, "Math.E");
+    // RAÍZ
+    expresion = expresion.replace(/sqrt\(/g, "Math.sqrt(");
+    // LOGARITMO NATURAL
+    expresion = expresion.replace(/ln\(/g, "Math.log(");
+    // LOGARITMO BASE 10
+    expresion = expresion.replace(/log\(/g, "Math.log10(");
+    // SENO 
+    expresion = expresion.replace(/sin\(/g, "Math.sin(");
+    // COSENO
+    expresion = expresion.replace(/cos\(/g, "Math.cos(");
+    // TANGENTE
+    expresion = expresion.replace(/tan\(/g, "Math.tan(");
 
-        let expresion = expresionActual;
+    // OBTENER VARIABLES
+    const campoX = document.getElementById("valorX");
+    const campoA = document.getElementById("valorA");
+    const campoB = document.getElementById("valorB");
 
-        /* -----------------------------
-           POTENCIAS
-        ----------------------------- */
+    const x = campoX && campoX.value !== "" ? Number(campoX.value) : 0;
+    const a = campoA && campoA.value !== "" ? Number(campoA.value) : 0;
+    const b = campoB && campoB.value !== "" ? Number(campoB.value) : 0;
 
-        expresion =
-            expresion.replace(/\^/g, "**");
+    // EVALUAR EXPRESIÓN
+    const resultadoCalculado = Function(
+      "x",
+      "a",
+      "b",
+      `"use strict";
+                return (${expresion})`,
+    )(x, a, b);
 
-
-        /* -----------------------------
-           PI
-        ----------------------------- */
-
-        expresion =
-            expresion.replace(/π/g, "Math.PI");
-
-
-        /* -----------------------------
-           E
-        ----------------------------- */
-
-        expresion =
-            expresion.replace(/\be\b/g, "Math.E");
-
-
-        /* -----------------------------
-           RAÍZ
-        ----------------------------- */
-
-        expresion =
-            expresion.replace(
-                /sqrt\(/g,
-                "Math.sqrt("
-            );
-
-
-        /* -----------------------------
-           LOGARITMO NATURAL
-        ----------------------------- */
-
-        expresion =
-            expresion.replace(
-                /ln\(/g,
-                "Math.log("
-            );
-
-
-        /* -----------------------------
-           LOGARITMO BASE 10
-        ----------------------------- */
-
-        expresion =
-            expresion.replace(
-                /log\(/g,
-                "Math.log10("
-            );
-
-
-        /* -----------------------------
-           SENO
-        ----------------------------- */
-
-        expresion =
-            expresion.replace(
-                /sin\(/g,
-                "Math.sin("
-            );
-
-
-        /* -----------------------------
-           COSENO
-        ----------------------------- */
-
-        expresion =
-            expresion.replace(
-                /cos\(/g,
-                "Math.cos("
-            );
-
-
-        /* -----------------------------
-           TANGENTE
-        ----------------------------- */
-
-        expresion =
-            expresion.replace(
-                /tan\(/g,
-                "Math.tan("
-            );
-
-
-        /* =================================
-           OBTENER VARIABLES
-        ================================= */
-
-        const campoX =
-            document.getElementById("valorX");
-
-        const campoA =
-            document.getElementById("valorA");
-
-        const campoB =
-            document.getElementById("valorB");
-
-
-        const x =
-            campoX && campoX.value !== ""
-                ? Number(campoX.value)
-                : 0;
-
-        const a =
-            campoA && campoA.value !== ""
-                ? Number(campoA.value)
-                : 0;
-
-        const b =
-            campoB && campoB.value !== ""
-                ? Number(campoB.value)
-                : 0;
-
-
-        /* =================================
-           EVALUAR EXPRESIÓN
-        ================================= */
-
-        const resultadoCalculado =
-            Function(
-                "x",
-                "a",
-                "b",
-                `"use strict";
-                return (${expresion})`
-            )(x, a, b);
-
-
-        /* =================================
-           COMPROBAR RESULTADO
-        ================================= */
-
-        if (
-            typeof resultadoCalculado !== "number" ||
-            !Number.isFinite(resultadoCalculado)
-        ) {
-            throw new Error();
-        }
-
-
-        /* =================================
-           MOSTRAR RESULTADO
-        ================================= */
-
-        const resultado =
-            document.getElementById("resultado");
-
-        if (resultado) {
-            resultado.textContent =
-                resultadoCalculado;
-        }
-
-    } catch (error) {
-
-        const resultado =
-            document.getElementById("resultado");
-
-        if (resultado) {
-            resultado.textContent =
-                "Error";
-        }
+    // COMPROBAR EL RESULTADO
+    if (
+      typeof resultadoCalculado !== "number" ||
+      !Number.isFinite(resultadoCalculado)
+    ) {
+      throw new Error();
     }
-}
 
+    // MOSTRAR RESULTADO
+    const resultado = document.getElementById("resultado");
+
+    if (resultado) {
+      resultado.textContent = resultadoCalculado;
+    }
+  } catch (error) {
+    const resultado = document.getElementById("resultado");
+    if (resultado) {
+      resultado.textContent = "Error";
+    }
+  }
+}
 
 /* ========================================
    EVALUAR FUNCIÓN f(x)
 ======================================== */
 
 function evaluarFuncion() {
+  const funcion = document.getElementById("funcion");
+  const resultadoFuncion = document.getElementById("resultadoFuncion");
+  const campoX = document.getElementById("valorX");
+  const campoA = document.getElementById("valorA");
+  const campoB = document.getElementById("valorB");
 
-    const funcion =
-        document.getElementById("funcion");
+  if (!funcion || !resultadoFuncion) {
+    return;
+  }
 
-    const resultadoFuncion =
-        document.getElementById("resultadoFuncion");
+  let expresion = funcion.value.trim();
 
-    const campoX =
-        document.getElementById("valorX");
+  if (expresion === "") {
+    resultadoFuncion.textContent = "Escribe una función.";
+    return;
+  }
 
-    const campoA =
-        document.getElementById("valorA");
+  const x = campoX && campoX.value !== "" ? Number(campoX.value) : 0;
+  const a = campoA && campoA.value !== "" ? Number(campoA.value) : 0;
+  const b = campoB && campoB.value !== "" ? Number(campoB.value) : 0;
 
-    const campoB =
-        document.getElementById("valorB");
+  try {
+    /* Convertir símbolos matemáticos */
+    expresion = expresion.replace(/\^/g, "**");
+    expresion = expresion.replace(/π/g, "Math.PI");
+    expresion = expresion.replace(/\be\b/g, "Math.E");
+    expresion = expresion.replace(/sqrt\(/g, "Math.sqrt(");
+    expresion = expresion.replace(/ln\(/g, "Math.log(");
+    expresion = expresion.replace(/log\(/g, "Math.log10(");
+    expresion = expresion.replace(/sin\(/g, "Math.sin(");
+    expresion = expresion.replace(/cos\(/g, "Math.cos(");
+    expresion = expresion.replace(/tan\(/g, "Math.tan(");
 
+    const resultado = Function(
+      "x",
+      "a",
+      "b",
+      `"use strict";
+                 return (${expresion})`,
+    )(x, a, b);
 
-    if (!funcion || !resultadoFuncion) {
-        return;
+    if (typeof resultado !== "number" || !Number.isFinite(resultado)) {
+      throw new Error();
     }
 
-
-    let expresion =
-        funcion.value.trim();
-
-
-    if (expresion === "") {
-
-        resultadoFuncion.textContent =
-            "Escribe una función.";
-
-        return;
-    }
-
-
-    const x =
-        campoX && campoX.value !== ""
-            ? Number(campoX.value)
-            : 0;
-
-    const a =
-        campoA && campoA.value !== ""
-            ? Number(campoA.value)
-            : 0;
-
-    const b =
-        campoB && campoB.value !== ""
-            ? Number(campoB.value)
-            : 0;
-
-
-    try {
-
-        /* Convertir símbolos matemáticos */
-
-        expresion =
-            expresion.replace(/\^/g, "**");
-
-        expresion =
-            expresion.replace(
-                /π/g,
-                "Math.PI"
-            );
-
-        expresion =
-            expresion.replace(
-                /\be\b/g,
-                "Math.E"
-            );
-
-        expresion =
-            expresion.replace(
-                /sqrt\(/g,
-                "Math.sqrt("
-            );
-
-        expresion =
-            expresion.replace(
-                /ln\(/g,
-                "Math.log("
-            );
-
-        expresion =
-            expresion.replace(
-                /log\(/g,
-                "Math.log10("
-            );
-
-        expresion =
-            expresion.replace(
-                /sin\(/g,
-                "Math.sin("
-            );
-
-        expresion =
-            expresion.replace(
-                /cos\(/g,
-                "Math.cos("
-            );
-
-        expresion =
-            expresion.replace(
-                /tan\(/g,
-                "Math.tan("
-            );
-
-
-        const resultado =
-            Function(
-                "x",
-                "a",
-                "b",
-                `"use strict";
-                 return (${expresion})`
-            )(x, a, b);
-
-
-        if (
-            typeof resultado !== "number" ||
-            !Number.isFinite(resultado)
-        ) {
-            throw new Error();
-        }
-
-
-        resultadoFuncion.textContent =
-            "f(" + x + ") = " +
-            Number(resultado.toFixed(10));
-
-    } catch (error) {
-
-        resultadoFuncion.textContent =
-            "Error en la función";
-    }
+    resultadoFuncion.textContent =
+      "f(" + x + ") = " + Number(resultado.toFixed(10));
+  } catch (error) {
+    resultadoFuncion.textContent = "Error en la función";
+  }
 }
-
 
 /* ========================================
    GRÁFICA DE f(x)
@@ -397,407 +182,222 @@ function evaluarFuncion() {
 
 let graficaFuncion = null;
 
-
 function graficarFuncion() {
+  const campoFuncion = document.getElementById("funcion");
 
-    const campoFuncion =
-        document.getElementById("funcion");
+  if (!campoFuncion) return;
 
-    if (!campoFuncion) {
-        return;
-    }
+  const expresion = campoFuncion.value.trim();
 
+  if (expresion === "") {
+    alert("Escribe una función primero.");
+    return;
+  }
 
-    let expresion =
-        campoFuncion.value.trim();
-
-
-    /* ================================
-       COMPROBAR FUNCIÓN
+  /* ================================
+       COMPILAR FUNCIÓN CON MATH.JS
     ================================= */
+  let funcionCompilada;
+  try {
+    // math.compile() parsea la expresión matemática de forma segura y estándar
+    const nodo = math.parse(expresion);
 
-    if (expresion === "") {
+    funcionCompilada = nodo.compile();
 
-        alert("Escribe una función primero.");
+    // Prueba de evaluación inicial
+    funcionCompilada.evaluate({ x: 1 });
+  } catch (error) {
+    alert("La función ingresada no es válida. Revisa la sintaxis.");
+    return;
+  }
 
-        return;
-    }
-
-
-    /* ================================
-       CONVERTIR EXPRESIÓN
-    ================================= */
-
-    expresion =
-        expresion.replace(/\^/g, "**");
-
-    expresion =
-        expresion.replace(
-            /π/g,
-            "Math.PI"
-        );
-
-    expresion =
-        expresion.replace(
-            /\be\b/g,
-            "Math.E"
-        );
-
-    expresion =
-        expresion.replace(
-            /sqrt\(/g,
-            "Math.sqrt("
-        );
-
-    expresion =
-        expresion.replace(
-            /ln\(/g,
-            "Math.log("
-        );
-
-    expresion =
-        expresion.replace(
-            /log\(/g,
-            "Math.log10("
-        );
-
-    expresion =
-        expresion.replace(
-            /sin\(/g,
-            "Math.sin("
-        );
-
-    expresion =
-        expresion.replace(
-            /cos\(/g,
-            "Math.cos("
-        );
-
-    expresion =
-        expresion.replace(
-            /tan\(/g,
-            "Math.tan("
-        );
-
-
-    /* ================================
-       CREAR FUNCIÓN
-    ================================= */
-
-    let funcion;
-
-    try {
-
-        funcion =
-            new Function(
-                "x",
-                "return " + expresion
-            );
-
-
-        /* Probar la función */
-
-        const prueba =
-            funcion(1);
-
-        if (
-            typeof prueba !== "number" ||
-            !Number.isFinite(prueba)
-        ) {
-            throw new Error();
-        }
-
-    } catch (error) {
-
-        alert(
-            "La función ingresada no es válida."
-        );
-
-        return;
-    }
-
-
-    /* ================================
+  /* ================================
        CREAR PUNTOS
     ================================= */
+  const valoresX = [];
+  const valoresY = [];
 
-    const valoresX = [];
-    const valoresY = [];
-
-
-    for (
-        let x = -10;
-        x <= 10;
-        x += 0.1
-    ) {
-
-        let y;
-
-        try {
-            y = funcion(x);
-        } catch (error) {
-            y = null;
-        }
-
-
-        valoresX.push(
-            Number(x.toFixed(2))
-        );
-
-
-        if (
-            typeof y === "number" &&
-            Number.isFinite(y) &&
-            Math.abs(y) < 1000
-        ) {
-
-            valoresY.push(y);
-
-        } else {
-
-            valoresY.push(null);
-        }
+  for (let x = -50; x <= 50; x += 0.1) {
+    let y;
+    try {
+      // Evalúa la función para cada x
+      y = funcionCompilada.evaluate({ x: x });
+    } catch (error) {
+      y = null;
     }
 
+    const xLimpia = Number(x.toFixed(2));
+    valoresX.push(xLimpia);
 
-    /* ================================
-       MOSTRAR VENTANA DE GRÁFICA
-    ================================= */
-
-    const modal =
-        document.getElementById("modalGrafica");
-
-    const nombreFuncion =
-        document.getElementById(
-            "nombreFuncionGrafica"
-        );
-
-
-    if (modal) {
-        modal.style.display = "flex";
+    if (typeof y === "number" && Number.isFinite(y) && Math.abs(y) < 1000) {
+      const yLimpia = Number(y.toFixed(2));
+      valoresY.push(yLimpia);
+    } else {
+      valoresY.push(null);
     }
+  }
 
+  // 1. PRIMERO: MOSTRAR EL MODAL Y ASIGNAR TÍTULO
+  const modal = document.getElementById("modalGrafica");
+  const canvas = document.getElementById("graficaFuncion");
+  const nombreFuncion = document.getElementById("nombreFuncionGrafica");
 
-    if (nombreFuncion) {
+  if (!modal || !canvas) return;
+  
+  modal.style.display = "flex";
 
-        nombreFuncion.textContent =
-            "f(x) = " +
-            campoFuncion.value;
+  if (nombreFuncion) {
+    nombreFuncion.textContent = "f(x) = " + expresion;
+  }
+
+  const ctx = canvas.getContext("2d");
+
+  // 3. DESTRUIIR GRÁFICA ANTERIOR
+  if (graficaFuncion) {
+    graficaFuncion.destroy();
+    graficaFuncion = null;
+  }
+
+  // 4. CREAR PUNTOS DE FORMA DIRECTA (Estructura x, y recomendada por Chart.js)
+  const puntos = [];
+  for (let i = 0; i < valoresX.length; i++) {
+    if (valoresY[i] !== null) {
+      puntos.push({ x: valoresX[i], y: valoresY[i] });
     }
+  }
 
+  // 5. CREAR LA GRÁFICA
 
-    /* ================================
-       OBTENER CANVAS
-    ================================= */
+  const etiquetasX = valoresX.map((x) => x.toString());
 
-    const canvas =
-        document.getElementById(
-            "graficaFuncion"
-        );
+  graficaFuncion = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: etiquetasX,
+      datasets: [
+        {
+          label: "f(x) = " + expresion,
+          data: valoresY, // Pasamos el array de objetos {x, y}
+          borderColor: "#2563eb", // Azul visible
+          backgroundColor: "rgba(37, 99, 235, 0.1)",
+          borderWidth: 2,
+          pointRadius: 0, // Muestra una línea continua suave
+          tension: 0.1,
+          spanGaps: true,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      scales: {
+        x: {
+          type: "linear", // Fuerza escala matemática lineal
+          position: "center",
+          title: {
+            display: true,
+            text: "x",
+          },
+        },
+        y: {
+          position: "center",
+          title: {
+            display: true,
+            text: "f(x)",
+          },
+        },
+      },
+      plugins: {
+        legend: { display: true },
+        zoom: {
+          pan: {
+            enabled: true,
+            mode: "xy",
+            modifierKey: null,
+          },
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 0.05,
+            },
+            pinch: {
+              enabled: true, // Zoom táctil/touchpad
+            },
+            mode: "xy",
+          },
+        },
+      },
+    },
+  });
 
-
-    if (!canvas) {
-        return;
-    }
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    /* ================================
-       ELIMINAR GRÁFICA ANTERIOR
-    ================================= */
-
-    if (graficaFuncion !== null) {
-
-        graficaFuncion.destroy();
-    }
-
-
-    /* ================================
-       CREAR GRÁFICA
-    ================================= */
-
-    graficaFuncion =
-        new Chart(
-            ctx,
-            {
-
-                type: "line",
-
-                data: {
-
-                    labels: valoresX,
-
-                    datasets: [
-
-                        {
-
-                            label:
-                                "f(x) = " +
-                                campoFuncion.value,
-
-                            data: valoresY,
-
-                            borderWidth: 2,
-
-                            pointRadius: 0,
-
-                            tension: 0.1
-                        }
-                    ]
-                },
-
-
-                options: {
-
-                    responsive: true,
-
-                    maintainAspectRatio: false,
-
-
-                    scales: {
-
-                        x: {
-
-                            title: {
-
-                                display: true,
-
-                                text: "x"
-                            }
-                        },
-
-
-                        y: {
-
-                            title: {
-
-                                display: true,
-
-                                text: "f(x)"
-                            }
-                        }
-                    },
-
-
-                    plugins: {
-
-                        legend: {
-
-                            display: true
-                        }
-                    }
-                }
-            }
-        );
+  canvas.onwheel = function(e) {
+    e.preventDefault();
+  };
 }
-
 
 /* ========================================
    CERRAR GRÁFICA
 ======================================== */
 
 function cerrarGrafica() {
-
-    const modal =
-        document.getElementById(
-            "modalGrafica"
-        );
-
-
-    if (modal) {
-
-        modal.style.display =
-            "none";
-    }
+  const modal = document.getElementById("modalGrafica");
+  if (modal) {
+    modal.style.display = "none";
+  }
 }
-
 
 /* ========================================
    SELECCIÓN DEL MÉTODO NUMÉRICO
 ======================================== */
 
-const selectorMetodo =
-    document.getElementById("metodo");
-
-const valoresBiseccion =
-    document.getElementById(
-        "valoresBiseccion"
-    );
-
-const valoresNewton =
-    document.getElementById(
-        "valoresNewton"
-    );
-
+const selectorMetodo = document.getElementById("metodo");
+const valoresBiseccion = document.getElementById("valoresBiseccion");
+const valoresNewton = document.getElementById("valoresNewton");
 
 if (selectorMetodo) {
+  selectorMetodo.addEventListener("change", function () {
+    if (selectorMetodo.value === "biseccion") {
+      if (valoresBiseccion) {
+        valoresBiseccion.style.display = "block";
+      }
 
-    selectorMetodo.addEventListener(
-        "change",
-        function () {
+      if (valoresNewton) {
+        valoresNewton.style.display = "none";
+      }
+    } else if (selectorMetodo.value === "newton") {
+      if (valoresBiseccion) {
+        valoresBiseccion.style.display = "none";
+      }
 
-            if (
-                selectorMetodo.value ===
-                "biseccion"
-            ) {
-
-                if (valoresBiseccion) {
-                    valoresBiseccion.style.display =
-                        "block";
-                }
-
-                if (valoresNewton) {
-                    valoresNewton.style.display =
-                        "none";
-                }
-
-            }
-
-            else if (
-                selectorMetodo.value ===
-                "newton"
-            ) {
-
-                if (valoresBiseccion) {
-                    valoresBiseccion.style.display =
-                        "none";
-                }
-
-                if (valoresNewton) {
-                    valoresNewton.style.display =
-                        "block";
-                }
-            }
-        }
-    );
+      if (valoresNewton) {
+        valoresNewton.style.display = "block";
+      }
+    }
+  });
 }
-
 
 /* ========================================
    EJECUTAR MÉTODO SELECCIONADO
 ======================================== */
 
 function resolverMetodo() {
+  // Limpiar la tabla de iteraciones anterior
+  const tablaContenedor = document.getElementById("tablaBiseccion");
 
-    const metodo =
-        document.getElementById(
-            "metodo"
-        ).value;
+  if (tablaContenedor) {
+    tablaContenedor.innerHTML = "";
+  }
+  
+  const metodo = document.getElementById("metodo").value;
 
+  if (metodo === "biseccion") {
+    resolverBiseccion();
+  }
 
-    if (metodo === "biseccion") {
-
-        resolverBiseccion();
-    }
-
-
-    if (metodo === "newton") {
-
-        resolverNewton();
-    }
+  if (metodo === "newton") {
+    resolverNewton();
+  }
 }
 
 /* ========================================
@@ -805,677 +405,425 @@ function resolverMetodo() {
 ======================================== */
 
 function resolverNewton() {
-    /* ----------------------------------------
+  /* ----------------------------------------
        OBTENER DATOS DE LA INTERFAZ
     ---------------------------------------- */
-    const campoFuncion = document.getElementById("funcion");
-    const campoX = document.getElementById("valorX"); // x inicial
-    const campoTolerancia = document.getElementById("tolerancia");
-    const campoIteraciones = document.getElementById("iteraciones");
-    const resultadoMetodo = document.getElementById("resultadoMetodo");
-    const tablaContenedor = document.getElementById("tablaBiseccion"); // Reutilizamos el contenedor
+  const campoFuncion = document.getElementById("funcion");
+  const campoX = document.getElementById("valorX"); // x inicial
+  const campoTolerancia = document.getElementById("tolerancia");
+  const campoIteraciones = document.getElementById("iteraciones");
+  const resultadoMetodo = document.getElementById("resultadoMetodo");
+  const tablaContenedor = document.getElementById("tablaBiseccion"); // Reutilizamos el contenedor
 
-    if (!campoFuncion || !campoX || !campoTolerancia || !campoIteraciones || !resultadoMetodo) return;
+  if (
+    !campoFuncion ||
+    !campoX ||
+    !campoTolerancia ||
+    !campoIteraciones ||
+    !resultadoMetodo
+  )
+    return;
 
-    const expresionOriginal = campoFuncion.value.trim();
-    const x0 = Number(campoX.value);
-    const tolerancia = Number(campoTolerancia.value);
-    const maxIteraciones = Number(campoIteraciones.value);
+  const expresionOriginal = campoFuncion.value.trim();
+  const x0 = Number(campoX.value);
+  const tolerancia = Number(campoTolerancia.value);
+  const maxIteraciones = Number(campoIteraciones.value);
 
-    /* ----------------------------------------
+  /* ----------------------------------------
        VALIDACIONES ESTRICTAS (Rol P)
     ---------------------------------------- */
-    if (expresionOriginal === "") {
-        resultadoMetodo.textContent = "Escribe una función f(x).";
-        return;
-    }
-    if (!Number.isFinite(x0)) {
-        resultadoMetodo.textContent = "Ingresa un valor válido para x₀.";
-        return;
-    }
-    if (!Number.isFinite(tolerancia) || tolerancia <= 0) {
-        resultadoMetodo.textContent = "La tolerancia debe ser mayor que 0.";
-        return;
-    }
+  if (expresionOriginal === "") {
+    resultadoMetodo.textContent = "Escribe una función f(x).";
+    return;
+  }
+  if (!Number.isFinite(x0)) {
+    resultadoMetodo.textContent = "Ingresa un valor válido para x₀.";
+    return;
+  }
+  if (!Number.isFinite(tolerancia) || tolerancia <= 0) {
+    resultadoMetodo.textContent = "La tolerancia debe ser mayor que 0.";
+    return;
+  }
 
-    /* ----------------------------------------
+  /* ----------------------------------------
        PARSER DE LA FUNCIÓN (Reutilizando lógica de Massiel)
     ---------------------------------------- */
-    let expresion = expresionOriginal
-        .replace(/\^/g, "**").replace(/π/g, "Math.PI").replace(/\be\b/g, "Math.E")
-        .replace(/sqrt\(/g, "Math.sqrt(").replace(/ln\(/g, "Math.log(")
-        .replace(/log\(/g, "Math.log10(").replace(/sin\(/g, "Math.sin(")
-        .replace(/cos\(/g, "Math.cos(").replace(/tan\(/g, "Math.tan(");
+  let expresion = expresionOriginal
+    .replace(/\^/g, "**")
+    .replace(/π/g, "Math.PI")
+    .replace(/\be\b/g, "Math.E")
+    .replace(/sqrt\(/g, "Math.sqrt(")
+    .replace(/ln\(/g, "Math.log(")
+    .replace(/log\(/g, "Math.log10(")
+    .replace(/sin\(/g, "Math.sin(")
+    .replace(/cos\(/g, "Math.cos(")
+    .replace(/tan\(/g, "Math.tan(");
 
-    let funcion;
-    try {
-        funcion = new Function("x", "return " + expresion);
-        if (!Number.isFinite(funcion(x0))) throw new Error();
-    } catch (error) {
-        resultadoMetodo.textContent = "La función ingresada no es válida.";
-        return;
-    }
+  let funcion;
+  try {
+    funcion = new Function("x", "return " + expresion);
+    if (!Number.isFinite(funcion(x0))) throw new Error();
+  } catch (error) {
+    resultadoMetodo.textContent = "La función ingresada no es válida.";
+    return;
+  }
 
-    /* ----------------------------------------
+  /* ----------------------------------------
        LÓGICA DE NEWTON-RAPHSON
     ---------------------------------------- */
-    let iter = 0;
-    let x = x0;
-    let error = tolerancia + 1; // Para forzar entrada al bucle
-    const iteraciones = [];
+  let iter = 0;
+  let x = x0;
+  let error = tolerancia + 1; // Para forzar entrada al bucle
+  const iteraciones = [];
 
-    while (error > tolerancia && iter < maxIteraciones) {
-        let fx = funcion(x);
-        
-        // Derivada numérica (Diferencias finitas centradas)
-        let h = 1e-7;
-        let dfx = (funcion(x + h) - funcion(x - h)) / (2 * h);
+  while (error > tolerancia && iter < maxIteraciones) {
+    let fx = funcion(x);
 
-        // MITIGACIÓN DE RIESGOS (División por cero)
-        if (Math.abs(dfx) < 1e-12) {
-            resultadoMetodo.innerHTML = `<span style='color:red;'>Error Crítico: La derivada es cero o casi cero (f'(x) ≈ 0). El método falla por división por cero.</span>`;
-            return;
-        }
+    // Derivada numérica (Diferencias finitas centradas)
+    let h = 1e-7;
+    let dfx = (funcion(x + h) - funcion(x - h)) / (2 * h);
 
-        let xSiguiente = x - (fx / dfx);
-        error = Math.abs(xSiguiente - x);
-
-        iteraciones.push({ iter: iter, x: x, fx: fx, dfx: dfx, error: iter === 0 ? null : error });
-
-        x = xSiguiente;
-        iter++;
+    // MITIGACIÓN DE RIESGOS (División por cero)
+    if (Math.abs(dfx) < 1e-12) {
+      resultadoMetodo.innerHTML = `<span style='color:red;'>Error Crítico: La derivada es cero o casi cero (f'(x) ≈ 0). El método falla por división por cero.</span>`;
+      return;
     }
 
-    /* ----------------------------------------
+    let xSiguiente = x - fx / dfx;
+    error = Math.abs(xSiguiente - x);
+
+    iteraciones.push({
+      iter: iter,
+      x: x,
+      fx: fx,
+      dfx: dfx,
+      error: iter === 0 ? null : error,
+    });
+
+    x = xSiguiente;
+    iter++;
+  }
+
+  /* ----------------------------------------
        DIBUJAR TABLA
     ---------------------------------------- */
-    if (tablaContenedor) {
-        let html = `<h3>Tabla de Newton-Raphson</h3>
+  if (tablaContenedor) {
+    let html = `<h3>Tabla de Newton-Raphson</h3>
             <table><thead><tr>
             <th>Iteración</th><th>xₙ</th><th>f(xₙ)</th><th>f'(xₙ)</th><th>Error |xₙ₊₁ - xₙ|</th>
             </tr></thead><tbody>`;
 
-        iteraciones.forEach(it => {
-            let errStr = it.error === null ? "-" : it.error.toFixed(8);
-            html += `<tr>
+    iteraciones.forEach((it) => {
+      let errStr = it.error === null ? "-" : it.error.toFixed(8);
+      html += `<tr>
                 <td>${it.iter}</td>
                 <td><strong>${it.x.toFixed(8)}</strong></td>
                 <td>${it.fx.toFixed(6)}</td>
                 <td>${it.dfx.toFixed(6)}</td>
                 <td>${errStr}</td>
             </tr>`;
-        });
-        html += `</tbody></table>`;
-        tablaContenedor.innerHTML = html;
-    }
+    });
+    html += `</tbody></table>`;
+    tablaContenedor.innerHTML = html;
+  }
 
-    /* ----------------------------------------
+  /* ----------------------------------------
        MOSTRAR RESULTADO FINAL
     ---------------------------------------- */
-    if (iter >= maxIteraciones) {
-        resultadoMetodo.innerHTML = `Método: Newton-Raphson<br>No se alcanzó la tolerancia.<br>Última aproximación: x = ${x.toFixed(8)}<br>Iteraciones: ${iter}`;
-    } else {
-        resultadoMetodo.innerHTML = `Método: Newton-Raphson<br><span style='color:green; font-size:18px;'>Raíz encontrada: x = <strong>${x.toFixed(8)}</strong></span><br>Iteraciones: ${iter}`;
-    }
+  if (iter >= maxIteraciones) {
+    resultadoMetodo.innerHTML = `Método: Newton-Raphson<br>No se alcanzó la tolerancia.<br>Última aproximación: x = ${x.toFixed(8)}<br>Iteraciones: ${iter}`;
+  } else {
+    resultadoMetodo.innerHTML = `Método: Newton-Raphson<br><span style='color:green; font-size:18px;'>Raíz encontrada: x = <strong>${x.toFixed(8)}</strong></span><br>Iteraciones: ${iter}`;
+  }
 }
 /* ========================================
    MÉTODO DE BISECCIÓN
 ======================================== */
 
 function resolverBiseccion() {
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        OBTENER DATOS
     ---------------------------------------- */
 
-    const campoFuncion =
-        document.getElementById(
-            "funcion"
-        );
+  const campoFuncion = document.getElementById("funcion");
+  const campoA = document.getElementById("valorA");
+  const campoB = document.getElementById("valorB");
+  const campoTolerancia = document.getElementById("tolerancia");
+  const campoIteraciones = document.getElementById("iteraciones");
+  const resultadoMetodo = document.getElementById("resultadoMetodo");
 
-    const campoA =
-        document.getElementById(
-            "valorA"
-        );
-
-    const campoB =
-        document.getElementById(
-            "valorB"
-        );
-
-    const campoTolerancia =
-        document.getElementById(
-            "tolerancia"
-        );
-
-    const campoIteraciones =
-        document.getElementById(
-            "iteraciones"
-        );
-
-    const resultadoMetodo =
-        document.getElementById(
-            "resultadoMetodo"
-        );
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        COMPROBAR QUE EXISTAN LOS CAMPOS
     ---------------------------------------- */
 
-    if (
-        !campoFuncion ||
-        !campoA ||
-        !campoB ||
-        !campoTolerancia ||
-        !campoIteraciones ||
-        !resultadoMetodo
-    ) {
+  if (
+    !campoFuncion ||
+    !campoA ||
+    !campoB ||
+    !campoTolerancia ||
+    !campoIteraciones ||
+    !resultadoMetodo
+  ) {
+    return;
+  }
 
-        return;
-    }
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        OBTENER VALORES
     ---------------------------------------- */
 
-    const expresionOriginal =
-        campoFuncion.value.trim();
+  const expresionOriginal = campoFuncion.value.trim();
+  const aInicial = Number(campoA.value);
+  const bInicial = Number(campoB.value);
+  const tolerancia = Number(campoTolerancia.value);
+  const maxIteraciones = Number(campoIteraciones.value);
 
-    const aInicial =
-        Number(campoA.value);
-
-    const bInicial =
-        Number(campoB.value);
-
-    const tolerancia =
-        Number(campoTolerancia.value);
-
-    const maxIteraciones =
-        Number(campoIteraciones.value);
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        VALIDAR FUNCIÓN
     ---------------------------------------- */
 
-    if (expresionOriginal === "") {
+  if (expresionOriginal === "") {
+    resultadoMetodo.textContent = "Escribe una función f(x).";
+    return;
+  }
 
-        resultadoMetodo.textContent =
-            "Escribe una función f(x).";
-
-        return;
-    }
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        VALIDAR a Y b
     ---------------------------------------- */
 
-    if (
-        !Number.isFinite(aInicial) ||
-        !Number.isFinite(bInicial)
-    ) {
+  if (!Number.isFinite(aInicial) || !Number.isFinite(bInicial)) {
+    resultadoMetodo.textContent = "Ingresa valores válidos para a y b.";
+    return;
+  }
 
-        resultadoMetodo.textContent =
-            "Ingresa valores válidos para a y b.";
-
-        return;
-    }
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        VALIDAR TOLERANCIA
     ---------------------------------------- */
 
-    if (
-        !Number.isFinite(tolerancia) ||
-        tolerancia <= 0
-    ) {
+  if (!Number.isFinite(tolerancia) || tolerancia <= 0) {
+    resultadoMetodo.textContent = "La tolerancia debe ser mayor que 0.";
+    return;
+  }
 
-        resultadoMetodo.textContent =
-            "La tolerancia debe ser mayor que 0.";
-
-        return;
-    }
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        VALIDAR ITERACIONES
     ---------------------------------------- */
 
-    if (
-        !Number.isInteger(maxIteraciones) ||
-        maxIteraciones <= 0
-    ) {
+  if (!Number.isInteger(maxIteraciones) || maxIteraciones <= 0) {
+    resultadoMetodo.textContent =
+      "Las iteraciones deben ser un número entero mayor que 0.";
+    return;
+  }
 
-        resultadoMetodo.textContent =
-            "Las iteraciones deben ser un número entero mayor que 0.";
-
-        return;
-    }
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        CONVERTIR FUNCIÓN
     ---------------------------------------- */
 
-    let expresion =
-        expresionOriginal;
+  let expresion = expresionOriginal;
+  expresion = expresion.replace(/\^/g, "**");
+  expresion = expresion.replace(/π/g, "Math.PI");
+  expresion = expresion.replace(/\be\b/g, "Math.E");
+  expresion = expresion.replace(/sqrt\(/g, "Math.sqrt(");
+  expresion = expresion.replace(/ln\(/g, "Math.log(");
+  expresion = expresion.replace(/log\(/g, "Math.log10(");
+  expresion = expresion.replace(/sin\(/g, "Math.sin(");
+  expresion = expresion.replace(/cos\(/g, "Math.cos(");
+  expresion = expresion.replace(/tan\(/g, "Math.tan(");
 
-
-    expresion =
-        expresion.replace(
-            /\^/g,
-            "**"
-        );
-
-
-    expresion =
-        expresion.replace(
-            /π/g,
-            "Math.PI"
-        );
-
-
-    expresion =
-        expresion.replace(
-            /\be\b/g,
-            "Math.E"
-        );
-
-
-    expresion =
-        expresion.replace(
-            /sqrt\(/g,
-            "Math.sqrt("
-        );
-
-
-    expresion =
-        expresion.replace(
-            /ln\(/g,
-            "Math.log("
-        );
-
-
-    expresion =
-        expresion.replace(
-            /log\(/g,
-            "Math.log10("
-        );
-
-
-    expresion =
-        expresion.replace(
-            /sin\(/g,
-            "Math.sin("
-        );
-
-
-    expresion =
-        expresion.replace(
-            /cos\(/g,
-            "Math.cos("
-        );
-
-
-    expresion =
-        expresion.replace(
-            /tan\(/g,
-            "Math.tan("
-        );
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        CREAR FUNCIÓN f(x)
     ---------------------------------------- */
 
-    let funcion;
+  let funcion;
 
-    try {
+  try {
+    funcion = new Function("x", "return " + expresion);
 
-        funcion =
-            new Function(
-                "x",
-                "return " + expresion
-            );
+    const prueba = funcion(aInicial);
 
-
-        const prueba =
-            funcion(aInicial);
-
-
-        if (
-            typeof prueba !== "number" ||
-            !Number.isFinite(prueba)
-        ) {
-
-            throw new Error();
-        }
-
-    } catch (error) {
-
-        resultadoMetodo.textContent =
-            "La función ingresada no es válida.";
-
-        return;
+    if (typeof prueba !== "number" || !Number.isFinite(prueba)) {
+      throw new Error();
     }
+  } catch (error) {
+    resultadoMetodo.textContent = "La función ingresada no es válida.";
+    return;
+  }
 
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        EVALUAR EXTREMOS
     ---------------------------------------- */
 
-    let a =
-        aInicial;
+  let a = aInicial;
+  let b = bInicial;
+  let fa;
+  let fb;
 
-    let b =
-        bInicial;
+  try {
+    fa = funcion(a);
+    fb = funcion(b);
+  } catch (error) {
+    resultadoMetodo.textContent = "No se pudo evaluar la función.";
+    return;
+  }
 
-    let fa;
-
-    let fb;
-
-
-    try {
-
-        fa =
-            funcion(a);
-
-        fb =
-            funcion(b);
-
-    } catch (error) {
-
-        resultadoMetodo.textContent =
-            "No se pudo evaluar la función.";
-
-        return;
-    }
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        COMPROBAR CAMBIO DE SIGNO
     ---------------------------------------- */
 
-    if (fa === 0) {
+  if (fa === 0) {
+    resultadoMetodo.innerHTML = "Raíz encontrada: x = " + a;
+    return;
+  }
 
-        resultadoMetodo.innerHTML =
-            "Raíz encontrada: x = " +
-            a;
+  if (fb === 0) {
+    resultadoMetodo.innerHTML = "Raíz encontrada: x = " + b;
+    return;
+  }
 
-        return;
-    }
+  if (fa * fb > 0) {
+    resultadoMetodo.innerHTML = "No existe cambio de signo entre a y b.";
+    return;
+  }
 
-
-    if (fb === 0) {
-
-        resultadoMetodo.innerHTML =
-            "Raíz encontrada: x = " +
-            b;
-
-        return;
-    }
-
-
-    if (fa * fb > 0) {
-
-        resultadoMetodo.innerHTML =
-            "No existe cambio de signo entre a y b.";
-
-        return;
-    }
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        BISECCIÓN
     ---------------------------------------- */
 
-    let m = 0;
+  let m = 0;
+  let fm = 0;
+  let error = 0;
+  let raizEncontrada = false;
+  let iteracionRealizada = 0;
 
-    let fm = 0;
-
-    let error = 0;
-
-    let raizEncontrada = false;
-
-    let iteracionRealizada = 0;
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        GUARDAR ITERACIONES
     ---------------------------------------- */
 
-    const iteraciones = [];
+  const iteraciones = [];
 
+  for (let i = 1; i <= maxIteraciones; i++) {
+    /* Punto medio */
+    m = (a + b) / 2;
 
-    for (
-        let i = 1;
-        i <= maxIteraciones;
-        i++
-    ) {
+    /* Evaluar función */
+    fm = funcion(m);
 
-        /* Punto medio */
+    /* Error aproximado */
+    error = Math.abs(b - a) / 2;
+    iteracionRealizada = i;
 
-        m =
-            (a + b) / 2;
-
-
-        /* Evaluar función */
-
-        fm =
-            funcion(m);
-
-
-        /* Error aproximado */
-
-        error =
-            Math.abs(b - a) / 2;
-
-
-        iteracionRealizada =
-            i;
-
-
-        /* ------------------------------------
+    /* ------------------------------------
            GUARDAR DATOS DE LA ITERACIÓN
         ------------------------------------ */
 
-        iteraciones.push({
+    iteraciones.push({
+      numero: i,
+      a: a,
+      b: b,
+      m: m,
+      fm: fm,
+      error: error,
+    });
 
-            numero: i,
-
-            a: a,
-
-            b: b,
-
-            m: m,
-
-            fm: fm,
-
-            error: error
-
-        });
-
-
-        /* ------------------------------------
+    /* ------------------------------------
            COMPROBAR CONVERGENCIA
         ------------------------------------ */
 
-        if (
-            Math.abs(fm) < tolerancia ||
-            error < tolerancia
-        ) {
+    if (Math.abs(fm) < tolerancia || error < tolerancia) {
+      raizEncontrada = true;
+      break;
+    }
 
-            raizEncontrada =
-                true;
-
-            break;
-        }
-
-
-        /* ------------------------------------
+    /* ------------------------------------
            ACTUALIZAR INTERVALO
         ------------------------------------ */
 
-        if (fa * fm < 0) {
-
-            b =
-                m;
-
-            fb =
-                fm;
-
-        } else {
-
-            a =
-                m;
-
-            fa =
-                fm;
-        }
+    if (fa * fm < 0) {
+      b = m;
+      fb = fm;
+    } else {
+      a = m;
+      fa = fm;
     }
+  }
 
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        MOSTRAR TABLA DE ITERACIONES
     ---------------------------------------- */
 
-    const tablaBiseccion =
-        document.getElementById(
-            "tablaBiseccion"
-        );
+  const tablaBiseccion = document.getElementById("tablaBiseccion");
 
-
-    if (tablaBiseccion) {
-
-        let html = `
-
+  if (tablaBiseccion) {
+    let html = `
             <h3>Tabla de Bisección</h3>
-
             <table>
-
                 <thead>
-
                     <tr>
-
                         <th>Iteración</th>
-
                         <th>a</th>
-
                         <th>b</th>
-
                         <th>m</th>
-
                         <th>f(m)</th>
-
                         <th>Error</th>
-
                     </tr>
-
                 </thead>
-
                 <tbody>
-
         `;
 
-
-        iteraciones.forEach(
-            function(iteracion) {
-
-                html += `
-
+    iteraciones.forEach(function (iteracion) {
+      html += `
                     <tr>
-
                         <td>
                             ${iteracion.numero}
                         </td>
-
                         <td>
                             ${iteracion.a.toFixed(6)}
                         </td>
-
                         <td>
                             ${iteracion.b.toFixed(6)}
                         </td>
-
                         <td>
                             ${iteracion.m.toFixed(6)}
                         </td>
-
                         <td>
                             ${iteracion.fm.toFixed(6)}
                         </td>
-
                         <td>
                             ${iteracion.error.toFixed(6)}
                         </td>
-
                     </tr>
-
                 `;
-            }
-        );
+    });
 
-
-        html += `
-
+    html += `
                 </tbody>
-
             </table>
-
         `;
+    tablaBiseccion.innerHTML = html;
+  }
 
-
-        tablaBiseccion.innerHTML =
-            html;
-    }
-
-
-    /* ----------------------------------------
+  /* ----------------------------------------
        MOSTRAR RESULTADO
     ---------------------------------------- */
 
-    if (raizEncontrada) {
-
-        resultadoMetodo.innerHTML =
-
-            "Método: Bisección<br>" +
-
-            "Raíz aproximada: x = " +
-
-            m.toFixed(10) +
-
-            "<br>" +
-
-            "f(x) = " +
-
-            fm.toFixed(10) +
-
-            "<br>" +
-
-            "Iteraciones: " +
-
-            iteracionRealizada;
-
-    } else {
-
-        resultadoMetodo.innerHTML =
-
-            "Método: Bisección<br>" +
-
-            "No se alcanzó la tolerancia solicitada.<br>" +
-
-            "Última aproximación: x = " +
-
-            m.toFixed(10) +
-
-            "<br>" +
-
-            "Iteraciones realizadas: " +
-
-            iteracionRealizada;
-    }
+  if (raizEncontrada) {
+    resultadoMetodo.innerHTML =
+      "Método: Bisección<br>" +
+      "Raíz aproximada: x = " +
+      m.toFixed(10) +
+      "<br>" +
+      "f(x) = " +
+      fm.toFixed(10) +
+      "<br>" +
+      "Iteraciones: " +
+      iteracionRealizada;
+  } else {
+    resultadoMetodo.innerHTML =
+      "Método: Bisección<br>" +
+      "No se alcanzó la tolerancia solicitada.<br>" +
+      "Última aproximación: x = " +
+      m.toFixed(10) +
+      "<br>" +
+      "Iteraciones realizadas: " +
+      iteracionRealizada;
+  }
 }

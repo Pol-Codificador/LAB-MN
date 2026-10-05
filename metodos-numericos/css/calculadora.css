@@ -434,9 +434,20 @@
     box-sizing: border-box;
 }
 
+#modalGrafica {
+    display: none;
+    pointer-events: auto;
+}
+
 #modalGrafica #graficaFuncion {
     width: 100% !important;
     height: 100% !important;
+    touch-action: none;
+    cursor: grab;
+}
+
+#modalGrafica #graficaFuncion:active {
+    cursor: grabbing;
 }
 
 /* ========================================
@@ -514,7 +525,8 @@
 }
 
 .tabla-biseccion table {
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
     border-collapse: collapse;
     background-color: white;
 }
@@ -526,6 +538,7 @@
     text-align: center;
     font-family: "Courier New", monospace;
     font-size: 13px;
+    white-space: nowrap;
 }
 
 .tabla-biseccion th {
