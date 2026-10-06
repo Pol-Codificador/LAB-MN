@@ -1,7 +1,3 @@
-/* ========================================
-   CALCULADORA
-======================================== */
-
 let expresionActual = "";
 
 /* ========================================
@@ -72,7 +68,7 @@ function calcular() {
     expresion = expresion.replace(/ln\(/g, "Math.log(");
     // LOGARITMO BASE 10
     expresion = expresion.replace(/log\(/g, "Math.log10(");
-    // SENO 
+    // SENO
     expresion = expresion.replace(/sin\(/g, "Math.sin(");
     // COSENO
     expresion = expresion.replace(/cos\(/g, "Math.cos(");
@@ -177,163 +173,75 @@ function evaluarFuncion() {
 }
 
 /* ========================================
-   GRÁFICA DE f(x)
+   GRAFICACIÓN DE LA FUNCIÓN
 ======================================== */
+let miGraficadorAPI = null;
 
-let graficaFuncion = null;
+// Configuración del Applet de GeoGebra
+const params = {
+  appName: "graphing", // Usa la vista de Graficadora 2D
+  width: 800,
+  height: 500,
+  showToolBar: false,
+  showMenuBar: false,
+  showAlgebraInput: false, // Opcional: oculta/muestra la barra de entrada de GeoGebra
+  allowStyleBar: true,
+  appletOnLoad: function (api) {
+    console.log("GeoGebra cargado correctamente.");
+    miGraficadorAPI = api;
+  },
+};
 
+// Inicializar e inyectar el applet al cargar la ventana
+const applet = new GGBApplet(params, true);
+
+window.addEventListener("load", function () {
+  applet.inject("ggb-element");
+});
+
+/**
+ * Función principal para graficar la función ingresada por el usuario
+ * @param {string} expresionUsuario Expresión opcional, o la toma del input de tu formulario
+ */
 function graficarFuncion() {
-  const campoFuncion = document.getElementById("funcion");
+  // 1. Obtener la expresión
+  const input = document.getElementById("funcion");
+  const expresion = input ? input.value : "";
 
-  if (!campoFuncion) return;
-
-  const expresion = campoFuncion.value.trim();
-
-  if (expresion === "") {
-    alert("Escribe una función primero.");
+  if (!expresion.trim()) {
+    alert("Por favor ingresa una función matemática válida.");
     return;
   }
 
-  /* ================================
-       COMPILAR FUNCIÓN CON MATH.JS
-    ================================= */
-  let funcionCompilada;
-  try {
-    // math.compile() parsea la expresión matemática de forma segura y estándar
-    const nodo = math.parse(expresion);
-
-    funcionCompilada = nodo.compile();
-
-    // Prueba de evaluación inicial
-    funcionCompilada.evaluate({ x: 1 });
-  } catch (error) {
-    alert("La función ingresada no es válida. Revisa la sintaxis.");
+  // 2. Verificar que la API de GeoGebra esté lista
+  if (!miGraficadorAPI) {
+    alert(
+      "GeoGebra aún se está cargando. Por favor, espera unos segundos e intenta de nuevo.",
+    );
     return;
   }
 
-  /* ================================
-       CREAR PUNTOS
-    ================================= */
-  const valoresX = [];
-  const valoresY = [];
-
-  for (let x = -50; x <= 50; x += 0.1) {
-    let y;
-    try {
-      // Evalúa la función para cada x
-      y = funcionCompilada.evaluate({ x: x });
-    } catch (error) {
-      y = null;
-    }
-
-    const xLimpia = Number(x.toFixed(2));
-    valoresX.push(xLimpia);
-
-    if (typeof y === "number" && Number.isFinite(y) && Math.abs(y) < 1000) {
-      const yLimpia = Number(y.toFixed(2));
-      valoresY.push(yLimpia);
-    } else {
-      valoresY.push(null);
-    }
-  }
-
-  // 1. PRIMERO: MOSTRAR EL MODAL Y ASIGNAR TÍTULO
+  // 3. Mostrar el modal emergente
   const modal = document.getElementById("modalGrafica");
-  const canvas = document.getElementById("graficaFuncion");
   const nombreFuncion = document.getElementById("nombreFuncionGrafica");
 
-  if (!modal || !canvas) return;
-  
-  modal.style.display = "flex";
+  if (modal) {
+    modal.style.display = "flex";
+  }
 
   if (nombreFuncion) {
     nombreFuncion.textContent = "f(x) = " + expresion;
   }
 
-  const ctx = canvas.getContext("2d");
+  // 4. Limpiar comandos o funciones previas en el plano
+  miGraficadorAPI.newConstruction();
 
-  // 3. DESTRUIIR GRÁFICA ANTERIOR
-  if (graficaFuncion) {
-    graficaFuncion.destroy();
-    graficaFuncion = null;
-  }
+  // 5. Evaluar la función en GeoGebra
+  const comandoGGB = "f(x) = " + expresion;
+  miGraficadorAPI.evalCommand(comandoGGB);
 
-  // 4. CREAR PUNTOS DE FORMA DIRECTA (Estructura x, y recomendada por Chart.js)
-  const puntos = [];
-  for (let i = 0; i < valoresX.length; i++) {
-    if (valoresY[i] !== null) {
-      puntos.push({ x: valoresX[i], y: valoresY[i] });
-    }
-  }
-
-  // 5. CREAR LA GRÁFICA
-
-  const etiquetasX = valoresX.map((x) => x.toString());
-
-  graficaFuncion = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: etiquetasX,
-      datasets: [
-        {
-          label: "f(x) = " + expresion,
-          data: valoresY, // Pasamos el array de objetos {x, y}
-          borderColor: "#2563eb", // Azul visible
-          backgroundColor: "rgba(37, 99, 235, 0.1)",
-          borderWidth: 2,
-          pointRadius: 0, // Muestra una línea continua suave
-          tension: 0.1,
-          spanGaps: true,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false,
-      scales: {
-        x: {
-          type: "linear", // Fuerza escala matemática lineal
-          position: "center",
-          title: {
-            display: true,
-            text: "x",
-          },
-        },
-        y: {
-          position: "center",
-          title: {
-            display: true,
-            text: "f(x)",
-          },
-        },
-      },
-      plugins: {
-        legend: { display: true },
-        zoom: {
-          pan: {
-            enabled: true,
-            mode: "xy",
-            modifierKey: null,
-          },
-          zoom: {
-            wheel: {
-              enabled: true,
-              speed: 0.05,
-            },
-            pinch: {
-              enabled: true, // Zoom táctil/touchpad
-            },
-            mode: "xy",
-          },
-        },
-      },
-    },
-  });
-
-  canvas.onwheel = function(e) {
-    e.preventDefault();
-  };
+  // 6. Centrar la vista en un rango óptimo de ejes
+  miGraficadorAPI.setCoordSystem(-10, 10, -10, 10);
 }
 
 /* ========================================
@@ -351,31 +259,31 @@ function cerrarGrafica() {
    SELECCIÓN DEL MÉTODO NUMÉRICO
 ======================================== */
 
-const selectorMetodo = document.getElementById("metodo");
-const valoresBiseccion = document.getElementById("valoresBiseccion");
-const valoresNewton = document.getElementById("valoresNewton");
+document.addEventListener("DOMContentLoaded", function () {
+  const selectorMetodo = document.getElementById("metodo");
+  const valoresBiseccion = document.getElementById("valoresBiseccion");
+  const valoresNewton = document.getElementById("valoresNewton");
 
-if (selectorMetodo) {
-  selectorMetodo.addEventListener("change", function () {
-    if (selectorMetodo.value === "biseccion") {
-      if (valoresBiseccion) {
-        valoresBiseccion.style.display = "block";
+  if (selectorMetodo) {
+    selectorMetodo.addEventListener("change", function () {
+      if (selectorMetodo.value === "biseccion") {
+        if (valoresBiseccion) {
+          valoresBiseccion.style.display = "block";
+        }
+        if (valoresNewton) {
+          valoresNewton.style.display = "none";
+        }
+      } else if (selectorMetodo.value === "newton") {
+        if (valoresBiseccion) {
+          valoresBiseccion.style.display = "none";
+        }
+        if (valoresNewton) {
+          valoresNewton.style.display = "block";
+        }
       }
-
-      if (valoresNewton) {
-        valoresNewton.style.display = "none";
-      }
-    } else if (selectorMetodo.value === "newton") {
-      if (valoresBiseccion) {
-        valoresBiseccion.style.display = "none";
-      }
-
-      if (valoresNewton) {
-        valoresNewton.style.display = "block";
-      }
-    }
-  });
-}
+    });
+  }
+});
 
 /* ========================================
    EJECUTAR MÉTODO SELECCIONADO
@@ -388,22 +296,22 @@ function resolverMetodo() {
   if (tablaContenedor) {
     tablaContenedor.innerHTML = "";
   }
-  
+
   const metodo = document.getElementById("metodo").value;
 
-  if (metodo === "biseccion") {
-    resolverBiseccion();
-  }
-
-  if (metodo === "newton") {
-    resolverNewton();
+  switch (metodo) {
+    case "biseccion":
+      resolverBiseccion();
+      break;
+    case "newton":
+      resolverNewton();
+      break;
   }
 }
 
 /* ========================================
-   MÉTODO DE NEWTON-RAPHSON (Aporte Rol P - Paul)
+   MÉTODO DE NEWTON-RAPHSON
 ======================================== */
-
 function resolverNewton() {
   /* ----------------------------------------
        OBTENER DATOS DE LA INTERFAZ
@@ -536,15 +444,12 @@ function resolverNewton() {
     resultadoMetodo.innerHTML = `Método: Newton-Raphson<br><span style='color:green; font-size:18px;'>Raíz encontrada: x = <strong>${x.toFixed(8)}</strong></span><br>Iteraciones: ${iter}`;
   }
 }
+
 /* ========================================
    MÉTODO DE BISECCIÓN
 ======================================== */
-
 function resolverBiseccion() {
-  /* ----------------------------------------
-       OBTENER DATOS
-    ---------------------------------------- */
-
+  // OBTENER DATOS
   const campoFuncion = document.getElementById("funcion");
   const campoA = document.getElementById("valorA");
   const campoB = document.getElementById("valorB");
@@ -552,10 +457,7 @@ function resolverBiseccion() {
   const campoIteraciones = document.getElementById("iteraciones");
   const resultadoMetodo = document.getElementById("resultadoMetodo");
 
-  /* ----------------------------------------
-       COMPROBAR QUE EXISTAN LOS CAMPOS
-    ---------------------------------------- */
-
+  // COMPROBAR QUE EXISTEN LOS CAMPOS
   if (
     !campoFuncion ||
     !campoA ||
@@ -567,57 +469,39 @@ function resolverBiseccion() {
     return;
   }
 
-  /* ----------------------------------------
-       OBTENER VALORES
-    ---------------------------------------- */
-
+  // OBTENER VALORES
   const expresionOriginal = campoFuncion.value.trim();
   const aInicial = Number(campoA.value);
   const bInicial = Number(campoB.value);
   const tolerancia = Number(campoTolerancia.value);
   const maxIteraciones = Number(campoIteraciones.value);
 
-  /* ----------------------------------------
-       VALIDAR FUNCIÓN
-    ---------------------------------------- */
-
+  // VALIDAR FUNCION
   if (expresionOriginal === "") {
     resultadoMetodo.textContent = "Escribe una función f(x).";
     return;
   }
 
-  /* ----------------------------------------
-       VALIDAR a Y b
-    ---------------------------------------- */
-
+  // VALIDAR A Y B
   if (!Number.isFinite(aInicial) || !Number.isFinite(bInicial)) {
     resultadoMetodo.textContent = "Ingresa valores válidos para a y b.";
     return;
   }
 
-  /* ----------------------------------------
-       VALIDAR TOLERANCIA
-    ---------------------------------------- */
-
+  //VALIDAR TOLERANCIA
   if (!Number.isFinite(tolerancia) || tolerancia <= 0) {
     resultadoMetodo.textContent = "La tolerancia debe ser mayor que 0.";
     return;
   }
 
-  /* ----------------------------------------
-       VALIDAR ITERACIONES
-    ---------------------------------------- */
-
+  // VALIDAR ITERACIONES
   if (!Number.isInteger(maxIteraciones) || maxIteraciones <= 0) {
     resultadoMetodo.textContent =
       "Las iteraciones deben ser un número entero mayor que 0.";
     return;
   }
 
-  /* ----------------------------------------
-       CONVERTIR FUNCIÓN
-    ---------------------------------------- */
-
+  // CONVERTIR FUNCIÓN
   let expresion = expresionOriginal;
   expresion = expresion.replace(/\^/g, "**");
   expresion = expresion.replace(/π/g, "Math.PI");
@@ -629,15 +513,11 @@ function resolverBiseccion() {
   expresion = expresion.replace(/cos\(/g, "Math.cos(");
   expresion = expresion.replace(/tan\(/g, "Math.tan(");
 
-  /* ----------------------------------------
-       CREAR FUNCIÓN f(x)
-    ---------------------------------------- */
-
+  // CREAR FUNCIÓN
   let funcion;
 
   try {
     funcion = new Function("x", "return " + expresion);
-
     const prueba = funcion(aInicial);
 
     if (typeof prueba !== "number" || !Number.isFinite(prueba)) {
@@ -648,10 +528,7 @@ function resolverBiseccion() {
     return;
   }
 
-  /* ----------------------------------------
-       EVALUAR EXTREMOS
-    ---------------------------------------- */
-
+  // EVALUAR EXTREMOS
   let a = aInicial;
   let b = bInicial;
   let fa;
@@ -665,10 +542,7 @@ function resolverBiseccion() {
     return;
   }
 
-  /* ----------------------------------------
-       COMPROBAR CAMBIO DE SIGNO
-    ---------------------------------------- */
-
+  // COMPROBAR EL CAMBIO DE SIGNO
   if (fa === 0) {
     resultadoMetodo.innerHTML = "Raíz encontrada: x = " + a;
     return;
@@ -684,20 +558,14 @@ function resolverBiseccion() {
     return;
   }
 
-  /* ----------------------------------------
-       BISECCIÓN
-    ---------------------------------------- */
-
+  // BISECCIÓN
   let m = 0;
   let fm = 0;
   let error = 0;
   let raizEncontrada = false;
   let iteracionRealizada = 0;
 
-  /* ----------------------------------------
-       GUARDAR ITERACIONES
-    ---------------------------------------- */
-
+  // GUARDAR LAS ITERACIONES
   const iteraciones = [];
 
   for (let i = 1; i <= maxIteraciones; i++) {
@@ -711,10 +579,7 @@ function resolverBiseccion() {
     error = Math.abs(b - a) / 2;
     iteracionRealizada = i;
 
-    /* ------------------------------------
-           GUARDAR DATOS DE LA ITERACIÓN
-        ------------------------------------ */
-
+    // GUARDAR DATOS DE LA ITERACIÓN
     iteraciones.push({
       numero: i,
       a: a,
@@ -724,19 +589,13 @@ function resolverBiseccion() {
       error: error,
     });
 
-    /* ------------------------------------
-           COMPROBAR CONVERGENCIA
-        ------------------------------------ */
-
+    // COMPROBAR CONVERGENCIA
     if (Math.abs(fm) < tolerancia || error < tolerancia) {
       raizEncontrada = true;
       break;
     }
 
-    /* ------------------------------------
-           ACTUALIZAR INTERVALO
-        ------------------------------------ */
-
+    // ACTUALIZAR INTERVALO
     if (fa * fm < 0) {
       b = m;
       fb = fm;
@@ -746,10 +605,7 @@ function resolverBiseccion() {
     }
   }
 
-  /* ----------------------------------------
-       MOSTRAR TABLA DE ITERACIONES
-    ---------------------------------------- */
-
+  // MOSTRAR LA TABLA
   const tablaBiseccion = document.getElementById("tablaBiseccion");
 
   if (tablaBiseccion) {
@@ -801,10 +657,7 @@ function resolverBiseccion() {
     tablaBiseccion.innerHTML = html;
   }
 
-  /* ----------------------------------------
-       MOSTRAR RESULTADO
-    ---------------------------------------- */
-
+  // MOSTRAR EL RESULTADO
   if (raizEncontrada) {
     resultadoMetodo.innerHTML =
       "Método: Bisección<br>" +
