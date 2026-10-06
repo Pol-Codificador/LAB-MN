@@ -1,0 +1,192 @@
+.contenedor-teoria {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.encabezado-teoria {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.encabezado-teoria h1 {
+    font-family: "Courier New", monospace;
+    color: #173b57;
+    margin-bottom: 10px;
+}
+
+.encabezado-teoria p {
+    color: #555;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.tarjeta-teoria {
+    background-color: #ffffff;
+    border: 2px solid #173b57;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .10);
+}
+
+.tarjeta-teoria h2 {
+    font-family: "Courier New", monospace;
+    color: #173b57;
+    margin-top: 0;
+}
+
+.tarjeta-teoria p {
+    line-height: 1.8;
+    color: #444;
+    font-size: 17px;
+}
+
+.boton-repositorio {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 22px;
+    background-color: #173b57;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: "Courier New", monospace;
+    font-weight: bold;
+}
+
+.boton-repositorio:hover {
+    background-color: #2c7a9b;
+}
+
+.boton-regresar {
+    display: inline-block;
+    margin-bottom: 25px;
+    color: #173b57;
+    text-decoration: none;
+    font-family: "Courier New", monospace;
+    font-weight: bold;
+}
+
+.boton-regresar:hover {
+    color: #2c7a9b;
+}
+
+.formula {
+    background-color: #eef2f5;
+    border-left: 4px solid #2c7a9b;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    font-family: "Courier New", monospace;
+    font-size: 19px;
+    font-weight: bold;
+    color: #173b57;
+    border-radius: 5px;
+}
+
+.tarjeta-teoria h3 {
+    font-family: "Courier New", monospace;
+    color: #7b4fa3;
+    margin-top: 28px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.material-completo {
+    text-align: center;
+    border-style: dashed;
+}
+
+.material-completo p {
+    max-width: 750px;
+    margin: 0 auto 15px;
+}
+
+.videos-guia {
+    margin-top: 30px;
+}
+
+.lista-videos {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.video-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 18px;
+    background-color: #f7f9fa;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.icono-video {
+    width: 55px;
+    height: 55px;
+    min-width: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #173b57;
+    color: white;
+    border-radius: 50%;
+    font-size: 22px;
+}
+
+.info-video {
+    flex: 1;
+}
+
+.info-video h3 {
+    margin: 0 0 6px;
+    font-family: "Courier New", monospace;
+    color: #173b57;
+}
+
+.info-video p {
+    margin: 5px 0 12px;
+}
+
+.boton-video {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #7b4fa3;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.boton-video:hover {
+    background-color: #5f397d;
+}
+
+
+.grupo-videos {
+    margin-top: 30px;
+}
+
+.grupo-videos:first-of-type {
+    margin-top: 20px;
+}
+
+.grupo-videos h3 {
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #aaa;
+}
+
+.info-video h4 {
+    margin: 0 0 12px;
+    font-family: "Courier New", monospace;
+    color: #173b57;
+    font-size: 15px;
+}
+
+.info-video h4::before {
+    content: "🎬 ";
+}

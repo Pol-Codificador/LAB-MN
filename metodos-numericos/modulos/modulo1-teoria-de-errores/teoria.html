@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teoría - Módulo 1</title>
+
+    <link rel="stylesheet" href="../../css/estilos.css">
+    <link rel="stylesheet" href="../../css/teoria.css">
+    <!-- MathJax para representar fórmulas matemáticas -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+</head>
+
+<body>
+    
+   <main class="contenedor-teoria">
+
+    <a href="errores.html" class="boton-regresar">
+        ← REGRESAR AL MÓDULO
+    </a>
+
+    <header class="encabezado-teoria">
+
+        <h1>📚 TEORÍA — MÓDULO 1</h1>
+
+        <p>
+            Teoría De Errores
+        </p>
+
+        <p>
+            En esta sección se presentan los conceptos fundamentales
+            necesarios para comprender la teoría de errores.
+        </p>
+
+    </header>
+
+  <!-- ========================================
+         1. INTRODUCCIÓN
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📖 1. Introducción</h2>
+
+        <p>
+            En ingeniería, muchas cantidades no pueden calcularse de manera
+            exacta o, aunque exista una expresión exacta, su evaluación
+            mediante una computadora produce una representación aproximada.
+            Por ello, el análisis numérico no solo busca obtener una solución,
+            sino también determinar <strong>qué tan cercana está esa solución
+            al valor verdadero</strong>.
+        </p>
+
+        <div class="formula">
+            Una aproximación numérica es útil cuando conocemos o podemos
+            controlar el error asociado a ella.
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         2. IDEA INTUITIVA DE UNA APROXIMACIÓN
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📐 2. Idea intuitiva de una aproximación</h2>
+
+        <p>
+            Una <strong>aproximación</strong> es un valor que representa a
+            otro valor considerado como referencia, pero que no necesariamente
+            coincide exactamente con él.
+        </p>
+
+        <h3>Ejemplo 1: número π</h3>
+
+        <p>
+            El número π posee infinitas cifras decimales:
+        </p>
+
+        <div class="formula">
+            $$\pi = 3.14159265358979\ldots$$
+        </div>
+
+        <p>
+            Si utilizamos:
+        </p>
+
+        <div class="formula">
+            $$\pi \approx 3.14$$
+        </div>
+
+        <p>
+            estamos reemplazando el valor de π por un número más sencillo
+            de utilizar. Esta sustitución introduce un error.
+        </p>
+
+        <h3>Ejemplo 2: raíz cuadrada</h3>
+
+        <div class="formula">
+            $$\sqrt{2}=1.41421356237\ldots$$
+        </div>
+
+        <p>
+            Si una calculadora o programa trabaja con:
+        </p>
+
+        <div class="formula">
+            $$\sqrt{2}\approx1.4142$$
+        </div>
+
+        <p>
+            el resultado es aproximado.
+        </p>
+
+        <h3>¿Por qué aproximamos?</h3>
+
+        <ul>
+            <li>La solución matemática puede no tener una forma cerrada sencilla.</li>
+            <li>Los datos de entrada pueden ser experimentales y tener incertidumbre.</li>
+            <li>Una computadora utiliza una cantidad finita de dígitos.</li>
+            <li>Un procedimiento numérico puede detenerse antes de llegar al valor exacto.</li>
+            <li>Una función puede reemplazarse por una expresión más sencilla.</li>
+        </ul>
+
+        <p>
+            Por tanto, el objetivo no es eliminar toda aproximación, sino
+            <strong>cuantificar y controlar el error</strong>.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         3. VALOR VERDADERO Y APROXIMADO
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>🎯 3. Valor verdadero y valor aproximado</h2>
+
+        <p>
+            Para estudiar el error se distinguen dos valores:
+        </p>
+
+        <ul>
+            <li>
+                <strong>Valor verdadero:</strong> valor de referencia de la cantidad.
+            </li>
+
+            <li>
+                <strong>Valor aproximado:</strong> valor utilizado en el cálculo.
+            </li>
+        </ul>
+
+        <div class="formula">
+            $$x_t = \text{valor verdadero}$$
+            $$x_a = \text{valor aproximado}$$
+        </div>
+
+        <p>
+            En muchas situaciones prácticas, el valor verdadero no se conoce
+            exactamente. En esos casos puede utilizarse un valor suficientemente
+            preciso como referencia.
+        </p>
+
+        <h3>Ejemplo</h3>
+
+        <p>
+            Supongamos:
+        </p>
+
+        <div class="formula">
+            $$x_t=25$$
+        </div>
+
+        <p>
+            y que un procedimiento numérico produce:
+        </p>
+
+        <div class="formula">
+            $$x_a=24.8$$
+        </div>
+
+        <p>
+            La diferencia es:
+        </p>
+
+        <div class="formula">
+            $$25-24.8=0.2$$
+        </div>
+
+        <p>
+            Esta diferencia constituye el error absoluto.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         4. EXACTITUD Y PRECISIÓN
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>🎯 4. Exactitud y precisión</h2>
+
+        <h3>4.1 Exactitud</h3>
+
+        <p>
+            La <strong>exactitud</strong> indica qué tan cercano está un
+            resultado al valor verdadero o de referencia.
+        </p>
+
+        <p>
+            Por ejemplo, si:
+        </p>
+
+        <div class="formula">
+            $$x_t=10$$
+        </div>
+
+        <p>
+            los resultados:
+        </p>
+
+        <div class="formula">
+            $$9.99,\quad 10.01,\quad 10.02$$
+        </div>
+
+        <p>
+            son bastante exactos porque están próximos a 10.
+        </p>
+
+        <h3>4.2 Precisión</h3>
+
+        <p>
+            La <strong>precisión</strong> describe qué tan cercanos están
+            entre sí varios resultados obtenidos repetidamente.
+        </p>
+
+        <p>
+            Supongamos cuatro mediciones:
+        </p>
+
+        <div class="formula">
+            $$8.21,\quad 8.22,\quad 8.21,\quad 8.22$$
+        </div>
+
+        <p>
+            Los resultados están muy agrupados, por lo que existe alta
+            precisión. Sin embargo, si el valor verdadero fuera 10,
+            las mediciones serían poco exactas.
+        </p>
+
+        <h3>Diferencia fundamental</h3>
+
+        <p>Exactitud → Cercanía al valor verdadero.</p>
+        <p>Precisión → Cercanía entre resultados repetidos.</p>
+
+        <h3>Combinaciones posibles</h3>
+
+        <ol>
+            <li>Alta exactitud y alta precisión.</li>
+            <li>Alta exactitud y baja precisión.</li>
+            <li>Baja exactitud y alta precisión.</li>
+            <li>Baja exactitud y baja precisión.</li>
+        </ol>
+
+    </section>
+
+
+    <!-- ========================================
+         5. ERROR ABSOLUTO
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📏 5. Error absoluto</h2>
+
+        <p>
+            El <strong>error absoluto</strong> mide la diferencia entre
+            el valor verdadero y el valor aproximado.
+        </p>
+
+        <div class="formula">
+            $$E_t=x_t-x_a$$
+        </div>
+
+        <p>
+            En muchos contextos se utiliza su magnitud:
+        </p>
+
+        <div class="formula">
+            $$|E_t|=|x_t-x_a|$$
+        </div>
+
+        <h3>Ejemplo</h3>
+
+        <p>
+            Sea:
+        </p>
+
+        <div class="formula">
+            $$x_t=12.5$$
+            $$x_a=12.1$$
+        </div>
+
+        <p>
+            Entonces:
+        </p>
+
+        <div class="formula">
+            $$E_t=12.5-12.1=0.4$$
+        </div>
+
+        <p>
+            Por tanto:
+        </p>
+
+        <div class="formula">
+            $$|E_t|=0.4$$
+        </div>
+
+        <p>
+            La aproximación presenta un error absoluto de
+            <strong>0.4 unidades</strong>.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         6. ERROR RELATIVO
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📊 6. Error relativo</h2>
+
+        <p>
+            El error absoluto no siempre permite comparar adecuadamente
+            errores de magnitudes diferentes.
+        </p>
+
+        <p>
+            Por ejemplo, un error de 1 metro puede ser muy grande si estamos
+            midiendo 2 metros, pero pequeño si estamos midiendo 1000 metros.
+        </p>
+
+        <div class="formula">
+            $$\varepsilon_t =
+            \frac{x_t-x_a}{x_t}$$
+        </div>
+
+        <p>
+            En magnitud:
+        </p>
+
+        <div class="formula">
+            $$|\varepsilon_t|=
+            \left|\frac{x_t-x_a}{x_t}\right|$$
+        </div>
+
+        <h3>Error relativo porcentual</h3>
+
+        <div class="formula">
+            $$\varepsilon_t(\%)=
+            \left|\frac{x_t-x_a}{x_t}\right|\times100$$
+        </div>
+
+        <h3>Ejemplo</h3>
+
+        <p>
+            Supongamos:
+        </p>
+
+        <div class="formula">
+            $$x_t=200$$
+            $$x_a=198$$
+        </div>
+
+        <p>
+            Error absoluto:
+        </p>
+
+        <div class="formula">
+            $$|E_t|=|200-198|=2$$
+        </div>
+
+        <p>
+            Error relativo:
+        </p>
+
+        <div class="formula">
+            $$|\varepsilon_t|=\frac{2}{200}=0.01$$
+        </div>
+
+        <p>
+            En porcentaje:
+        </p>
+
+        <div class="formula">
+            $$|\varepsilon_t|=1\%$$
+        </div>
+
+        <p>
+            El resultado tiene un error absoluto de
+            <strong>2 unidades</strong>, equivalente a un error relativo
+            del <strong>1 %</strong>.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         7. ERROR PORCENTUAL
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📈 7. Error porcentual</h2>
+
+        <p>
+            El error relativo puede expresarse directamente como porcentaje:
+        </p>
+
+        <div class="formula">
+            $$E_{\%}=
+            \left|\frac{x_t-x_a}{x_t}\right|\times100$$
+        </div>
+
+        <h3>Ejemplo</h3>
+
+        <p>
+            Se sabe que:
+        </p>
+
+        <div class="formula">
+            $$x_t=50$$
+            $$x_a=49.2$$
+        </div>
+
+        <p>
+            Entonces:
+        </p>
+
+        <div class="formula">
+            $$|E_t|=|50-49.2|=0.8$$
+        </div>
+
+        <div class="formula">
+            $$E_{\%}=\frac{0.8}{50}(100)=1.6\%$$
+        </div>
+
+        <p>
+            Por tanto, el error porcentual es
+            <strong>1.6 %</strong>.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         8. ERROR VERDADERO Y APROXIMADO
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>🔄 8. Error verdadero y error aproximado</h2>
+
+        <p>
+            En problemas reales puede ocurrir que el valor verdadero sea
+            desconocido. En ese caso no podemos calcular directamente
+            el error relativo verdadero.
+        </p>
+
+        <p>
+            Una alternativa consiste en comparar dos aproximaciones
+            consecutivas:
+            $x_a^{(n)}$ y $x_a^{(n-1)}$.
+        </p>
+
+        <div class="formula">
+            $$\varepsilon_a=
+            \left|
+            \frac{x_a^{(n)}-x_a^{(n-1)}}
+            {x_a^{(n)}}
+            \right|\times100$$
+        </div>
+
+        <p>
+            Este criterio es especialmente importante en métodos iterativos.
+        </p>
+
+        <h3>Ejemplo</h3>
+
+        <div class="formula">
+            $$x_a^{(n-1)}=2.51$$
+            $$x_a^{(n)}=2.50$$
+        </div>
+
+        <div class="formula">
+            $$\varepsilon_a=
+            \left|
+            \frac{2.50-2.51}{2.50}
+            \right|\times100
+            =0.4\%$$
+        </div>
+
+        <p>
+            Las dos últimas aproximaciones difieren relativamente en un
+            <strong>0.4 %</strong>.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         9. CIFRAS SIGNIFICATIVAS
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>🔢 9. Cifras significativas</h2>
+
+        <p>
+            Las <strong>cifras significativas</strong> representan los
+            dígitos que contienen información relevante sobre la precisión
+            de un número.
+        </p>
+
+        <div class="formula">
+            $$3.142$$
+        </div>
+
+        <p>
+            tiene cuatro cifras significativas.
+        </p>
+
+        <div class="formula">
+            $$0.003142$$
+        </div>
+
+        <p>
+            también tiene cuatro cifras significativas porque los ceros
+            iniciales solamente indican la posición decimal.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Cifras significativas</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>12.5</td>
+                    <td>3</td>
+                </tr>
+
+                <tr>
+                    <td>0.125</td>
+                    <td>3</td>
+                </tr>
+
+                <tr>
+                    <td>0.00125</td>
+                    <td>3</td>
+                </tr>
+
+                <tr>
+                    <td>1250.</td>
+                    <td>4</td>
+                </tr>
+
+                <tr>
+                    <td>1.250</td>
+                    <td>4</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+
+    <!-- ========================================
+         10. ERRORES DE REDONDEO
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>🔄 10. Errores de redondeo</h2>
+
+        <p>
+            Las computadoras representan los números utilizando una cantidad
+            finita de dígitos. Por esta razón, muchos números reales no
+            pueden representarse exactamente.
+        </p>
+
+        <p>
+            Por ejemplo, si solo se permiten cuatro cifras significativas:
+        </p>
+
+        <div class="formula">
+            $$\pi=3.14159265\ldots$$
+        </div>
+
+        <p>
+            puede almacenarse como:
+        </p>
+
+        <div class="formula">
+            $$3.142$$
+        </div>
+
+        <p>
+            La diferencia entre el número original y su representación
+            genera un <strong>error de redondeo</strong>.
+        </p>
+
+        <h3>Procedimiento de redondeo</h3>
+
+        <ol>
+            <li>Se conservan los dígitos requeridos.</li>
+            <li>Se observa el siguiente dígito.</li>
+            <li>Si es menor que 5, se conserva el último dígito.</li>
+            <li>Si es 5 o mayor, se incrementa el último dígito conservado.</li>
+        </ol>
+
+        <h3>Ejemplo</h3>
+
+        <p>
+            Redondear $8.3764$ a tres cifras significativas.
+        </p>
+
+        <p>
+            Se conservan $8.37$. El siguiente dígito es 6, por lo que
+            se aumenta el 7:
+        </p>
+
+        <div class="formula">
+            $$\boxed{8.38}$$
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         11. TRUNCAMIENTO Y REDONDEO
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>✂️ 11. Truncamiento y redondeo</h2>
+
+        <h3>Truncamiento</h3>
+
+        <p>
+            Consiste simplemente en eliminar los dígitos posteriores.
+        </p>
+
+        <div class="formula">
+            $$3.141592\rightarrow3.141$$
+        </div>
+
+        <h3>Redondeo</h3>
+
+        <p>
+            Considera el siguiente dígito para decidir si se aumenta
+            el último dígito conservado.
+        </p>
+
+        <div class="formula">
+            $$3.141592\rightarrow3.142$$
+        </div>
+
+        <p>
+            En general, el redondeo suele producir una representación más
+            cercana al valor original que el truncamiento, aunque ambos
+            introducen error.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         12. PROPAGACIÓN DE ERRORES
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>🔗 12. Propagación de errores en operaciones</h2>
+
+        <p>
+            Los errores presentes en los datos pueden propagarse cuando
+            realizamos operaciones matemáticas.
+        </p>
+
+        <p>
+            Supongamos:
+        </p>
+
+        <div class="formula">
+            $$z=x+y$$
+        </div>
+
+        <p>
+            Si $x$ y $y$ contienen errores, el resultado también puede
+            contenerlos.
+        </p>
+
+        <div class="formula">
+            $$\Delta z\approx\Delta x+\Delta y$$
+        </div>
+
+        <p>
+            Para una diferencia ($z=x-y$), se utiliza de forma conservadora:
+        </p>
+
+        <div class="formula">
+            $$|\Delta z|\approx|\Delta x|+|\Delta y|$$
+        </div>
+
+        <p>
+            Esto muestra que pequeños errores de entrada pueden combinarse
+            y generar un error significativo en la salida.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         13. SERIE DE TAYLOR
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📐 13. La serie de Taylor</h2>
+
+        <p>
+            La serie de Taylor constituye una herramienta fundamental para
+            aproximar funciones mediante polinomios.
+        </p>
+
+        <div class="formula">
+            $$
+            f(x)=f(x_i)+f'(x_i)(x-x_i)
+            +\frac{f''(x_i)}{2!}(x-x_i)^2
+            +\frac{f'''(x_i)}{3!}(x-x_i)^3+\cdots
+            $$
+        </div>
+
+        <p>
+            De manera general:
+        </p>
+
+        <div class="formula">
+            $$
+            f(x)=
+            \sum_{k=0}^{n}
+            \frac{f^{(k)}(x_i)}{k!}(x-x_i)^k+R_n
+            $$
+        </div>
+
+        <p>
+            donde $R_n$ representa el <strong>término de resto o error
+            de truncamiento</strong>.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         14. SERIE DE MACLAURIN
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📚 14. Serie de Maclaurin</h2>
+
+        <p>
+            Cuando el punto de expansión es $x_i=0$, la serie de Taylor
+            recibe el nombre de <strong>serie de Maclaurin</strong>.
+        </p>
+
+        <div class="formula">
+            $$
+            f(x)=f(0)+f'(0)x+
+            \frac{f''(0)}{2!}x^2+
+            \frac{f'''(0)}{3!}x^3+\cdots
+            $$
+        </div>
+
+        <h3>Exponencial</h3>
+
+        <div class="formula">
+            $$e^x=1+x+\frac{x^2}{2!}+
+            \frac{x^3}{3!}+\frac{x^4}{4!}+\cdots$$
+        </div>
+
+        <h3>Seno</h3>
+
+        <div class="formula">
+            $$\sin x=x-\frac{x^3}{3!}
+            +\frac{x^5}{5!}-\frac{x^7}{7!}+\cdots$$
+        </div>
+
+        <h3>Coseno</h3>
+
+        <div class="formula">
+            $$\cos x=1-\frac{x^2}{2!}
+            +\frac{x^4}{4!}-\frac{x^6}{6!}+\cdots$$
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         15. EJEMPLO DE TAYLOR
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>🧮 15. Ejemplo de aproximación mediante Taylor</h2>
+
+        <p>
+            Aproximemos $e^{0.5}$ utilizando los cuatro primeros términos:
+        </p>
+
+        <div class="formula">
+            $$e^x\approx1+x+\frac{x^2}{2}+\frac{x^3}{6}$$
+        </div>
+
+        <p>
+            Sustituyendo:
+        </p>
+
+        <div class="formula">
+            $$
+            e^{0.5}\approx
+            1+0.5+\frac{0.5^2}{2}+
+            \frac{0.5^3}{6}
+            $$
+        </div>
+
+        <div class="formula">
+            $$e^{0.5}\approx1+0.5+0.125+0.0208333$$
+        </div>
+
+        <div class="formula">
+            $$\boxed{e^{0.5}\approx1.6458333}$$
+        </div>
+
+        <p>
+            El valor de referencia es aproximadamente:
+        </p>
+
+        <div class="formula">
+            $$e^{0.5}\approx1.6487213$$
+        </div>
+
+        <p>
+            Error absoluto aproximado:
+        </p>
+
+        <div class="formula">
+            $$|E_t|\approx|1.6487213-1.6458333|$$
+        </div>
+
+        <div class="formula">
+            $$\boxed{|E_t|\approx0.002888}$$
+        </div>
+
+        <p>
+            Error porcentual:
+        </p>
+
+        <div class="formula">
+            $$\boxed{E_{\%}\approx0.175\%}$$
+        </div>
+
+    </section>
+
+
+    <!-- ========================================
+         16. ERROR DE TRUNCAMIENTO
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>✂️ 16. Error de truncamiento</h2>
+
+        <p>
+            Cuando una serie infinita se reemplaza por una cantidad finita
+            de términos, se produce un <strong>error de truncamiento</strong>.
+        </p>
+
+        <div class="formula">
+            $$e^x=1+x+\frac{x^2}{2!}
+            +\frac{x^3}{3!}+\frac{x^4}{4!}+\cdots$$
+        </div>
+
+        <p>
+            Si utilizamos solamente:
+        </p>
+
+        <div class="formula">
+            $$e^x\approx1+x+\frac{x^2}{2!}$$
+        </div>
+
+        <p>
+            los términos omitidos representan el error de truncamiento:
+        </p>
+
+        <div class="formula">
+            $$
+            \frac{x^3}{3!}+\frac{x^4}{4!}+\cdots
+            $$
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Tipo de error</th>
+                    <th>Origen</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Error de redondeo</td>
+                    <td>Representación finita de números.</td>
+                </tr>
+
+                <tr>
+                    <td>Error de truncamiento</td>
+                    <td>Omisión de términos de un procedimiento infinito.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+
+    <!-- ========================================
+         17. RESTO DE TAYLOR
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📌 17. Término de resto de Taylor</h2>
+
+        <p>
+            El teorema de Taylor permite representar el error mediante
+            un término de resto.
+        </p>
+
+        <p>
+            Una forma común es el resto de Lagrange:
+        </p>
+
+        <div class="formula">
+            $$
+            R_n=
+            \frac{f^{(n+1)}(\xi)}
+            {(n+1)!}(x-x_i)^{n+1}
+            $$
+        </div>
+
+        <p>
+            donde $\xi$ es algún punto situado entre $x_i$ y $x$.
+        </p>
+
+        <div class="formula">
+            $$f(x)=P_n(x)+R_n$$
+        </div>
+
+        <p>
+            donde:
+        </p>
+
+        <div class="formula">
+            $$
+            P_n(x)=
+            \sum_{k=0}^{n}
+            \frac{f^{(k)}(x_i)}
+            {k!}(x-x_i)^k
+            $$
+        </div>
+
+        <p>
+            es el polinomio de Taylor de grado $n$.
+        </p>
+
+        <p>
+            Esta expresión permite <strong>estimar el error</strong> cometido
+            al utilizar el polinomio en lugar de la función original.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         18. EJEMPLO DE ESTIMACIÓN
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📏 18. Ejemplo de estimación del error</h2>
+
+        <p>
+            Aproximemos $\sin(0.2)$ utilizando:
+        </p>
+
+        <div class="formula">
+            $$P_3(x)=x-\frac{x^3}{3!}$$
+        </div>
+
+        <p>
+            Entonces:
+        </p>
+
+        <div class="formula">
+            $$P_3(0.2)=0.2-\frac{0.2^3}{6}=0.1986667$$
+        </div>
+
+        <p>
+            El siguiente término de la serie es:
+        </p>
+
+        <div class="formula">
+            $$\frac{x^5}{5!}$$
+        </div>
+
+        <p>
+            Por ello podemos anticipar que el error será del orden de
+            $O(x^5)$.
+        </p>
+
+        <div class="formula">
+            $$0.2^5=0.00032$$
+        </div>
+
+        <p>
+            El factor $5!=120$ reduce aún más este valor.
+            Por ello, alrededor de cero, el polinomio cúbico proporciona
+            una aproximación bastante buena para $\sin(x)$ cuando $x$
+            es pequeño.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         19. ORDEN DE APROXIMACIÓN
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📉 19. Orden de aproximación</h2>
+
+        <p>
+            El <strong>orden de aproximación</strong> indica cómo disminuye
+            el error cuando disminuye el tamaño de la variable o del paso
+            utilizado.
+        </p>
+
+        <div class="formula">
+            $$E=O(h^p)$$
+        </div>
+
+        <p>
+            Decimos que el método tiene <strong>orden $p$</strong>.
+            Para valores suficientemente pequeños de $h$, el error se
+            comporta proporcionalmente a $h^p$.
+        </p>
+
+        <h3>Ejemplo</h3>
+
+        <p>
+            Supongamos:
+        </p>
+
+        <div class="formula">
+            $$E=O(h^2)$$
+        </div>
+
+        <p>
+            Si reducimos $h$ a la mitad:
+        </p>
+
+        <div class="formula">
+            $$h_{\text{nuevo}}=\frac{h}{2}$$
+        </div>
+
+        <p>
+            entonces:
+        </p>
+
+        <div class="formula">
+            $$
+            E_{\text{nuevo}}
+            \approx
+            \left(\frac{1}{2}\right)^2E
+            =\frac{E}{4}
+            $$
+        </div>
+
+        <p>
+            Un método de segundo orden reduce aproximadamente el error
+            a la cuarta parte cuando el paso se reduce a la mitad.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         20. ORDEN DE TAYLOR
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📐 20. Orden de Taylor</h2>
+
+        <p>
+            Si se utiliza un polinomio de Taylor de grado $n$ y el primer
+            término omitido es proporcional a $(x-x_i)^{n+1}$, entonces
+            el error de truncamiento es de orden:
+        </p>
+
+        <div class="formula">
+            $$O((x-x_i)^{n+1})$$
+        </div>
+
+        <h3>Ejemplo</h3>
+
+        <p>
+            Para:
+        </p>
+
+        <div class="formula">
+            $$e^x\approx1+x$$
+        </div>
+
+        <p>
+            el primer término omitido es:
+        </p>
+
+        <div class="formula">
+            $$\frac{x^2}{2}$$
+        </div>
+
+        <p>
+            Por ello:
+        </p>
+
+        <div class="formula">
+            $$E_t=O(x^2)$$
+        </div>
+
+        <p>
+            La aproximación lineal es de segundo orden respecto a $x$
+            alrededor de cero.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         21. APLICACIONES DE TAYLOR
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>🛠️ 21. Aplicaciones de la serie de Taylor</h2>
+
+        <h3>21.1 Aproximación de funciones</h3>
+
+        <p>
+            Funciones como $e^x$, $\sin x$ y $\cos x$ pueden aproximarse
+            mediante polinomios. Esto es útil cuando se requiere evaluar
+            una función con operaciones básicas.
+        </p>
+
+        <h3>21.2 Derivación de métodos numéricos</h3>
+
+        <p>
+            Muchos métodos de diferenciación numérica se obtienen
+            desarrollando funciones mediante Taylor.
+        </p>
+
+        <div class="formula">
+            $$
+            f(x+h)=f(x)+hf'(x)
+            +\frac{h^2}{2}f''(x)+\cdots
+            $$
+        </div>
+
+        <p>
+            Despejando:
+        </p>
+
+        <div class="formula">
+            $$f'(x)\approx
+            \frac{f(x+h)-f(x)}{h}$$
+        </div>
+
+        <h3>21.3 Análisis del error</h3>
+
+        <p>
+            Taylor permite determinar qué términos fueron omitidos y,
+            por tanto, estimar el orden del error.
+        </p>
+
+        <h3>21.4 Desarrollo de algoritmos</h3>
+
+        <p>
+            Los desarrollos de Taylor permiten estudiar la convergencia
+            y el comportamiento de algoritmos numéricos.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         22. DIFERENCIA HACIA ADELANTE
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>➡️ 22. Aplicación: derivada mediante Taylor</h2>
+
+        <p>
+            Partimos de:
+        </p>
+
+        <div class="formula">
+            $$
+            f(x+h)=f(x)+hf'(x)
+            +\frac{h^2}{2}f''(x)+O(h^3)
+            $$
+        </div>
+
+        <p>
+            Despejamos:
+        </p>
+
+        <div class="formula">
+            $$
+            f'(x)\approx
+            \frac{f(x+h)-f(x)}{h}
+            $$
+        </div>
+
+        <p>
+            Por tanto:
+        </p>
+
+        <div class="formula">
+            $$\boxed{
+            f'(x)\approx
+            \frac{f(x+h)-f(x)}{h}
+            }$$
+        </div>
+
+        <p>
+            El error dominante es <strong>$O(h)$</strong>.
+            Es decir, la diferencia hacia adelante es una aproximación
+            de primer orden.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         23. DIFERENCIA CENTRAL
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>↔️ 23. Aplicación: diferencia central</h2>
+
+        <p>
+            Desarrollamos:
+        </p>
+
+        <div class="formula">
+            $$
+            f(x+h)=f(x)+hf'(x)
+            +\frac{h^2}{2}f''(x)
+            +\frac{h^3}{6}f'''(x)+\cdots
+            $$
+        </div>
+
+        <div class="formula">
+            $$
+            f(x-h)=f(x)-hf'(x)
+            +\frac{h^2}{2}f''(x)
+            -\frac{h^3}{6}f'''(x)+\cdots
+            $$
+        </div>
+
+        <p>
+            Restando:
+        </p>
+
+        <div class="formula">
+            $$
+            f(x+h)-f(x-h)
+            =2hf'(x)+O(h^3)
+            $$
+        </div>
+
+        <p>
+            Entonces:
+        </p>
+
+        <div class="formula">
+            $$\boxed{
+            f'(x)\approx
+            \frac{f(x+h)-f(x-h)}
+            {2h}
+            }$$
+        </div>
+
+        <p>
+            El error es <strong>$O(h^2)$</strong>.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================
+         24. ERROR NUMÉRICO TOTAL
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>⚠️ 24. Error numérico total</h2>
+
+        <p>
+            En un cálculo numérico pueden aparecer diferentes fuentes
+            de error:
+        </p>
+
+        <ul>
+            <li>
+                <strong>Error de redondeo:</strong>
+                surge por la representación finita de los números.
+            </li>
+
+            <li>
+                <strong>Error de truncamiento:</strong>
+                surge al sustituir un procedimiento exacto o infinito
+                por una aproximación finita.
+            </li>
+
+            <li>
+                <strong>Error de datos:</strong>
+                proviene de incertidumbres en los datos de entrada.
+            </li>
+
+            <li>
+                <strong>Error de formulación:</strong>
+                se produce cuando el modelo matemático no representa
+                exactamente el fenómeno real.
+            </li>
+
+            <li>
+                <strong>Error humano:</strong>
+                puede originarse por errores de programación,
+                transcripción, unidades o planteamiento.
+            </li>
+        </ul>
+
+    </section>
+
+
+    <!-- ========================================
+         25. TABLA RESUMEN
+    ========================================= -->
+
+    <section class="tarjeta-teoria">
+
+        <h2>📋 25. Relación entre tipos de error</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Concepto</th>
+                    <th>Causa</th>
+                    <th>Ejemplo</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Error absoluto</td>
+                    <td>Diferencia entre valor verdadero y aproximado.</td>
+                    <td>$|x_t-x_a|$</td>
+                </tr>
+
+                <tr>
+                    <td>Error relativo</td>
+                    <td>Error absoluto comparado con el valor verdadero.</td>
+                    <td>$|x_t-x_a|/|x_t|$</td>
+                </tr>
+
+                <tr>
+                    <td>Error de redondeo</td>
+                    <td>Representación finita de números.</td>
+                    <td>$\pi\rightarrow3.142$</td>
+                </tr>
+
+                <tr>
+                    <td>Error de truncamiento</td>
+                    <td>Omisión de términos o procesos.</td>
+                    <td>$e^x\rightarrow1+x+x^2/2$</td>
+                </tr>
+
+                <tr>    
+                    <td>Error de datos</td>
+                    <td>Incertidumbre de entrada.</td>
+                    <td>Medición experimental.</td>
+                </tr>
+
+                <tr>
+                    <td>Error de formulación</td>
+                    <td>Modelo simplificado.</td>
+                    <td>Modelo físico aproximado.</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+    <!-- ========================================
+         5. MATERIAL COMPLETO
+    ========================================= -->
+
+    <section class="tarjeta-teoria material-completo">
+
+        <h2>📖 Material teórico completo</h2>
+
+        <p>
+            Para consultar la explicación completa, ejemplos,
+            ejercicios y material adicional del módulo, puedes
+            acceder al documento original del repositorio.
+        </p>
+
+        <a
+            href="https://github.com/Pol-Codificador/LAB-MN/blob/main/docs/semana1/teoria_de_errores.md#1-objetivo-del-m%C3%B3dulo"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="boton-repositorio">
+
+            🔗 CONSULTAR REPOSITORIO DE TEORÍA
+
+        </a>
+
+    </section>
+
+    <!-- ========================================
+     6. VIDEOS DE GUÍA
+========================================= -->
+
+<section class="tarjeta-teoria videos-guia">
+
+    <h2>🎥 Videos de guía</h2>
+
+    <p>
+        Complementa la teoría del módulo con estos videos
+        seleccionados para reforzar los principales conceptos.
+    </p>
+
+    <div class="grupo-videos">
+
+        <h3>📐 Teoría de errores</h3>
+
+        <div class="lista-videos">
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Introducción a los errores numéricos</h4>
+
+                    <a
+                        href="https://www.youtube.com/watch?v=rcdv9hlnimU&list=PL1fzt-aRc08oHfVjlowXWvaZ8wdk35Lir&index=1&t=221s"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="video-item">
+
+                <div class="icono-video">▶</div>
+
+                <div class="info-video">
+
+                    <h4>Teoría de errores</h4>
+
+                    <a
+                        href="https://www.youtube.com/watch?v=l69yxD718Jo"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="boton-video">
+
+                        ▶ VER VIDEO
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        if (window.MathJax) {
+            MathJax.typesetPromise();
+        }
+
+    });
+</script>
+</body>
+</html>
